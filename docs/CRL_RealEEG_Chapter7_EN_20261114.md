@@ -7,7 +7,7 @@ Date: 2026-11-14. Status: formal manuscript section. Every real-data conclusion 
 
 ## 7.1 Three independent sources and one protocol
 
-The empirical study uses three independently collected EEG sources. They deliberately span a wide range of acquisition and protocol differences, so the recovered label is interpreted only as a source-associated technical mixture rather than a latent environment, and no claim is made that a single device or task can be isolated as the cause.
+The empirical study uses three independently collected EEG sources. They span a wide spread of acquisition and protocol differences, so the recovered label is interpreted only as a source-associated technical mixture rather than a latent environment, and no claim is made that a single device or task can be isolated as the cause.
 
 The first source is a research-grade BrainVision study with eight channels sampled at a thousand hertz, thirty-two subjects, and sixty-four recordings spread across sessions, roughly two recordings per subject. The second is a consumer-grade Emotiv headset with fourteen channels at a hundred and twenty-eight hertz, thirty subjects and thirty long recordings, with a median of eighty-seven windows each. The third is the PhysioNet eyes-open baseline, a hundred and nine subjects and sixty-four channels, with about fifteen windows per recording, obtained through the public PhysioNet bucket.
 
@@ -57,7 +57,7 @@ This is read for exactly what it is: recording-level, oracle-$K$ evidence that t
 
 The pre-specified blind selector does not reproduce the oracle result. It returns two clusters rather than three, with ARI $0.279$, and the merge is systematic. Across every balanced seed the same two sources are joined, while the third stays apart. The contingency table shows the merged cluster absorbing nearly equal numbers from the two joined sources, and that cluster separates cleanly into the two true components once the correct number is restored.
 
-The stability gate is what drives the under-selection, not the BIC term, which on its own prefers the larger values. No pre-specified automatic rule recovers the oracle number, and the one-standard-error rule instead runs to the grid boundary. We present this as a primary finding rather than a caveat: covariance structure can be recoverable at a fixed $K$ while the number of sources is itself not identifiable by the blind procedure. The framing stays neutral on whether a reviewer reads it as a method failure, and both readings are left open.
+The stability gate drives the under-selection, not the BIC term, which on its own prefers the larger values. No pre-specified automatic rule recovers the oracle number, and the one-standard-error rule instead runs to the grid boundary. We present this as a primary finding rather than a caveat: covariance structure can be recoverable at a fixed $K$ while the number of sources is itself not identifiable by the blind procedure. The framing stays neutral on whether a reviewer reads it as a method failure, and both readings are left open.
 
 \begin{figure}[htbp]
 \centering
@@ -68,7 +68,7 @@ The stability gate is what drives the under-selection, not the BIC term, which o
 
 ## 7.5 Balance is a necessary condition
 
-The balanced design is doing real work, and removing it lowers the point estimate. On the full unbalanced pool the recording-level ARI falls to $0.371$. The most direct plug-in, which runs the procedure once over all subjects without resampling or rebalancing, is weaker still. With a hundred and seventy-one subjects in unequal group sizes, the subject-level ARI is only $0.241$. The large source is split across several clusters and the small sources merge, the same mechanism seen in the unbalanced recording result. Balance is therefore a condition for recovery, not a cosmetic detail, and the weak plug-in is reported alongside the balanced figure rather than hidden.
+The balanced design does real work, and removing it lowers the point estimate. On the full unbalanced pool the recording-level ARI falls to $0.371$. The most direct plug-in, which runs the procedure once over all subjects without resampling or rebalancing, is weaker still. With a hundred and seventy-one subjects in unequal group sizes, the subject-level ARI is only $0.241$. The large source is split across several clusters and the small sources merge, the same mechanism seen in the unbalanced recording result. Balance is therefore a condition for recovery, not a cosmetic detail, and the weak plug-in is reported alongside the balanced figure rather than hidden.
 
 The four primary designs are consolidated in one table, so the point estimate is never read apart from the design that produced it.
 

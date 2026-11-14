@@ -20,7 +20,7 @@ The population K-means risk and its optimum are
 
 $$R(c)=E\!\left[\min_k\|X-c_k\|^2\right],\qquad R^\star=\inf_c R(c).$$
 
-This model is a conditional model for the feature the pipeline actually builds. In the implementation,
+This model is conditional on the feature the pipeline actually builds. In the implementation,
 
 $$X_r=A\!\left[\frac1{W_r}\sum_{w=1}^{W_r}\operatorname{vech}\{\log(\widehat\Sigma_{rw})\}\right]+b,$$
 
@@ -59,9 +59,9 @@ $$\mathcal C^\star=\{c:R(c)=R^\star\}
 =\{(\mu_1,\dots,\mu_K)\text{ up to label permutation}\}.$$
 \end{assumption}
 
-This is a direct condition on the geometry of the population objective, not a consequence of any split/merge calculation. A nearby formulation in the K-means literature is the cost or $\varepsilon$-separation condition, under which the optimal $(K-1)$-center cost sits a strict and stable margin above the $K$-center cost and binds the $K$ centers to the $K$ natural groups. The exact statement and its constants must be checked against the source before a specific constant is quoted; we do not assume one here.
+This is a direct condition on the geometry of the population objective, not a consequence of any split/merge calculation. A nearby formulation in the K-means literature is the cost or $\varepsilon$-separation condition, under which the optimal $(K-1)$-center cost sits a strict and stable margin above the $K$-center cost and binds the $K$ centers to the $K$ natural groups. The exact statement and its constants must be checked against the source before a specific constant is quoted; we assume none here.
 
-The split/merge quantities used in the diagnostics call for a word of caution. With
+The split/merge quantities used in the diagnostics call for caution. With
 
 $$V_e(m)=\inf_{c_1,\dots,c_m}E[\min_j\|X-c_j\|^2\mid Z=e],\quad
 S_e(m)=V_e(1)-V_e(m),$$
@@ -80,7 +80,7 @@ The condition holds for an absolutely continuous distribution whose density stay
 $R(c)-R^\star\ge\kappa\,d(c,\mathcal C^\star)^2$.
 \end{assumption}
 
-This is an independent strong assumption. It is not implied by the margin condition, and the quantitative bound it supports is local.
+This is an independent strong assumption. The margin condition does not imply it, and the quantitative bound it supports is local.
 
 ## 5.3 The conditional compatibility theorem
 
@@ -93,7 +93,7 @@ $$P\{g_{c^\star}(X)\ne\pi(Z)\}=0.$$
 Assumption~\ref{a:align} identifies the optimal centers as a permutation of the environment means. Lemma~\ref{lem:truecenter} makes that configuration error-free.
 \end{proof}
 
-The identification comes from the alignment that is assumed, not from a lower-level generative argument. The theorem name in the paper keeps this visible: the *Conditional Compatibility Theorem* states that K-means compatibility implies risk-gap recovery, and it is not a generative bridge from recording separation to partition recovery.
+The identification comes from the alignment that is assumed, not from a lower-level generative argument. The theorem name keeps this visible: the *Conditional Compatibility Theorem* states that K-means compatibility implies risk-gap recovery, and it is not a generative bridge from recording separation to partition recovery.
 
 For a target misclassification level $q$, set
 
@@ -129,7 +129,7 @@ Combining this with Assumption~\ref{a:growth} and restricting to $0<q\le q_0$,
 
 $$\psi(q)\ge\kappa\Big(\frac{q}{C_{\rm margin}}\Big)^{2/\beta}.$$
 
-For $\beta=1$, $\psi(q)\ge(\kappa/C_{\rm margin}^2)q^2$. The cutoff $q_0$ is the largest misclassification level at which the local linearization holds; it is back-solved from the radius of the boundary stability region through the margin relation. Three limits stay in force. The perturbation has to lie in the local stability region, the margin condition has to hold for the transformed feature $X$ rather than the raw covariance or a window feature, and Assumption~\ref{a:growth} remains independent of the margin. We do not claim a global quantitative bound, and neither $\kappa$ nor $C_{\rm margin}$ is self-certified.
+For $\beta=1$, $\psi(q)\ge(\kappa/C_{\rm margin}^2)q^2$. The cutoff $q_0$ is the largest misclassification level at which the local linearization holds; it is back-solved from the radius of the boundary stability region through the margin relation. Three limits stay in force. The perturbation has to lie in the local stability region, the margin condition has to hold for the transformed feature $X$ rather than the raw covariance or a window feature, and Assumption~\ref{a:growth} remains independent of the margin. We claim no global quantitative bound, and neither $\kappa$ nor $C_{\rm margin}$ is self-certified.
 
 ## 5.4 Finite-sample transfer
 
