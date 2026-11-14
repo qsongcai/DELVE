@@ -81,12 +81,13 @@ ax.plot(Ks, sil, "-^", color=C["green"], label="Silhouette")
 ax.axvline(3, color=C["grey"], ls="--", lw=1)
 ax.annotate("oracle $K=3$", xy=(3, 0.62), xytext=(3.18, 0.72),
             color=C["grey"], fontsize=8)
-ax.annotate("blind choice $K=2$", xy=(2, 0.279), xytext=(1.55, 0.45),
+ax.annotate("blind choice $K=2$", xy=(2, 0.279), xytext=(0.12, 0.46),
             color=C["red"], fontsize=8,
             arrowprops=dict(arrowstyle="->", color=C["red"], lw=0.9))
 ax.set_xlabel("number of clusters $K$")
 ax.set_ylabel("score")
 ax.set_xticks(Ks)
+ax.set_xlim(0, 6.5)
 ax.set_ylim(0, 0.8)
 ax.legend(frameon=False, ncol=3, loc="lower center")
 ax.set_title("Recovery on the balanced 90-record design (seed 0)")
@@ -126,15 +127,16 @@ for yi, (name, mean, lo, hi) in zip(yy, boot):
     ax.errorbar(mean, yi, xerr=[[mean - lo], [hi - mean]], fmt="o",
                 color=C["blue"], capsize=4, ms=6, lw=1.3)
 ax.axvline(0.608, color=C["purple"], ls="--", lw=1.1)
-ax.text(0.615, len(boot) - 0.45, "recording point 0.608", color=C["purple"],
-        fontsize=7.5, rotation=90, va="top")
 ax.axvline(0.241, color=C["red"], ls="--", lw=1.1)
-ax.text(0.248, len(boot) - 0.45, "all-subject plug-in 0.241", color=C["red"],
-        fontsize=7.5, rotation=90, va="top")
+ax.text(0.235, 2.78, "plug-in 0.241", color=C["red"],
+        fontsize=7.5, ha="right", va="center")
+ax.text(0.615, 2.78, "point 0.608", color=C["purple"],
+        fontsize=7.5, ha="left", va="center")
 ax.set_yticks(yy)
 ax.set_yticklabels([b[0].replace("\n", " ") for b in boot])
 ax.set_xlabel("ARI")
 ax.set_xlim(0, 1)
+ax.set_ylim(-0.6, 3.05)
 ax.set_title("Subject-cluster bootstrap (B=500): mean and 95% CI")
 fig.savefig(os.path.join(OUT, "fig3_bootstrap_ci.pdf"))
 fig.savefig(os.path.join(OUT, "fig3_bootstrap_ci.png"))
