@@ -26,3 +26,7 @@ The practical contribution is a recording-level analysis framework that keeps th
 On three independent EEG sources, the same story is checked end to end. Source-associated structure is recoverable under a known $K$ and a balanced design, and the conclusion survives subject-level resampling. The blind selector under-counts, the unbalanced plug-in is weak, and within-source recovery is absent, all reported as findings rather than buried. They describe a technical, dataset-level structure, never a causal one.
 
 The open problems are where the work points next. Deriving the compatibility condition from a structured distribution class, establishing the identifiability of the number of environments, closing the training-side bound in the sample-split result, and extending the framework to non-Gaussian and genuinely unseen settings would each move the boundary outward. Until then, the claims are offered with their conditions attached, and the distinctions drawn here are intended to make clear exactly which downstream uses can be trusted.
+
+## 8.3 Code availability
+
+The complete implementation of DELVE, covering the numerical core, the EEG processing pipeline, and the experiment scripts that produce every table and figure, is maintained in a public GitHub repository at \url{https://github.com/qsongcai/DELVE}. The three EEG collections are public EEGDash and PhysioNet releases, and the repository documents the harmonization and analysis steps needed to reproduce the reported results.
