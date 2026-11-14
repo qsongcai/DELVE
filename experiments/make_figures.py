@@ -81,14 +81,34 @@ ax.plot(Ks, sil, "-^", color=C["green"], label="Silhouette")
 ax.axvline(3, color=C["grey"], ls="--", lw=1)
 ax.annotate("oracle $K=3$", xy=(3, 0.62), xytext=(3.18, 0.72),
             color=C["grey"], fontsize=8)
-ax.annotate("blind choice $K=2$", xy=(2, 0.279), xytext=(0.12, 0.46),
-            color=C["red"], fontsize=8,
+ax.annotate("", xy=(2, 0.279), xytext=(1.8, 0.13),
             arrowprops=dict(arrowstyle="->", color=C["red"], lw=0.9))
 ax.set_xlabel("number of clusters $K$")
 ax.set_ylabel("score")
 ax.set_xticks(Ks)
-ax.set_xlim(0, 6.5)
+ax.set_xlim(1.4, 6.5)
 ax.set_ylim(0, 0.8)
+
+# Place "blind choice K=2" so the gap between "blind" and "choice" sits
+# directly above the arrow's starting point (x = 1.8). Measure rendered
+# character extents rather than guessing proportional widths.
+fig.canvas.draw()
+def _data_extent(s):
+    t = ax.text(0, 0.1, s, ha="left", va="bottom", color=C["red"],
+                fontsize=8)
+    e = t.get_window_extent().transformed(ax.transData.inverted())
+    t.remove()
+    return e
+e_bc = _data_extent("blind choice")
+e_b = _data_extent("blind")
+e_c = _data_extent("choice")
+_gap_start = e_b.x1
+_choice_left = e_bc.x1 - e_c.width
+_gap_center = 0.5 * (_gap_start + _choice_left)
+_gap_offset = _gap_center - e_bc.x0
+label = ax.text(1.8 - _gap_offset, 0.1, "blind choice $K=2$",
+                ha="left", va="bottom", color=C["red"], fontsize=8)
+
 ax.legend(frameon=False, ncol=3, loc="lower center")
 ax.set_title("Recovery on the balanced 90-record design (seed 0)")
 fig.savefig(os.path.join(OUT, "fig1_k_sensitivity.pdf"))

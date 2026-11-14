@@ -160,9 +160,10 @@ A global empirical minimizer has $\delta_{\rm opt}=0$. Lloyd's algorithm only ap
 
 ## 5.5 Three operational variants and the guarantee boundary
 
-The name DELVE covers more than one object, and the guarantee attaches to exactly one of them. The distinction is stated here in the method rather than deferred to the limitations. The population alignment the theorems use is a compatibility condition, assumed on the population objective; this paper does not derive it from the covariance generative model.
+The name DELVE covers more than one object, and the guarantee attaches to exactly one of them. The distinction is stated here in the method rather than deferred to the limitations. The population alignment the theorems use is a compatibility condition, assumed on the population objective; this paper does not derive it from the covariance generative model. Table~\ref{tab:variants} lists the three variants and their guarantees.
 
-\begin{center}
+\begin{table}[htbp]
+\centering
 \small
 \begin{tabular}{lllll}
 \hline
@@ -173,7 +174,9 @@ DELVE-L & fixed & frozen & finite Lloyd & explicit $\delta_{\rm opt}$\\
 DELVE-B & blind & full-pool & Lloyd + selector & none\\
 \hline
 \end{tabular}
-\end{center}
+\caption{The three operational variants of DELVE and the guarantee attached to each. Only DELVE-G, with fixed $K$, a frozen scaler, and a global K-means optimizer, is covered in full by the risk-gap guarantee.}
+\label{tab:variants}
+\end{table}
 
 DELVE-G is the only object the theorem covers in full. It fixes the number of environments and the feature transformation, and a global empirical minimizer has zero optimization error. DELVE-L keeps the same fixed-$K$ setting but obtains its centers from finite-initialization Lloyd, so the finite-sample statement carries the explicit $\delta_{\rm opt}$ of the finite-sample decomposition rather than setting it to zero. DELVE-B is the blind pipeline run in the real-data chapter: a scaler fitted on the full pool and a pre-specified selector over $K$, with no oracle number, and it stays outside the unconditional guarantees. The sample-split construction that gives the held-out decomposition in Section~5.4 is an inductive use of the fixed-$K$ core, not a fourth clusterer. The main results label which variant each number comes from, so the guaranteed sub-procedure and the empirical pipeline are never read as one algorithm.
 

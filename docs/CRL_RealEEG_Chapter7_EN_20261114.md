@@ -13,9 +13,10 @@ The first source is a research-grade BrainVision study with eight channels sampl
 
 All three are reduced to one pre-specified pipeline before any clustering. Four shared channels are retained, F3, F4, O1, and O2; the data are resampled to a hundred and twenty-eight hertz, common-average referenced, band-passed from one to forty hertz with a fifty-hertz notch, and cut into four-second windows. Window covariances use shrinkage and are linearized through the matrix logarithm, and the recording feature is the within-recording average. The protocol is fixed before analysis, not chosen after seeing the clusters. Recordings carry different window counts, and each recording receives one equal vote rather than being weighted by its precision.
 
-The source-level facts and the preprocessing choices needed for reproduction are stated explicitly.
+The source-level facts and the preprocessing choices needed for reproduction are stated explicitly in Table~\ref{tab:sources}.
 
-\begin{center}
+\begin{table}[htbp]
+\centering
 \small
 \begin{tabular}{lllll}
 \hline
@@ -26,7 +27,9 @@ ds008099 & Emotiv EPOC & 14 & 128 Hz & 30 / 30\\
 on004362 & PhysioNet R01 & 64 & 160 Hz & 109 / 109\\
 \hline
 \end{tabular}
-\end{center}
+\caption{The three independently collected EEG sources and their acquisition characteristics. The harmonized pipeline reduces these heterogeneous sources to a common feature space.}
+\label{tab:sources}
+\end{table}
 
 The harmonization keeps the four shared channels, resamples to $128$ hertz, applies the common-average reference, a one-to-forty-hertz band-pass with a fifty-hertz notch, and non-overlapping four-second windows. Window covariances use the Ledoit–Wolf shrinkage, the matrix logarithm is taken on the shrunk positive-definite matrices with no eigenvalue clipping, and the recording feature is the unweighted mean across windows. The scaler is fitted only on the analysis subset, and the fixed-$K$ K-means uses fifty initializations with the default Lloyd stopping rule. No recording is excluded after download, missing channels are not interpolated, and the PhysioNet source is read through its public bucket. The exact accession numbers, download locations, and the data references are listed in the bibliography.
 
@@ -70,9 +73,10 @@ The stability gate drives the under-selection, not the BIC term, which on its ow
 
 The balanced design does real work, and removing it lowers the point estimate. On the full unbalanced pool the recording-level ARI falls to $0.371$. The most direct plug-in, which runs the procedure once over all subjects without resampling or rebalancing, is weaker still. With a hundred and seventy-one subjects in unequal group sizes, the subject-level ARI is only $0.241$. The large source is split across several clusters and the small sources merge, the same mechanism seen in the unbalanced recording result. Balance is therefore a condition for recovery, not a cosmetic detail, and the weak plug-in is reported alongside the balanced figure rather than hidden.
 
-The four primary designs are consolidated in one table, so the point estimate is never read apart from the design that produced it.
+The four primary designs are consolidated in Table~\ref{tab:designs}, so the point estimate is never read apart from the design that produced it.
 
-\begin{center}
+\begin{table}[htbp]
+\centering
 \begin{tabular}{lllll}
 \hline
 design & $K$ & balance & unit & ARI\\
@@ -83,7 +87,9 @@ fixed $K=3$ & 3 & unbalanced & recording & 0.371\\
 full plug-in & selected & unbalanced & subject & 0.241\\
 \hline
 \end{tabular}
-\end{center}
+\caption{ARI across the four primary designs. Recovery is strong under the balanced oracle-$K$ design (0.608) and weakens under blind selection, unbalanced pooling, and the full subject plug-in.}
+\label{tab:designs}
+\end{table}
 
 The $0.608$ is a balanced oracle-$K$ diagnostic, not a general performance number for the blind pipeline. The balanced oracle-$K$ result holds across six seeds at a mean of $0.582$, and the cross-fitted fold gives $0.610$; the other three rows report the blind and unbalanced regimes as primary results rather than footnotes.
 
@@ -93,9 +99,10 @@ Treating the subject as the independent unit, a subject-cluster bootstrap with f
 
 Two honest qualifications attach. The single balanced subject realization at seed zero is $0.523$, a single draw from the same resampling mechanism whose bootstrap mean is $0.616$, and it is not a point estimate on its own. The intervals are not widened by clustering in the way one might expect, because only one source carries repeated recordings and subject aggregation lowers the per-row noise, which offsets the loss of independent units. With roughly thirty subjects per source the intervals remain wide, and the bootstrap is a finite-sample approximation rather than a proof.
 
-The resampling protocol is stated in full so the intervals are read for what they are.
+Table~\ref{tab:resampling} states the resampling protocol in full so the intervals are read for what they are.
 
-\begin{center}
+\begin{table}[htbp]
+\centering
 \small
 \begin{tabular}{lllll}
 \hline
@@ -106,7 +113,9 @@ cluster, keep recordings & subject & refit & 500 & 2.5/97.5\\
 naive recording & recording & refit & 500 & 2.5/97.5\\
 \hline
 \end{tabular}
-\end{center}
+\caption{The three resampling designs used to quantify subject-level uncertainty. All three refit the scaler and centers on each draw and report percentile intervals rather than a coverage theorem.}
+\label{tab:resampling}
+\end{table}
 
 The target parameter is the recording-level ARI, an external metric that needs the true labels rather than a sample mean. Thirty units are drawn per source, the scaler and the fixed-$K$ K-means centers are refitted on every draw, and the number of environments stays at the oracle value rather than being reselected. The cached covariance and log features are not recomputed. The intervals are percentile intervals, not BCa, and they are finite-sample resampling diagnostics, not confidence guarantees with a coverage theorem. The subject-level permutation uses the subject as its unit, with the same plus-one correction and a minimum reportable value of $1/(B+1)$.
 
@@ -150,9 +159,10 @@ On the Riemannian geometry, the between-source distance exceeds the within-sourc
 
 The DELVE components are standard pieces, and the design choices need to be justified against measured alternatives rather than asserted. The baseline matrix was run on the two-source design, ninety-four recordings and sixty-two subjects, with the same harmonization and a blind fit; metadata entered only in the post-hoc scoring. The numbers are therefore two-source, $K=2$ evidence and are read with that scope.
 
-The covariance representation varies the estimator and the matrix mapping, with recording-level ARI against the source label.
+The covariance representation varies the estimator and the matrix mapping, with recording-level ARI against the source label in Table~\ref{tab:covrep}.
 
-\begin{center}
+\begin{table}[htbp]
+\centering
 \begin{tabular}{llll}
 \hline
 estimator \textbackslash\ mapping & logm & raw & sqrtm\\
@@ -162,11 +172,14 @@ Ledoit–Wolf & 0.581 & 0.049 & 0.163\\
 OAS & 0.457 & 0.049 & 0.163\\
 \hline
 \end{tabular}
-\end{center}
+\caption{Recording-level ARI across covariance estimators and matrix mappings. The matrix logarithm is decisive, and Ledoit–Wolf shrinkage is indispensable at the available sample size.}
+\label{tab:covrep}
+\end{table}
 
-The logarithm is the decisive mapping, with raw and square-root features near zero, and shrinkage is indispensable at the available sample size: empirical shrinkage with the log reaches only $0.232$, against $0.581$ for Ledoit–Wolf. The clusterer and the non-covariance features are compared on the same fixed design.
+The logarithm is the decisive mapping, with raw and square-root features near zero, and shrinkage is indispensable at the available sample size: empirical shrinkage with the log reaches only $0.232$, against $0.581$ for Ledoit–Wolf. The clusterer and the non-covariance features are compared on the same fixed design in Table~\ref{tab:clusterers}.
 
-\begin{center}
+\begin{table}[htbp]
+\centering
 \begin{tabular}{llll}
 \hline
 clusterer & ARI & non-covariance feature & ARI\\
@@ -179,7 +192,9 @@ agg-ward & 0.317 & &\\
 agg-average & 0.024 & &\\
 \hline
 \end{tabular}
-\end{center}
+\caption{Recording-level ARI across clusterers and non-covariance features. GMM and phase locking outperform hard K-means, but phase locking is an acquisition-sensitive diagnostic rather than evidence for the covariance framework.}
+\label{tab:clusterers}
+\end{table}
 
 The soft GMM and the non-covariance phase-locking feature outperform the hard K-means on this two-source design, which is reported rather than hidden; phase locking is an acquisition-sensitive fingerprint and is not used as evidence for the covariance framework. The Riemannian and density-based clusterers do not form stable source-consistent clusters across the tested configurations, as stated in the previous section. The table covers the estimator, mapping, clusterer, and feature choices; the earlier recording-averaging and standardization steps are not separately ablated here, and that gap is stated rather than filled with an unmeasured number.
 
