@@ -100,7 +100,17 @@ For a target misclassification level $q$, set
 $$\mathcal C_q=\{c:\mathrm{Err}(c,Z)\ge q\},\qquad
 \psi(q)=\inf_{c\in\mathcal C_q}\{R(c)-R^\star\}.$$
 
-The absence of a positive-probability tie region at the optimum is not, by itself, enough to close $\mathcal C_q$ or to make $\mathrm{Err}$ continuous.
+The absence of a positive-probability tie region at the optimum is not, by itself, enough to close $\mathcal C_q$ or to make $\mathrm{Err}$ continuous. The compactness and continuity the gap argument uses need to be stated rather than left implicit.
+
+\begin{lemma}[compact center domain and continuity of the risk]\label{lem:compact}
+Work in the bounded-feature frame, $\|X\|\le B$ almost surely. Let the center space be the product of closed balls $\mathcal C_B=(\overline{\mathcal B_p(B)})^K$, with the label permutation quotient out. Then $\mathcal C_B$ is compact, the population risk $R$ is continuous on it, and an optimizer of $R$ can be taken inside $\mathcal C_B$.
+\end{lemma}
+
+\begin{proof}
+The space $\mathcal C_B$ is a closed and bounded subset of the finite-dimensional space $\mathbb R^{Kp}$, so it is compact by the Heine–Borel theorem. If a center $c_k$ lies outside the ball, project it to $\bar c_k=Bc_k/\|c_k\|$. The ball is convex, and for every $x$ with $\|x\|\le B$ the projection does not increase the distance, $\|x-\bar c_k\|\le\|x-c_k\|$; replacing every out-of-ball center therefore cannot raise the risk, which places an optimizer inside $\mathcal C_B$. For continuity, write $\ell(c,x)=\min_k\|x-c_k\|^2$. Each map $c\mapsto\|x-c_k\|^2$ is continuous, and the minimum of finitely many continuous functions is continuous. Since $\ell$ is bounded on $\mathcal C_B$, taking the expectation preserves continuity, so $R(c)=E[\ell(c,X)]$ is continuous. The misclassification used in $\mathrm{Err}(c,Z)$ is computed after matching the fitted labels to the true labels by the optimal permutation, so the label permutation is quotient out and does not create extra points.
+\end{proof}
+
+Under Assumption~\ref{a:closed}, $\mathrm{Err}$ is upper semicontinuous, so the level set $\mathcal C_q=\{c:\mathrm{Err}(c,Z)\ge q\}$ is closed. Intersected with the compact domain $\mathcal C_B$, it is compact, and the continuous function $R-R^\star$ attains its infimum on it.
 
 \begin{theorem}[positive risk gap]\label{thm:B}
 Under the assumptions of Theorem~\ref{thm:A} together with Assumption~\ref{a:closed}, for every $q>0$ with $\mathcal C_q\ne\varnothing$,
@@ -108,7 +118,7 @@ $$\psi(q)>0.$$
 \end{theorem}
 
 \begin{proof}
-Under Theorem~\ref{thm:A} the optimal set has error zero, so $\mathcal C_q\cap\mathcal C^\star=\varnothing$. Assumption~\ref{a:closed} closes $\mathcal C_q$. On a compact domain the infimum of $R-R^\star$ over that closed set is attained and is strictly positive.
+Under Theorem~\ref{thm:A} the optimal set has error zero, so $\mathcal C_q\cap\mathcal C^\star=\varnothing$. Lemma~\ref{lem:compact} supplies the compact center domain and the continuity of $R$, and Assumption~\ref{a:closed} closes $\mathcal C_q$. The infimum of the continuous function $R-R^\star$ over that compact set is attained, and it is strictly positive because the set excludes every point where the risk difference is zero.
 \end{proof}
 
 A quantitative form is available only locally. Let the margin obey $P(X\in\mathcal M_t)\le C_{\rm margin}t^\beta$, with $\beta=1$ in the ordinary case. Inside the local stability region, where a label flip is caused only by the boundary tube,
@@ -148,6 +158,25 @@ $$\varepsilon_M\le\sqrt{\frac{8B^4\log(2N_\eta/\alpha)}{M}}+8B\eta.$$
 
 A global empirical minimizer has $\delta_{\rm opt}=0$. Lloyd's algorithm only approximates it, and a center outside the ball can be projected back without increasing risk; the Lloyd result is therefore stated with an explicit $\delta_{\rm opt}$ and kept separate.
 
-## 5.5 Scope
+## 5.5 Three operational variants and the guarantee boundary
+
+The name DELVE covers more than one object, and the guarantee attaches to exactly one of them. The distinction is stated here in the method rather than deferred to the limitations. The population alignment the theorems use is a compatibility condition, assumed on the population objective; this paper does not derive it from the covariance generative model.
+
+\begin{center}
+\small
+\begin{tabular}{lllll}
+\hline
+Variant & $K$ & scaler & optimizer & guarantee\\
+\hline
+DELVE-G & fixed & frozen & global K-means & risk-gap\\
+DELVE-L & fixed & frozen & finite Lloyd & explicit $\delta_{\rm opt}$\\
+DELVE-B & blind & full-pool & Lloyd + selector & none\\
+\hline
+\end{tabular}
+\end{center}
+
+DELVE-G is the only object the theorem covers in full. It fixes the number of environments and the feature transformation, and a global empirical minimizer has zero optimization error. DELVE-L keeps the same fixed-$K$ setting but obtains its centers from finite-initialization Lloyd, so the finite-sample statement carries the explicit $\delta_{\rm opt}$ of the finite-sample decomposition rather than setting it to zero. DELVE-B is the blind pipeline run in the real-data chapter: a scaler fitted on the full pool and a pre-specified selector over $K$, with no oracle number, and it stays outside the unconditional guarantees. The sample-split construction that gives the held-out decomposition in Section~5.4 is an inductive use of the fixed-$K$ core, not a fourth clusterer. The main results label which variant each number comes from, so the guaranteed sub-procedure and the empirical pipeline are never read as one algorithm.
+
+## 5.6 Scope
 
 The guarantee covers the global empirical K-means solution under a fixed K, a fixed or frozen feature transformation, bounded features, and the alignment and level-set assumptions. It does not cover automatic K selection, full-pool standardization, or finite-initialization Lloyd, and it does not establish that the unlabeled EEG satisfies the conditions. Those components are reported as empirical or transductive procedures, outside the unconditional claims. The stronger route—proving alignment on a structured distribution class through a capture or exchange argument—is left as future work.

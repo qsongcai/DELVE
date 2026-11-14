@@ -52,25 +52,56 @@ The construction is not tied to the identity map. For any diffeomorphism $g$ ont
 
 On a sample of $2\times10^5$ draws the disagreement fraction is $0.5000$, the two assignments stay near equal weight, and the empirical squared maximum-mean-discrepancy between $Z$ and $T(Z)$ is $0.00058$, finite-sample noise around a population value of zero. The environment-specific means under the two partitions point along orthogonal axes, so the conditional distributions genuinely differ even though the pooled law cannot tell them apart.
 
-A scoping note belongs here. The theorem is a single $d=2$ witness, not a claim that every pooled distribution is non-identifiable. It establishes that identifiability cannot be assumed and that the uniqueness clause in the known-index formulations of the problem fails at the population level; finite samples then add estimation error on top of a non-uniqueness that is already present.
+A scoping note belongs here, and the model class has to be stated precisely. The result operates on the class of arbitrary measurable environment assignments with no parametric restriction on the component laws; only the pooled marginal is constrained. Within that class the theorem is a single $d=2$ witness, not a claim that every pooled distribution is non-identifiable. If the component laws are restricted to a structured family, fixed Gaussian covariances for example, the construction need not remain inside that smaller class, and the witness is not a statement about it. What it establishes is that, with only $P_X$ fixed, identifiability cannot be assumed and the uniqueness clause in the known-index formulations fails at the population level; finite samples then add estimation error on top of a non-uniqueness that is already present.
 
-## 4.3 Point identification in a constrained Gaussian frame
+## 4.3 Point identification in a symmetric two-component covariance-mixture model
 
-Tighten the setting and the decomposition set collapses to a point. The frame is a linear, invertible mixing, whitened after the fact, with a symmetric two-component structure.
+Tighten the setting and the decomposition set collapses to a point. The model is a two-component Gaussian mixture with a symmetric, whitened structure. Let $E\in\{+1,-1\}$ carry equal weight, $P(E=+1)=P(E=-1)=1/2$, and write the two component laws as zero-mean Gaussians,
 
-\begin{theorem}[point identification under the constrained frame]\label{thm:pointid}
-Under a linear invertible mixing, after whitening and within the symmetric two-component frame, the fourth-order cumulant tensor determines the component parameter up to label permutation. In $d=2$ the moment inversion is unique under a fixed separation.
+$$X\mid E=+1\sim N(0,I+K),\qquad X\mid E=-1\sim N(0,I-K),$$
+
+where $K$ is symmetric and $I\pm K\succ0$, equivalently every eigenvalue of $K$ lies strictly inside $(-1,1)$. The pooled mean is zero and the pooled covariance is
+
+$$E[XX^\top]=\tfrac12(I+K)+\tfrac12(I-K)=I,$$
+
+so the frame is whitened by construction. The object the theorem identifies is the unordered component covariance pair $\{I+K,I-K\}$, not the pooled covariance, which is fixed at $I$, and not any recording assignment.
+
+\begin{theorem}[point identification of the component covariance pair]\label{thm:pointid}
+In the symmetric two-component model above, the fourth-order cumulant tensor determines $K$ up to a global sign in $d=2$, under the nondegeneracy clauses stated in the proof, and hence determines the unordered component covariance pair uniquely. The global sign $K\leftrightarrow-K$ is exactly the label permutation that exchanges the two components.
 \end{theorem}
 
 \begin{proof}
-The cumulant identity behind the inversion is
+Use the fourth cumulant, defined as
 
-$$\kappa_{ijkl}=K_{ij}K_{kl}+K_{ik}K_{jl}+K_{il}K_{jk},$$
+\begin{align*}
+\kappa_{ijkl}={}&E[X_iX_jX_kX_l]-E[X_iX_j]E[X_kX_l]\\
+&-E[X_iX_k]E[X_jX_l]-E[X_iX_l]E[X_jX_k].
+\end{align*}
 
-where $K$ is the symmetric component parameter in the whitened frame, written $I\pm K$ for the two components. Contracting the tensor against a symmetric basis and inverting the resulting moment equations recovers $K$; the whitening step removes the second-order freedom, and the symmetry constraint removes the remaining rotational freedom. The recovered object is the unordered component parameter, up to permutation.
+For a zero-mean Gaussian component, Isserlis' theorem gives the fourth moment as the sum over the three pairings, $(\Sigma_\pm)_{ij}(\Sigma_\pm)_{kl}+(\Sigma_\pm)_{ik}(\Sigma_\pm)_{jl}+(\Sigma_\pm)_{il}(\Sigma_\pm)_{jk}$. Averaging the two components and using $\Sigma_\pm=I\pm K$,
+
+$$\tfrac12\sum_{\pm}(\Sigma_\pm)_{ij}(\Sigma_\pm)_{kl}=\delta_{ij}\delta_{kl}+K_{ij}K_{kl},$$
+
+with the same identity for the other two pairings. Since $E[X_iX_j]=\delta_{ij}$, subtracting the three second-order terms leaves
+
+$$\kappa_{ijkl}=K_{ij}K_{kl}+K_{ik}K_{jl}+K_{il}K_{jk}.$$
+
+Now specialize to $d=2$ and write $K=\begin{pmatrix}a&b\\ b&c\end{pmatrix}$. Reading the five distinct components gives
+
+$$\kappa_{1111}=3a^2,\qquad \kappa_{2222}=3c^2,\qquad \kappa_{1122}=ac,$$
+$$\kappa_{1112}=3ab,\qquad \kappa_{1222}=3bc.$$
+
+The magnitudes are recovered from the diagonal and the products,
+
+$$|a|=\sqrt{\kappa_{1111}/3},\qquad |c|=\sqrt{\kappa_{2222}/3},\qquad
+|b|=\sqrt{\frac{\kappa_{1112}\kappa_{1222}}{9\kappa_{1122}}},$$
+
+the last expression requiring $ac\ne0$. The signs are then pinned down relative to one another: $\operatorname{sign}(ac)=\operatorname{sign}(\kappa_{1122})$ and $\operatorname{sign}(ab)=\operatorname{sign}(\kappa_{1112})$. Fixing the sign of $a$ by convention fixes all three. The one freedom that remains is the global sign $(a,b,c)\mapsto(-a,-b,-c)$; every component of $\kappa$ is quadratic or a product and is unchanged by it, and it sends $K$ to $-K$, which exchanges $I+K$ with $I-K$. That is the component label permutation, not a distinct parameter. The unordered pair $\{I+K,I-K\}$ is therefore unique, and the positivity condition $I\pm K\succ0$ is checked on the recovered eigenvalues.
 \end{proof}
 
-This is exactly what it looks like: a constrained special case. The whitening, the two-component restriction, and the symmetry are doing the work, and the result is not a generic fourth-order theorem. Outside that frame the generic fourth-order map is non-injective, and the generic injectivity threshold for centered Gaussian mixtures sits at sixth order, within explicit rank bounds on the number of components. With the full distribution rather than a finite collection of moments, a finite Gaussian mixture is identifiable up to permutation by the classical mixture result. We report the fourth-versus-sixth order threshold and the full-distribution result as cited propositions, checking the exact rank bounds against the source for each $(m,n)$ before quoting them; they are not proofs this paper claims as its own.
+The dimension deserves a precise boundary. The same calculation extends formally: after orthogonally diagonalizing $K=Q\Lambda Q^\top$, one has $\kappa_{iiii}=3\lambda_i^2$ and $\kappa_{iijj}=\lambda_i\lambda_j$, so the eigenvalues and their relative signs follow as in $d=2$, and locating the eigenbasis in $\kappa$ is a symmetric tensor decomposition. Under distinct $|\lambda_i|$ that decomposition is finite and unique up to the global sign, but we state the general-dimension uniqueness as a tensor-decomposition result rather than prove it here; the formal theorem is claimed for $d=2$ under the nondegeneracy clauses above.
+
+This is exactly what it looks like: a constrained special case. The whitening, the two-component restriction, the equal weights, and the symmetry are doing the work, and the result is not a generic fourth-order theorem. Outside that frame the generic fourth-order map is non-injective, and the generic injectivity threshold for centered Gaussian mixtures sits at sixth order, within explicit rank bounds on the number of components. With the full distribution rather than a finite collection of moments, a finite Gaussian mixture is identifiable up to permutation by the classical mixture result. We report the fourth-versus-sixth order threshold and the full-distribution result as cited propositions, checking the exact rank bounds against the source for each $(m,n)$ before quoting them; they are not proofs this paper claims as its own.
 
 ## 4.4 Scope
 
