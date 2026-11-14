@@ -9,17 +9,23 @@ Date: 2026-11-14. Status: formal manuscript section. Notation set here is used t
 
 A latent environment $E$ takes values in $\{1,\dots,K\}$ with probabilities $\pi_e=P(E=e)>0$. The observed vector comes from a fixed, deterministic mixing of a latent variable,
 
-$$X=A\,x^{(0)}+b,$$
+\begin{equation}\label{eq:obs-model}
+X=A\,x^{(0)}+b,
+\end{equation}
 
 where $A$ is a fixed full-column-rank transformation and $b$ a fixed offset. Conditional on the environment, $X$ has law $G_e$. Once the environment labels are removed, the analyst receives only the pooled marginal,
 
-$$P_X=\sum_{e=1}^K \pi_e G_e,$$
+\begin{equation}\label{eq:pool-mixture}
+P_X=\sum_{e=1}^K \pi_e G_e,
+\end{equation}
 
 a single distribution with no mark of the component behind a given draw.
 
 The pooled covariance is the second moment of this marginal,
 
-$$\bar\Sigma=E[XX^\top]=\sum_e\pi_e\Sigma_e.$$
+\begin{equation}\label{eq:pool-cov}
+\bar\Sigma=E[XX^\top]=\sum_e\pi_e\Sigma_e.
+\end{equation}
 
 It is one fixed positive-definite matrix, not a random per-sample covariance. The distinction matters: the single-pool model here has no random covariance layer, and a hierarchical model where $X\mid C\sim N(0,C)$ with $C$ itself random is a different object we do not treat.
 
@@ -43,7 +49,9 @@ $$x_w=\operatorname{vech}(\log \widehat\Sigma_w).$$
 
 The recording feature is the within-recording average,
 
-$$x_r=\frac1{W_r}\sum_{w=1}^{W_r}x_w.$$
+\begin{equation}\label{eq:rec-estimand}
+x_r=\frac1{W_r}\sum_{w=1}^{W_r}x_w.
+\end{equation}
 
 A single standardization is then applied across recordings. Window counts, sampling rates, and recording durations can differ across recordings; the feature map makes them comparable.
 

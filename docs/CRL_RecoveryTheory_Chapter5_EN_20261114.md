@@ -18,7 +18,9 @@ $$\mu_e = E[X\mid Z=e],\qquad \pi_e=P(Z=e),\qquad
 
 The population K-means risk and its optimum are
 
-$$R(c)=E\!\left[\min_k\|X-c_k\|^2\right],\qquad R^\star=\inf_c R(c).$$
+\begin{equation}\label{eq:risk}
+R(c)=E\!\left[\min_k\|X-c_k\|^2\right],\qquad R^\star=\inf_c R(c).
+\end{equation}
 
 This model is conditional on the feature the pipeline actually builds. In the implementation,
 
@@ -97,8 +99,10 @@ The identification comes from the alignment that is assumed, not from a lower-le
 
 For a target misclassification level $q$, set
 
-$$\mathcal C_q=\{c:\mathrm{Err}(c,Z)\ge q\},\qquad
-\psi(q)=\inf_{c\in\mathcal C_q}\{R(c)-R^\star\}.$$
+\begin{equation}\label{eq:margin}
+\mathcal C_q=\{c:\mathrm{Err}(c,Z)\ge q\},\qquad
+\psi(q)=\inf_{c\in\mathcal C_q}\{R(c)-R^\star\}.
+\end{equation}
 
 The absence of a positive-probability tie region at the optimum is not, by itself, enough to close $\mathcal C_q$ or to make $\mathrm{Err}$ continuous. The compactness and continuity the gap argument uses need to be stated rather than left implicit.
 
@@ -114,7 +118,9 @@ Under Assumption~\ref{a:closed}, $\mathrm{Err}$ is upper semicontinuous, so the 
 
 \begin{theorem}[positive risk gap]\label{thm:B}
 Under the assumptions of Theorem~\ref{thm:A} together with Assumption~\ref{a:closed}, for every $q>0$ with $\mathcal C_q\ne\varnothing$,
-$$\psi(q)>0.$$
+\begin{equation}\label{eq:compatibility}
+\psi(q)>0.
+\end{equation}
 \end{theorem}
 
 \begin{proof}
@@ -135,13 +141,17 @@ For $\beta=1$, $\psi(q)\ge(\kappa/C_{\rm margin}^2)q^2$. The cutoff $q_0$ is the
 
 Let $\widehat R_M$ be the empirical risk on $M$ independent recordings, let $\varepsilon_M$ be the uniform deviation $\sup_{c\in\mathcal C}|\widehat R_M(c)-R(c)|$, and let $\delta_{\rm opt}=\widehat R_M(\widehat c)-\widehat R_M^\star$ be the optimization error. The standard excess-risk decomposition is
 
-$$R(\widehat c)-R^\star\le 2\varepsilon_M+\delta_{\rm opt}.$$
+\begin{equation}\label{eq:risk-gap}
+R(\widehat c)-R^\star\le 2\varepsilon_M+\delta_{\rm opt}.
+\end{equation}
 
 \begin{theorem}[finite-sample recovery]\label{thm:C}
 Suppose Assumption~\ref{a:align} and Assumption~\ref{a:closed} hold, so that $\psi(q)$ is well defined. If
 $$2\varepsilon_M+\delta_{\rm opt}<\psi(q),$$
 then
-$$\mathrm{Err}(\widehat c,Z)<q.$$
+\begin{equation}\label{eq:error-bound}
+\mathrm{Err}(\widehat c,Z)<q.
+\end{equation}
 \end{theorem}
 
 \begin{proof}

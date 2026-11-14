@@ -13,7 +13,9 @@ $$\mu=\sum_e a_e\delta_{G_e},\qquad a_e>0,\qquad \sum_e a_e G_e=P_X.$$
 
 The decomposition set is
 
-$$\mathcal D(P_X)=\left\{\mu=\sum_e a_e\delta_{G_e}:\ a_e>0,\ \sum_e a_e G_e=P_X\right\}.$$
+\begin{equation}\label{eq:identified-set}
+\mathcal D(P_X)=\left\{\mu=\sum_e a_e\delta_{G_e}:\ a_e>0,\ \sum_e a_e G_e=P_X\right\}.
+\end{equation}
 
 The structure is identified up to label permutation when $\mathcal D(P_X)$ is a singleton. With the labels gone and only $P_X$ in hand, the joint law of $(X,E)$ is not fixed. Any Markov kernel $\kappa(e\mid x)$ whose integral against $P_X$ matches the label marginal is a valid assignment, and outside degenerate cases the set of such kernels contains more than one point. The first result makes this concrete with an explicit witness.
 
@@ -21,7 +23,9 @@ The structure is identified up to label permutation when $\mathcal D(P_X)$ is a 
 
 \begin{theorem}[the pooled marginal does not determine the partition]\label{thm:d2}
 There exist two environment assignments $\sigma$ and $\sigma'$, not related by a global label permutation, that hold simultaneously under one and the same observation distribution. A measure-preserving bijection $T$ on the latent space satisfies
-$$T_\#P_Z=P_Z,\qquad \sigma'=\sigma\circ T,\qquad \sigma'\notin\{\sigma,\ 1-\sigma\}.$$
+\begin{equation}\label{eq:witness}
+T_\#P_Z=P_Z,\qquad \sigma'=\sigma\circ T,\qquad \sigma'\notin\{\sigma,\ 1-\sigma\}.
+\end{equation}
 \end{theorem}
 
 \begin{proof}
@@ -41,7 +45,9 @@ $$\sigma'(z)=\sigma(Tz)=\mathbb 1[z_2\le 0],$$
 
 which splits the disk by the sign of the second coordinate. The two partitions disagree on the second and fourth quadrants, where the coordinates have opposite signs:
 
-$$P_Z(\sigma\ne\sigma')=\tfrac12.$$
+\begin{equation}\label{eq:disagreement}
+P_Z(\sigma\ne\sigma')=\tfrac12.
+\end{equation}
 
 A global label permutation flips either every point or none, measured by the assignment, so it cannot produce a half-set disagreement. Hence $\sigma'$ is not a relabeling of $\sigma$.
 \end{proof}
@@ -93,8 +99,10 @@ $$\kappa_{1112}=3ab,\qquad \kappa_{1222}=3bc.$$
 
 The magnitudes are recovered from the diagonal and the products,
 
-$$|a|=\sqrt{\kappa_{1111}/3},\qquad |c|=\sqrt{\kappa_{2222}/3},\qquad
-|b|=\sqrt{\frac{\kappa_{1112}\kappa_{1222}}{9\kappa_{1122}}},$$
+\begin{equation}\label{eq:point-id}
+|a|=\sqrt{\kappa_{1111}/3},\qquad |c|=\sqrt{\kappa_{2222}/3},\qquad
+|b|=\sqrt{\frac{\kappa_{1112}\kappa_{1222}}{9\kappa_{1122}}},
+\end{equation}
 
 the last expression requiring $ac\ne0$. The signs are then pinned down relative to one another: $\operatorname{sign}(ac)=\operatorname{sign}(\kappa_{1122})$ and $\operatorname{sign}(ab)=\operatorname{sign}(\kappa_{1112})$. Fixing the sign of $a$ by convention fixes all three. The one freedom that remains is the global sign $(a,b,c)\mapsto(-a,-b,-c)$; every component of $\kappa$ is quadratic or a product and is unchanged by it, and it sends $K$ to $-K$, which exchanges $I+K$ with $I-K$. That is the component label permutation, not a distinct parameter. The unordered pair $\{I+K,I-K\}$ is therefore unique, and the positivity condition $I\pm K\succ0$ is checked on the recovered eigenvalues.
 \end{proof}
