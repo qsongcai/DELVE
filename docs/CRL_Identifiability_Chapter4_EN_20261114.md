@@ -19,11 +19,13 @@ The structure is identified up to label permutation when $\mathcal D(P_X)$ is a 
 
 ## 4.2 Partition non-identification
 
-**Theorem 1 (the pooled marginal does not determine the partition).** *There exist two environment assignments $\sigma$ and $\sigma'$, not related by a global label permutation, that hold simultaneously under one and the same observation distribution. A measure-preserving bijection $T$ on the latent space satisfies*
-
+\begin{theorem}[the pooled marginal does not determine the partition]\label{thm:d2}
+There exist two environment assignments $\sigma$ and $\sigma'$, not related by a global label permutation, that hold simultaneously under one and the same observation distribution. A measure-preserving bijection $T$ on the latent space satisfies
 $$T_\#P_Z=P_Z,\qquad \sigma'=\sigma\circ T,\qquad \sigma'\notin\{\sigma,\ 1-\sigma\}.$$
+\end{theorem}
 
-**Construction.** Work in two dimensions. Let the latent variable $z=(Z_1,Z_2)$ be uniform on the unit disk $\mathcal D=\{z:\|z\|\le 1\}$, and take the mixing map to be the identity so that $x=z$. There are two environments of equal weight.
+\begin{proof}
+\emph{Construction.} Work in two dimensions. Let the latent variable $z=(Z_1,Z_2)$ be uniform on the unit disk $\mathcal D=\{z:\|z\|\le 1\}$, and take the mixing map to be the identity so that $x=z$. There are two environments of equal weight.
 
 The first assignment splits the disk by the sign of the first coordinate,
 
@@ -41,7 +43,8 @@ which splits the disk by the sign of the second coordinate. The two partitions d
 
 $$P_Z(\sigma\ne\sigma')=\tfrac12.$$
 
-A global label permutation flips either every point or none, measured by the assignment, so it cannot produce a half-set disagreement. Hence $\sigma'$ is not a relabeling of $\sigma$. $\square$
+A global label permutation flips either every point or none, measured by the assignment, so it cannot produce a half-set disagreement. Hence $\sigma'$ is not a relabeling of $\sigma$.
+\end{proof}
 
 The same fact reads as a coupling argument. The label $E$ is an unobserved categorical variable, and $P_X$ fixes only the marginal of $X$. The joint law of $X$ and $E$ is a coupling of $P_X$ with the label marginal, and the set of such couplings is convex and is a singleton only in degenerate cases. Every coupling in that set gives a different assignment while sharing $P_X$. The rotation is an explicit, smooth, measure-preserving witness to the general statement rather than the general statement itself.
 
@@ -55,13 +58,17 @@ A scoping note belongs here. The theorem is a single $d=2$ witness, not a claim 
 
 Tighten the setting and the decomposition set collapses to a point. The frame is a linear, invertible mixing, whitened after the fact, with a symmetric two-component structure.
 
-**Theorem 2 (point identification under the constrained frame).** *Under a linear invertible mixing, after whitening and within the symmetric two-component frame, the fourth-order cumulant tensor determines the component parameter up to label permutation. In $d=2$ the moment inversion is unique under a fixed separation.*
+\begin{theorem}[point identification under the constrained frame]\label{thm:pointid}
+Under a linear invertible mixing, after whitening and within the symmetric two-component frame, the fourth-order cumulant tensor determines the component parameter up to label permutation. In $d=2$ the moment inversion is unique under a fixed separation.
+\end{theorem}
 
+\begin{proof}
 The cumulant identity behind the inversion is
 
 $$\kappa_{ijkl}=K_{ij}K_{kl}+K_{ik}K_{jl}+K_{il}K_{jk},$$
 
-where $K$ is the symmetric component parameter in the whitened frame, written $I\pm K$ for the two components. Contracting the tensor against a symmetric basis and inverting the resulting moment equations recovers $K$; the whitening step removes the second-order freedom, and the symmetry constraint removes the remaining rotational freedom. The recovered object is the unordered component parameter, up to permutation. $\square$
+where $K$ is the symmetric component parameter in the whitened frame, written $I\pm K$ for the two components. Contracting the tensor against a symmetric basis and inverting the resulting moment equations recovers $K$; the whitening step removes the second-order freedom, and the symmetry constraint removes the remaining rotational freedom. The recovered object is the unordered component parameter, up to permutation.
+\end{proof}
 
 This is exactly what it looks like: a constrained special case. The whitening, the two-component restriction, and the symmetry are doing the work, and the result is not a generic fourth-order theorem. Outside that frame the generic fourth-order map is non-injective, and the generic injectivity threshold for centered Gaussian mixtures sits at sixth order, within explicit rank bounds on the number of components. With the full distribution rather than a finite collection of moments, a finite Gaussian mixture is identifiable up to permutation by the classical mixture result. We report the fourth-versus-sixth order threshold and the full-distribution result as cited propositions, checking the exact rank bounds against the source for each $(m,n)$ before quoting them; they are not proofs this paper claims as its own.
 

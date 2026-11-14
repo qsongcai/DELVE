@@ -29,11 +29,25 @@ The clearest positive evidence comes from the balanced cross-source design. With
 
 This is read for exactly what it is: recording-level, oracle-$K$ evidence that the source label can be reconstructed from the covariance features, a repeatability result across independent sources. It is not an external validation of the fully blind pipeline, and it is not a subject-level claim.
 
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.72\columnwidth]{fig2_pca_scatter.pdf}
+\caption{The balanced ninety recording features projected onto their first two principal components and colored by the true source. One source separates along the first component, while the other two occupy closer but still structured regions; the geometry is consistent with an oracle-$K$ recovery rather than three fully disjoint clouds.}
+\label{fig:pca}
+\end{figure}
+
 ## 7.4 Blind selection fails, and the failure is a headline
 
 The pre-specified blind selector does not reproduce the oracle result. It returns two clusters rather than three, with ARI $.279$, and the merge is systematic. Across every balanced seed the same two sources are joined, while the third stays apart. The contingency table shows the merged cluster absorbing nearly equal numbers from the two joined sources, and that cluster separates cleanly into the two true components once the correct number is restored.
 
 The stability gate is what drives the under-selection, not the BIC term, which on its own prefers the larger values. No pre-specified automatic rule recovers the oracle number, and the one-standard-error rule instead runs to the grid boundary. We present this as a primary finding rather than a caveat: covariance structure can be recoverable at a fixed $K$ while the number of environments is itself not identifiable by the blind procedure. The framing stays neutral on whether a reviewer reads it as a method failure, and both readings are left open.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.85\columnwidth]{fig1_k_sensitivity.pdf}
+\caption{Adjusted Rand index, normalized mutual information, and silhouette across $K=2,\dots,6$ on the balanced ninety-recording design. The blind selector stops at two clusters with ARI $.279$, whereas the oracle value of three gives $.608$, and the scores plateau before declining as extra clusters split the sources.}
+\label{fig:ksens}
+\end{figure}
 
 ## 7.5 Balance is a necessary condition
 
@@ -44,6 +58,13 @@ The balanced design is doing real work, and removing it lowers the point estimat
 Treating the subject as the independent unit, a subject-cluster bootstrap with five hundred resamples confirms the balanced recovery does not rest on treating repeated recordings as independent. Three designs are compared. The subject-aggregated bootstrap gives a mean of $.616$ with a ninety-five percent interval from $.31$ to $.81$, the cluster-preserving design gives $.554$ with a slightly wider interval, and the naive recording bootstrap gives $.603$. All three intervals exclude zero. A subject-level permutation reaches the smallest reportable value, with the null distribution centered near zero.
 
 Two honest qualifications attach. The single balanced subject realization at seed zero is $.523$, a single draw from the same resampling mechanism whose bootstrap mean is $.616$, and it is not a point estimate on its own. The intervals are not widened by clustering in the way one might expect, because only one source carries repeated recordings and subject aggregation lowers the per-row noise, which offsets the loss of independent units. With roughly thirty subjects per source the intervals remain wide, and the bootstrap is a finite-sample approximation rather than a proof.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.85\columnwidth]{fig3_bootstrap_ci.pdf}
+\caption{Subject-cluster bootstrap means and ninety-five percent intervals for three resampling designs. All three intervals exclude zero and sit near the recording point estimate of $.608$, while the all-subject plug-in of $.241$ marks the weaker unbalanced regime.}
+\label{fig:bootstrap}
+\end{figure}
 
 ## 7.7 Where recovery stops
 
@@ -60,6 +81,13 @@ A predictable concern is that the recovery is an artifact of the common-average 
 ## 7.10 Novelty detection and inductive assignment
 
 Pooled label recovery does not establish generalization to unseen data. Each source is held out in turn, the scaler and two centers are fitted on the other two and frozen, and the held-out recordings are mapped without a refit. Two held-out sources are clearly detectable as novel, with ROC AUC between $.89$ and $.93$, while the third is only weakly separated at $.70$, near the training false-alarm rate. The ranking is stable across seeds even though the absolute threshold is not, and held-out recordings split about evenly between the two seen centers rather than collapsing into one, which places them outside the training clusters. When all three sources enter training, a cross-fitted fold assigns held-out recordings with ARI $.610$, essentially matching the transductive $.608$, and this corresponds directly to the sample-split mechanism in the theory. Novelty detection is not the same as correctly labeling a new environment, and full cross-domain generalization remains unproved.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{fig4_spatial_novelty.pdf}
+\caption{Left: recording-level ARI under common-average, bipolar, and surface-Laplacian (CSD) spatial representations across six seeds, with the magnitude varying but staying positive. Right: leave-one-source novelty ROC AUC, high for two sources and weak for the third.}
+\label{fig:spatial}
+\end{figure}
 
 ## 7.11 Auxiliary diagnostics
 
