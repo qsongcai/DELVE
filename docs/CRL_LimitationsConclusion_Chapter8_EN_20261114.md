@@ -1,6 +1,6 @@
 # Limitations and Conclusion (Chapter 8, formal English)
 
-Working title: *Identifiability and Recovery of Covariance-Based Environment Structure under Pooled Observations*
+Working title: *Identifiability Boundaries and Conditional Recovery*
 Date: 2026-11-14. Status: formal manuscript section. The limitations state the boundaries of the claims; the conclusion restates only what the evidence supports.
 
 ---

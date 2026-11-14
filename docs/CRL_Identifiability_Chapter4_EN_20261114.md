@@ -1,6 +1,6 @@
 # Identifiability Boundary (Chapter 4, formal English)
 
-Working title: *Identifiability and Recovery of Covariance-Based Environment Structure under Pooled Observations*
+Working title: *Identifiability Boundaries and Conditional Recovery*
 Date: 2026-11-14. Status: formal manuscript section. This is mechanism A: a single pooled distribution, with no environment labels. The results below do not imply the DELVE recovery guarantees in Chapter 5.
 
 ---
@@ -54,7 +54,7 @@ A global label permutation flips either every point or none, measured by the ass
 
 The same fact can be read as a coupling argument. The label $E$ is an unobserved categorical variable, and $P_X$ fixes only the marginal of $X$. The joint law of $X$ and $E$ is a coupling of $P_X$ with the label marginal, and the set of such couplings is convex and shrinks to a singleton only in degenerate cases. Every coupling gives a different assignment while sharing $P_X$. The rotation is an explicit, smooth, measure-preserving witness to the general statement, not the general statement itself.
 
-The construction is not tied to the identity map. For any diffeomorphism $g$ onto its image, the transported partitions $\sigma\circ g^{-1}$ and $\sigma'\circ g^{-1}$ remain distinct under the same $P_X$ and are not related by a permutation. A full-column-rank linear mixing $x=Gz$ is the special case where the rotation becomes the linear conjugate $GTG^{-1}$. A local variant, a compactly supported volume-preserving involution that swaps the assignment on two small equal-area regions, shows the non-uniqueness is not an artifact of a global rotation.
+The construction transports under a reparameterization. For a full-column-rank linear mixing $x=Gz$, the rotation becomes the linear conjugate $GTG^{-1}$ and the same witness applies, and a smooth change of coordinates carries it over in the same way. No separate theorem is built from this; the $d=2$ rotation is the explicit result, and the transported versions are the same witness in new coordinates rather than a broader non-identifiability claim.
 
 On a sample of $2\times10^5$ draws the disagreement fraction is $0.5000$, the two assignments stay near equal weight, and the empirical squared maximum-mean-discrepancy between $Z$ and $T(Z)$ is $0.00058$, finite-sample noise around a population value of zero. The environment-specific means under the two partitions point along orthogonal axes, so the conditional distributions genuinely differ even though the pooled law cannot tell them apart.
 
@@ -73,7 +73,7 @@ $$E[XX^\top]=\tfrac12(I+K)+\tfrac12(I-K)=I,$$
 so the frame is whitened by construction. The object the theorem identifies is the unordered component covariance pair $\{I+K,I-K\}$, not the pooled covariance fixed at $I$, and not any recording assignment.
 
 \begin{theorem}[point identification of the component covariance pair]\label{thm:pointid}
-In the symmetric two-component model above, the fourth-order cumulant tensor determines $K$ up to a global sign in $d=2$, under the nondegeneracy clauses stated in the proof, and hence determines the unordered component covariance pair uniquely. The global sign $K\leftrightarrow-K$ is exactly the label permutation that exchanges the two components.
+In the symmetric two-component model above, with $K$ symmetric and every eigenvalue of $K$ lying strictly inside $(-1,1)$, the fourth-order cumulant tensor determines the two eigenvalues of $K$ and, when they are unequal, their eigenvectors in $d=2$, and so determines $K$ up to a global sign. It hence determines the unordered component covariance pair uniquely. The global sign $K\leftrightarrow-K$ is exactly the label permutation that exchanges the two components.
 \end{theorem}
 
 \begin{proof}
@@ -92,22 +92,33 @@ with the same identity for the other two pairings. Since $E[X_iX_j]=\delta_{ij}$
 
 $$\kappa_{ijkl}=K_{ij}K_{kl}+K_{ik}K_{jl}+K_{il}K_{jk}.$$
 
-Now specialize to $d=2$ and write $K=\begin{pmatrix}a&b\\ b&c\end{pmatrix}$. Reading the five distinct components gives
+Now specialize to $d=2$ and orthogonally diagonalize $K=Q\operatorname{diag}(\lambda_1,\lambda_2)Q^\top$, with $\lambda_1,\lambda_2\in(-1,1)$. The cumulant transforms under the same orthogonal matrix, so in the eigenbasis of $K$ it takes the diagonal form
 
-$$\kappa_{1111}=3a^2,\qquad \kappa_{2222}=3c^2,\qquad \kappa_{1122}=ac,$$
-$$\kappa_{1112}=3ab,\qquad \kappa_{1222}=3bc.$$
+$$\kappa'_{1111}=3\lambda_1^2,\qquad \kappa'_{2222}=3\lambda_2^2,\qquad
+\kappa'_{1122}=\lambda_1\lambda_2,\qquad
+\kappa'_{1112}=\kappa'_{1222}=0.$$
 
-The magnitudes are recovered from the diagonal and the products,
+The eigenbasis still has to be located from the observed tensor. Contract over the two middle indices to form the matrix
+
+$$T_{ij}=\sum_m\kappa_{i m m j}=2(K^2)_{ij}+\operatorname{tr}(K)\,K_{ij},$$
+
+a polynomial in $K$, so it commutes with $K$ and shares its eigenvectors. In the eigenbasis its eigenvalues are $\tau_i=3\lambda_i^2+\lambda_1\lambda_2$, with $\tau_1-\tau_2=3(\lambda_1^2-\lambda_2^2)$.
+
+When $\lambda_1^2\ne\lambda_2^2$, the two $\tau_i$ are distinct, and diagonalizing $T$ recovers the eigenbasis $Q$ uniquely. In that basis the eigenvalues follow as
 
 \begin{equation}\label{eq:point-id}
-|a|=\sqrt{\kappa_{1111}/3},\qquad |c|=\sqrt{\kappa_{2222}/3},\qquad
-|b|=\sqrt{\frac{\kappa_{1112}\kappa_{1222}}{9\kappa_{1122}}},
+|\lambda_i|=\sqrt{\kappa'_{iiii}/3},\qquad
+\operatorname{sign}(\lambda_1\lambda_2)=\operatorname{sign}(\kappa'_{1122}),
 \end{equation}
 
-the last expression requiring $ac\ne0$. The signs are then pinned down relative to one another: $\operatorname{sign}(ac)=\operatorname{sign}(\kappa_{1122})$ and $\operatorname{sign}(ab)=\operatorname{sign}(\kappa_{1112})$. Fixing the sign of $a$ by convention fixes all three. The one freedom that remains is the global sign $(a,b,c)\mapsto(-a,-b,-c)$; every component of $\kappa$ is quadratic or a product and is unchanged by it, and it sends $K$ to $-K$, which exchanges $I+K$ with $I-K$. That is the component label permutation, not a distinct parameter. The unordered pair $\{I+K,I-K\}$ is therefore unique, and the positivity condition $I\pm K\succ0$ is checked on the recovered eigenvalues.
+fixing both magnitudes and their relative sign.
+
+Two boundary cases remain. If $\lambda_1=\lambda_2$, then $K=\lambda_1 I$ is isotropic and no basis is needed; the single value follows from $\kappa'_{1111}/3$. If $\lambda_1=-\lambda_2$, the matrix $T$ is scalar and its eigenvectors are not unique. Writing the eigenvector of $\lambda_1$ as $q=(\cos\phi,\sin\phi)$ gives $K=\lambda_1(2qq^\top-I)$, and the direction follows from $\tan(2\phi)=\kappa_{1112}/\kappa_{1111}$, that is $\phi=\tfrac12\arctan(\kappa_{1112}/\kappa_{1111})$.
+
+The one freedom that remains is the global sign $K\mapsto-K$. Every component of $\kappa$ is quadratic or a product and is unchanged by it, and it sends $K$ to $-K$, which exchanges $I+K$ with $I-K$. That is the component label permutation, not a distinct parameter. The unordered pair $\{I+K,I-K\}$ is therefore unique, and the positivity condition $I\pm K\succ0$ is checked on the recovered eigenvalues.
 \end{proof}
 
-The dimension deserves a precise boundary. The same calculation extends formally: after orthogonally diagonalizing $K=Q\Lambda Q^\top$, one has $\kappa_{iiii}=3\lambda_i^2$ and $\kappa_{iijj}=\lambda_i\lambda_j$, so the eigenvalues and their relative signs follow as in $d=2$, and locating the eigenbasis in $\kappa$ is a symmetric tensor decomposition. Under distinct $|\lambda_i|$ that decomposition is finite and unique up to the global sign, but we state the general-dimension uniqueness as a tensor-decomposition result rather than prove it here; the formal theorem is claimed for $d=2$ under the nondegeneracy clauses above.
+The dimension deserves a precise boundary. The same calculation extends formally: after orthogonally diagonalizing $K=Q\Lambda Q^\top$, one has $\kappa_{iiii}=3\lambda_i^2$ and $\kappa_{iijj}=\lambda_i\lambda_j$, so the eigenvalues and their relative signs follow as in $d=2$, and locating the eigenbasis in $\kappa$ is a symmetric tensor decomposition. Under distinct $|\lambda_i|$ that decomposition is finite and unique up to the global sign, but we state the general-dimension uniqueness as a tensor-decomposition result rather than prove it here; the formal theorem is claimed for $d=2$ under the eigenvalue conditions above.
 
 This is a constrained special case, plainly. The whitening, the two-component restriction, the equal weights, and the symmetry do the work, and the result is not a generic fourth-order theorem. Outside that frame the generic fourth-order map is non-injective, and the generic injectivity threshold for centered Gaussian mixtures sits at sixth order, within explicit rank bounds on the number of components. Given the full distribution rather than a finite collection of moments, a finite Gaussian mixture is identifiable up to permutation by the classical mixture result. We report the fourth-versus-sixth order threshold and the full-distribution result as cited propositions, checking the exact rank bounds against the source for each $(m,n)$ before quoting them; they are not proofs this paper claims as its own.
 

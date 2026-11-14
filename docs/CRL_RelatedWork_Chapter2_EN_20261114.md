@@ -1,6 +1,6 @@
 # Related Work (Chapter 2, formal English)
 
-Working title: *Identifiability and Recovery of Covariance-Based Environment Structure under Pooled Observations*
+Working title: *Identifiability Boundaries and Conditional Recovery*
 Date: 2026-11-14. Status: formal manuscript section. Citations use numbered references; preprints are marked as such.
 
 ---
@@ -33,7 +33,7 @@ These methods share our concern that the environment is latent, yet they differ 
 
 ## 2.4 Unlabeled recovery and the partial-identification vocabulary
 
-Recent work continues the unlabeled-mixture line along signals we do not use. Kanamori et al.~\cite{kanamori2026} recover latent components and the mixing matrix from marginal independence, a component-level result that leaves the partition of pooled observations untouched; their estimator is a kernel-moment-matching criterion, with $k$-means serving only as a weak baseline. Chen et al.~\cite{chen2026} develop sharp partial-identification bounds for a latent prevalence from large-model panels. Our three-tier analysis targets a different object, the covariance-based environment partition, and the two read as complementary rather than competing.
+Recent work continues the unlabeled-mixture line along signals we do not use. Kanamori et al.~\cite{kanamori2026} recover latent components and the mixing matrix from marginal independence, a component-level result that leaves the partition of pooled observations untouched; their estimator is a kernel-moment-matching criterion, with $k$-means serving only as a weak baseline. Chen et al.~\cite{chen2026} develop sharp partial-identification bounds for a latent prevalence from large-model panels. Our identifiability analysis targets a different object, the covariance-based environment partition, and the two read as complementary rather than competing.
 
 The term partial identification carries more than one meaning, and the uses are kept apart. It enters statistics through Manski~\cite{manski2003}, who develops inference under data and assumptions that only partially identify a parameter, where the identified object is the set of parameter values consistent with the constraints and the bounds are often sharp. In the econometric usage it denotes sharp bounds on a scalar parameter from a fixed set of moment or calibration constraints. Here it denotes the set of covariance environment parameters consistent with the relaxed assumptions, a descriptive mechanism-A framing rather than a claim of priority or a proved sharp set. We make no first claim for partial identification, and the resampling intervals that accompany it are finite-sample diagnostics, not confidence sets with an unconditional coverage theorem.
 

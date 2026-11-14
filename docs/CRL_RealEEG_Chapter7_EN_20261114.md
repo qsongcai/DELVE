@@ -1,6 +1,6 @@
-# Real EEG: Blind Environment Recovery without Labels (Chapter 7, formal English)
+# Real EEG: Diagnosing Cross-Source Technical Separability without Labels (Chapter 7, formal English)
 
-Working title: *Identifiability and Recovery of Covariance-Based Environment Structure under Pooled Observations*
+Working title: *Identifiability Boundaries and Conditional Recovery*
 Date: 2026-11-14. Status: formal manuscript section. Every real-data conclusion is limited to dataset-level, source-associated technical structure. The environment here is not a biological or causal environment.
 
 ---
@@ -43,9 +43,35 @@ $$p=\frac{1+\#\{b:T_b\ge T_{\mathrm{obs}}\}}{B+1}.$$
 
 The smallest reportable value is one over $B+1$, and a statistic at that floor is reported as the exact value rather than as strictly smaller. Each p-value is labeled with its resampling count and its unit. Descriptive window-level figures, including the window ARI near $0.26$, stay descriptive and carry no independent p-value.
 
-## 7.3 Recovery under a known number of sources
+## 7.3 Simple metadata and the technical-difference controls
+
+A direct diagnostic asks whether the sources are already separated by information that has nothing to do with latent environments. The most basic per-recording field is the number of windows, fixed by each recording's length and the four-second window rule. It is nine for every recording in the first source, fifteen for every recording in the third, and ranges from eighty to a hundred and fourteen in the second; the three ranges do not overlap. A decision tree given only this field predicts the source with perfect cross-validated accuracy. Adding the device metadata that is constant within a source, the original sampling rate, channel count, and file format, holds the accuracy at one for both logistic and tree models. The three sources are therefore fully separable from trivial metadata alone; covariance is not needed to tell them apart, and this is the clearest evidence that the recovered label is a technical one.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{ll}
+\hline
+diagnostic & result\\
+\hline
+source prediction from window count only & CV accuracy 1.000\\
+source prediction from full device metadata & CV accuracy 1.000\\
+within-source silhouette ($K=2,3$) & 0.18--0.22\\
+within-source ARI vs subject (ds007541) & 0.02--0.03\\
+same-task two-source $K=2$ ARI (resting sources) & 0.53 (0.56 over seeds)\\
+\hline
+\end{tabular}
+\caption{Metadata baselines and the same-device and same-task controls. Trivial metadata already separates the sources, no stable structure appears within a device, and the two resting sources still separate despite sharing a task.}
+\label{tab:metactrl}
+\end{table}
+
+Two controls check where the structure appears. The same-device control pools recordings within one source and repeats the clustering there. The silhouette stays low, between about $0.18$ and $0.22$, and for the one source with two recordings per subject the clustering agrees with the subject label at an ARI of only $0.02$ to $0.03$, so no stable within-device structure is recovered. The same-task control keeps the two resting, eyes-open sources and drops the third; despite the shared task they still separate at two clusters, with a balanced ARI of $0.53$, $0.56$ over three seeds. The task is not what drives the separation. Together these controls support the reading that the across-source structure is a device and protocol artifact, not a latent environment that reappears within a device.
+
+## 7.4 Recovery under a known number of sources
 
 The clearest positive evidence comes from the balanced cross-source design. With only two sources pooled, every paired combination is recovered, with ARI between $0.48$ and $0.64$. Pooling all three sources and fixing the number at the oracle value of three strengthens the result. On the balanced ninety-recording design, recording-level ARI reaches $0.608$, with a recording permutation at the smallest reportable value, and the result holds across six balanced seeds at a mean of $0.582$.
+
+The balanced design is not a blind run. Thirty recordings are drawn from each source, and that draw uses the source label only to select the recordings; the label never enters the covariance features, the scaler, or the clustering. The size of the draw and the rule are fixed in advance, before any cluster is seen, so the design is a pre-specified evaluation rather than a post-hoc adjustment. The only genuinely blind analysis in this chapter is the data-driven number selection of the next section.
 
 This is read for exactly what it is: recording-level, oracle-$K$ evidence that the source label can be reconstructed from the covariance features, a repeatability result across independent sources. It is not an external validation of the fully blind pipeline, and it is not a subject-level claim.
 
@@ -71,7 +97,7 @@ The stability gate drives the under-selection, not the BIC term, which on its ow
 
 ## 7.5 Balance is a necessary condition
 
-The balanced design does real work, and removing it lowers the point estimate. On the full unbalanced pool the recording-level ARI falls to $0.371$. The most direct plug-in, which runs the procedure once over all subjects without resampling or rebalancing, is weaker still. With a hundred and seventy-one subjects in unequal group sizes, the subject-level ARI is only $0.241$. The large source is split across several clusters and the small sources merge, the same mechanism seen in the unbalanced recording result. Balance is therefore a condition for recovery, not a cosmetic detail, and the weak plug-in is reported alongside the balanced figure rather than hidden.
+The balanced design does real work, and removing it lowers the point estimate. On the full unbalanced pool the recording-level ARI falls to $0.371$. The most direct plug-in, which runs the procedure once over all subjects without resampling or rebalancing, is weaker still. With a hundred and seventy-one subjects in unequal group sizes, the subject-level ARI is only $0.241$. The large source is split across several clusters and the small sources merge, the same mechanism seen in the unbalanced recording result. Balance is therefore a condition for recovery, not a cosmetic detail, and the weak plug-in is reported alongside the balanced figure.
 
 The four primary designs are consolidated in Table~\ref{tab:designs}, so the point estimate is never read apart from the design that produced it.
 
@@ -157,7 +183,7 @@ On the Riemannian geometry, the between-source distance exceeds the within-sourc
 
 ## 7.12 Baselines and component ablations
 
-The DELVE components are standard pieces, and the design choices need to be justified against measured alternatives rather than asserted. The baseline matrix was run on the two-source design, ninety-four recordings and sixty-two subjects, with the same harmonization and a blind fit; metadata entered only in the post-hoc scoring. The numbers are therefore two-source, $K=2$ evidence and are read with that scope.
+The DELVE components are standard pieces, and the design choices need to be justified against measured alternatives rather than asserted. The baseline matrix was run on the two-source design, ninety-four recordings and sixty-two subjects, with the same harmonization and a blind fit; metadata entered only in the post-hoc scoring. The numbers are therefore two-source, $K=2$ evidence, read with that scope, and they do not establish how the algorithm performs on the three-source main experiment; no figure is carried across the two designs.
 
 The covariance representation varies the estimator and the matrix mapping, with recording-level ARI against the source label in Table~\ref{tab:covrep}.
 
@@ -172,7 +198,7 @@ Ledoit–Wolf & 0.581 & 0.049 & 0.163\\
 OAS & 0.457 & 0.049 & 0.163\\
 \hline
 \end{tabular}
-\caption{Recording-level ARI across covariance estimators and matrix mappings. The matrix logarithm is decisive, and Ledoit–Wolf shrinkage is indispensable at the available sample size.}
+\caption{Recording-level ARI across covariance estimators and matrix mappings on the fixed two-source, $K=2$ design (94 recordings, 62 subjects, blind fit). The matrix logarithm is decisive and Ledoit--Wolf shrinkage is indispensable at the available sample size. These figures do not measure performance on the three-source main experiment and are not compared with it.}
 \label{tab:covrep}
 \end{table}
 
@@ -192,12 +218,27 @@ agg-ward & 0.317 & &\\
 agg-average & 0.024 & &\\
 \hline
 \end{tabular}
-\caption{Recording-level ARI across clusterers and non-covariance features. GMM and phase locking outperform hard K-means, but phase locking is an acquisition-sensitive diagnostic rather than evidence for the covariance framework.}
+\caption{Recording-level ARI across clusterers and non-covariance features on the same fixed two-source, $K=2$ design. GMM and phase locking outperform hard K-means, but phase locking is an acquisition-sensitive diagnostic rather than evidence for the covariance framework, and the results are scoped to this two-source design rather than compared with the three-source experiment.}
 \label{tab:clusterers}
 \end{table}
 
-The soft GMM and the non-covariance phase-locking feature outperform the hard K-means on this two-source design, which is reported rather than hidden; phase locking is an acquisition-sensitive fingerprint and is not used as evidence for the covariance framework. The Riemannian and density-based clusterers do not form stable source-consistent clusters across the tested configurations, as stated in the previous section. The table covers the estimator, mapping, clusterer, and feature choices; the earlier recording-averaging and standardization steps are not separately ablated here, and that gap is stated rather than filled with an unmeasured number.
+The soft GMM and the non-covariance phase-locking feature outperform the hard K-means on this two-source design; phase locking is an acquisition-sensitive fingerprint and is not used as evidence for the covariance framework. The Riemannian and density-based clusterers do not form stable source-consistent clusters across the tested configurations, as stated in the previous section. The table covers the estimator, mapping, clusterer, and feature choices; the earlier recording-averaging and standardization steps are not separately ablated here, and that gap is stated rather than filled with an unmeasured number.
 
-## 7.13 Summary
+## 7.13 Data and processing details
 
-The real-data evidence supports one narrow statement and marks its limits. Under a known $K$ and a balanced design, source-associated covariance structure is recoverable across three independent sources, and the conclusion survives subject-level resampling. The blind selector under-counts, the unbalanced plug-in is weak, and within-source recovery is absent, all reported as boundary checks rather than hidden failures. The recovered object is a technical, dataset-level structure tied to acquisition and protocol, never a causal environment, and the ARI figures are not presented as validation of the theorem.
+The implementation is not an object of the theoretical guarantees, so the processing is fixed in code and the choices that determine the output are listed here in full.
+
+1. **Sources, versions, and links.** ds007541 is the *Multi-identity Information Authentication EEG Dataset*, OpenNeuro snapshots v1.0.0--v1.0.2, at \url{https://openneuro.org/datasets/ds007541}. ds008099 is the *Pizza-topping meat/vegetarian word categorization with consumer EEG (EMOTIV EPOC X)*, snapshot v1.0.0, at \url{https://openneuro.org/datasets/ds008099/versions/1.0.0}; both are also indexed on NEMAR under the matching on-prefixed identifiers and released under CC0. on004362 is the PhysioNet *EEG Motor Movement/Imagery Dataset* (eegmmidb), v1.0.0, at \url{https://physionet.org/content/eegmmidb/1.0.0/}, and is cited through Goldberger et al.~\cite{goldberger2000}.
+2. **Inclusion and exclusion.** Files are selected by fixed glob patterns, the verification run-01 BrainVision files, the per-subject EDF files, and the R01 PhysioNet EDF files. A recording that fails to load is skipped and named, and a recording with fewer than three windows is excluded; no recording is removed after a successful download, and missing channels are not interpolated. The retained counts are 64, 30, and 109 recordings from 32, 30, and 109 subjects, with all 109 PhysioNet subjects retained.
+3. **Channel mapping, reference, and order.** The four shared channels F3, F4, O1, and O2 are picked by name, and the trailing dots in the PhysioNet EDF names are stripped. A common-average reference is applied first, then the band-pass and notch, and resampling last, so the filters run at each device's native rate before any downsampling. Resampling uses the default FFT method with automatic padding.
+4. **Filter design.** Processing uses MNE 1.12.1 with FIR, zero-phase, windowed-sinc (firwin) filters and a Hamming window. The one-to-forty-hertz band-pass uses automatic transition bandwidths and an automatic length; the fifty-hertz notch uses a one-hertz transition bandwidth with an automatic length. The filter is therefore fully determined by the MNE version and these calls, and the released code reproduces it without custom coefficients.
+5. **Covariance level.** Ledoit–Wolf is fitted once per four-second window, never once per recording. The matrix logarithm is taken on each window covariance, and the recording feature is the unweighted mean of the window log-covariances.
+6. **Symmetrization and the logarithm.** No explicit symmetrization is applied; the shrinkage covariance is symmetric by construction. The SciPy matrix logarithm is used and its real part is kept to discard negligible numerical imaginary residue, with no eigenvalue clipping. A logarithm failure would surface as a load failure and the recording would be skipped under item 2; none occurs in the retained set.
+7. **Scaler.** The scaler is fitted on the analysis subset rather than the full pool for the fixed-transformation theorem, and it is refitted inside every bootstrap, resampling, and held-out draw. A scaler fitted once on the entire pool appears only in the transductive variant and is not part of the theorem.
+8. **Blind number selection.** For each candidate $K$, a diagonal Gaussian mixture gives the BIC, the hard partition gives the silhouette, and a bootstrap stability score is computed over sixty resamples with replacement, nearest-centroid prediction, and ARI agreement. The threshold is $\min(0.85,0.9\max_K\text{stability})$; candidates with stability above the threshold and a positive silhouette are eligible, and the eligible candidate with the smallest BIC is chosen. If none is eligible, the largest silhouette is used, and if no silhouette is positive the smallest BIC is used.
+9. **Balanced randomization.** For a given integer seed, \texttt{numpy.random.default\_rng(seed)} draws thirty recordings from each source without replacement, or all recordings when a source has fewer. The seed fixes the recording composition exactly, so every draw is reproducible.
+10. **Baseline parameters.** K-means uses thirty initializations; the Gaussian mixture uses eight initializations with \texttt{reg\_covar} $10^{-4}$ and full covariance; agglomerative clustering uses ward, complete, and average linkage with Euclidean affinity; spectral clustering uses a nearest-neighbor affinity. Every randomized baseline takes the seed as its random state.
+
+## 7.14 Summary
+
+The real-data evidence supports one narrow statement and marks its limits. Under a known $K$ and a balanced design, source-associated covariance structure is recoverable across three independent sources, and the conclusion survives subject-level resampling. The blind selector under-counts, the unbalanced plug-in is weak, and within-source recovery is absent, all reported as boundary checks. The recovered object is the dataset-level technical structure defined in Section 7.1, and the ARI figures are not validation of the theorem.

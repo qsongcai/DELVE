@@ -1,6 +1,6 @@
 # Recovery Theory (Chapter 5, formal English)
 
-Working title: *Identifiability and Recovery of Covariance-Based Environment Structure under Pooled Observations*
+Working title: *Identifiability Boundaries and Conditional Recovery*
 Date: 2026-11-14. Status: formal manuscript section, conditional framing. Symbols follow the conservative bridge.
 
 ---
@@ -21,6 +21,14 @@ The population K-means risk and its optimum are
 \begin{equation}\label{eq:risk}
 R(c)=E\!\left[\min_k\|X-c_k\|^2\right],\qquad R^\star=\inf_c R(c).
 \end{equation}
+
+\begin{definition}[center space, tie-breaking, and the misclassification rate]\label{def:err}
+A center configuration is an ordered $K$-tuple $c=(c_1,\dots,c_K)$ in $(\mathbb R^p)^K$. The symmetric group $S_K$ acts on it by relabeling, $\tau\cdot c=(c_{\tau^{-1}(1)},\dots,c_{\tau^{-1}(K)})$, and center configurations that differ only by such a permutation are identified in the quotient space $(\mathbb R^p)^K/S_K$. The bounded center domain used below is $\mathcal C_B=(\overline{\mathcal B_p(B)})^K/S_K$.
+
+For a configuration $c$, the nearest-center rule is $g_c(x)=\arg\min_k\|x-c_k\|^2$. Where two or more centers tie, the tie is broken by a fixed measurable rule, the smallest index among the tied centers, so $g_c$ is defined at every point. The misclassification rate is then
+$$\mathrm{Err}(c,Z)=\min_{\tau\in S_K}P\{g_c(X)\ne\tau(Z)\}.$$
+Taking the minimum over permutations makes $\mathrm{Err}$ invariant to label permutation and well defined on the quotient for every configuration, with values in $[0,1]$.
+\end{definition}
 
 This model is conditional on the feature the pipeline actually builds. In the implementation,
 
@@ -76,7 +84,14 @@ the comparison between the smallest merge cost $M_{\min}$ and the largest weight
 The misclassification function $\mathrm{Err}(c,Z)$ is upper semicontinuous on the center domain; equivalently, every level set $\mathcal C_q=\{c:\mathrm{Err}(c,Z)\ge q\}$ is closed.
 \end{assumption}
 
-The condition holds for an absolutely continuous distribution whose density stays bounded near the Voronoi boundary, since the mass of the boundary tube vanishes with its width. It still has to be stated rather than inferred.
+\begin{lemma}[boundary-tube vanishing gives closed level sets]\label{lem:closed}
+Suppose the law of $X$ is absolutely continuous with a density that stays bounded in a neighborhood of every Voronoi boundary. Then $\mathrm{Err}(c,Z)$ is continuous, and hence upper semicontinuous, on the center domain, and every level set $\mathcal C_q$ is closed.
+\end{lemma}
+
+\begin{proof}
+For a fixed permutation $\tau$, write $e_\tau(c)=P\{g_c(X)\ne\tau(Z)\}$ and let $c_n\to c$. A point on which $g_{c_n}(x)\ne g_c(x)$ must lie inside a tube of width $O(\|c_n-c\|)$ around the Voronoi boundary of $c$: away from that boundary the winning center has a strictly positive margin, and center perturbations of that size cannot overturn it. The Voronoi boundary is a finite union of level sets of the quadratic functions $\|x-c_k\|^2-\|x-c_j\|^2$, so it is Lebesgue-null; under the bounded density, the mass of its width-$w$ tube tends to zero as $w\downarrow0$. Hence $P\{g_{c_n}(X)\ne g_c(X)\}\to0$, and
+$|e_\tau(c_n)-e_\tau(c)|\le P\{g_{c_n}\ne g_c\}\to0$, so $e_\tau$ is continuous. Since $\mathrm{Err}(c)=\min_\tau e_\tau(c)$ is the minimum of finitely many continuous functions, it is continuous, hence upper semicontinuous, and the preimage $\mathcal C_q=\mathrm{Err}^{-1}([q,1])$ is closed. Tie points carry zero probability under absolute continuity, so the tie-breaking rule does not enter the argument, and a center exchange is only a relabeling already quotiented out.
+\end{proof}
 
 \begin{assumption}[quadratic growth]\label{a:growth}
 $R(c)-R^\star\ge\kappa\,d(c,\mathcal C^\star)^2$.
@@ -162,7 +177,21 @@ For bounded features with $\|X\|\le B$ and centers in $\mathcal C=(\mathcal B_p(
 
 $$N_\eta\le\Big(1+\frac{2\sqrt K B}{\eta}\Big)^{Kp}.$$
 
-The cell function $f_c(x)=\min_k\|x-c_k\|^2$ ranges in $[0,4B^2]$ and is $4B$-Lipschitz in the product center norm; the $\sqrt K$ factor enters the covering radius but not the Lipschitz constant. Hoeffding on the net and the two-sided discretization error give
+The cell function $f_c(x)=\min_k\|x-c_k\|^2$ ranges in $[0,4B^2]$. Its Lipschitz constant in the stacked centers is computed, not assumed. For fixed $x$, write $\phi_k(c_k)=\|x-c_k\|^2$, whose gradient is $\nabla_{c_k}\phi_k=2(c_k-x)$ with norm at most $2(\|c_k\|+\|x\|)\le 4B$. Taking a minimum is $1$-Lipschitz in its arguments, and away from Voronoi ties the gradient of the minimum is the gradient of the single active cell, with every other center block contributing zero. The stacked gradient therefore has Frobenius norm at most $4B$, so $f_c$ is $4B$-Lipschitz in the product center norm. The $\sqrt K$ factor enters the covering radius but not this constant.
+
+Let $\{c^{(1)},\dots,c^{(N_\eta)}\}$ be the net. For any $c$, choose $c^{(j)}$ with $\|c-c^{(j)}\|\le\eta$, which gives $|f_c(x)-f_{c^{(j)}}(x)|\le 4B\eta$ for every $x$. Splitting the uniform deviation at that net point,
+
+$$|\widehat R_M(c)-R(c)|\le
+\underbrace{|\widehat R_M(c)-\widehat R_M(c^{(j)})|}_{\le 4B\eta}
++|\widehat R_M(c^{(j)})-R(c^{(j)})|
++\underbrace{|R(c^{(j)})-R(c)|}_{\le 4B\eta},$$
+
+so the two-sided discretization contributes $8B\eta$. On the net, each summand lies in $[0,4B^2]$, and Hoeffding applied to the average of $M$ independent recordings gives
+
+$$P\!\left\{|\widehat R_M(c^{(j)})-R(c^{(j)})|\ge t\right\}
+\le 2\exp\!\left(-\frac{M t^2}{8B^4}\right).$$
+
+A union bound over the $N_\eta$ net points and the discretization above yield, with probability at least $1-\alpha$,
 
 $$\varepsilon_M\le\sqrt{\frac{8B^4\log(2N_\eta/\alpha)}{M}}+8B\eta.$$
 
