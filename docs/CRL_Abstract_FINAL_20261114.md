@@ -1,0 +1,10 @@
+# Abstract (final, 2026-11-14)
+
+Working title: *Identifiability and Recovery of Covariance-Based Environment Structure under Pooled Observations*
+Status: finalized. The abstract retains every conditional qualifier and does not imply a guarantee for the full pipeline.
+
+---
+
+Pooling observations while discarding the environment labels removes the very information that fixes which unit belongs where. We ask whether a covariance-based environment structure can nonetheless be identified and recovered from such pooled data. The answer is not a single verdict. In a concrete two-dimensional construction, two genuinely different partitions induce the same pooled law, a witness that non-identifiability is real rather than a technicality, and we do not read it as a general theorem. Under a Gaussian, whitened frame, the covariance structure becomes point-identified, with every assumption stated plainly. Relax those constraints and a single value is no longer pinned down, leaving a sharp identified set accompanied by bootstrap confidence sets whose support rests on simulation rather than theory.
+
+For recovery we give DELVE, a recording-level procedure built on shrunk covariance and matrix-log features. A finite-sample risk-gap guarantee is proved for the global empirical K-means solution when the number of environments and the feature transformation are fixed, and a held-out assignment error decomposition for a sample-split variant yields an inductive guarantee once both sides are controlled. Automatic K selection, full-pool standardization, and finite-initialization Lloyd stay outside the unconditional claims. On three independent, unlabeled EEG datasets two distinct results emerge. With K fixed at its oracle value, covariance features recover source-associated structure at recording-level ARI .608, whereas the pre-specified blind selector underestimates the number of environments, returning K=2 with ARI .279 and systematically merging the same source pair. Recovery and environment-number selection are therefore separate problems, and the blind failure is reported as a primary finding rather than a limitation.
