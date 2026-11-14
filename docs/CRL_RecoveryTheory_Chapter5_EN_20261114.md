@@ -158,7 +158,33 @@ $$\varepsilon_M\le\sqrt{\frac{8B^4\log(2N_\eta/\alpha)}{M}}+8B\eta.$$
 
 A global empirical minimizer has $\delta_{\rm opt}=0$. Lloyd's algorithm only approximates it, and a center outside the ball can be projected back without increasing risk; the Lloyd result is therefore stated with an explicit $\delta_{\rm opt}$ and kept separate.
 
-## 5.5 Three operational variants and the guarantee boundary
+## 5.5 The DELVE procedure
+
+The estimand and the guarantee above are operationalized by one procedure. Algorithm~\ref{alg:delve} lists the complete staged sequence from the raw recordings to the assignment and its diagnostics. The bracketed tags separate standard components from this paper's estimand and guarantee.
+
+\begin{algorithm}[htbp]
+\centering
+\small
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{@{}r >{\raggedright\arraybackslash}p{0.78\columnwidth}@{}}
+\textbf{Input} & recordings $\{R_1,\dots,R_M\}$, grid $\mathcal K=\{2,\dots,6\}$, level $\alpha$\\
+\textbf{Output} & $\hat K$, hard labels $\hat\ell_r$, soft posteriors $\eta_{rk}$, stability, bootstrap, sensitivity\\
+\textbf{Stage 0} & [standard] homogenize: shared channels, common-average reference, band-pass with notch, resample, four-second windows\\
+\textbf{Stage 1} & [standard] per window $\widehat\Sigma_w=\mathrm{LedoitWolf}$; $x_w=\operatorname{vech}(\log\widehat\Sigma_w)$\\
+\textbf{Stage 2} & [this paper's estimand] $x_r=\frac1{W_r}\sum_w x_w$; $X=\mathrm{StandardScaler}$ across recordings\\
+\textbf{Stage 3} & [standard] nearest-centroid labels, with K-means as the realization; BIC, silhouette, and stability score; $\hat K$\\
+\textbf{Stage 4} & [this paper's guarantee] misclassification bound $=\mathrm{term}_1(T_{\rm eff})+\mathrm{term}_2(E_{\rm center})$\\
+\textbf{Stage 5} & [standard] co-assignment and resampling stability\\
+\textbf{Stage 6} & [standard] assignment bootstrap and perturbation sensitivity\\
+\textbf{Stage 7} & post-hoc interpretation using metadata, not an algorithm output\\
+\end{tabular}
+\caption{The DELVE procedure for recording-level environment recovery. The standard components (Stages 0--1, 3, 5--6) are not claimed as novel; the contribution lies in the unified recording-level estimand (Stage 2) and the conditional misclassification guarantee (Stage 4), while automatic $K$ selection and the full-pool scaler stay outside the unconditional guarantees.}
+\label{alg:delve}
+\end{algorithm}
+
+The sample-split variant of Section~5.4 fits the scaler and centers on one half and freezes them for the held-out half, so it is an inductive use of the same staged core rather than a separate procedure. Stages 0 and 7 mark the boundaries of the claim: preprocessing is a design choice rather than a theorem, and the device or protocol reading is admitted only after the assignment is produced.
+
+## 5.6 Three operational variants and the guarantee boundary
 
 The name DELVE covers more than one object, and the guarantee attaches to exactly one of them. The distinction is stated here in the method rather than deferred to the limitations. The population alignment the theorems use is a compatibility condition, assumed on the population objective; this paper does not derive it from the covariance generative model. Table~\ref{tab:variants} lists the three variants and their guarantees.
 
@@ -180,6 +206,6 @@ DELVE-B & blind & full-pool & Lloyd + selector & none\\
 
 DELVE-G is the only object the theorem covers in full. It fixes the number of environments and the feature transformation, and a global empirical minimizer has zero optimization error. DELVE-L keeps the same fixed-$K$ setting but obtains its centers from finite-initialization Lloyd, so the finite-sample statement carries the explicit $\delta_{\rm opt}$ of the finite-sample decomposition rather than setting it to zero. DELVE-B is the blind pipeline run in the real-data chapter: a scaler fitted on the full pool and a pre-specified selector over $K$, with no oracle number, and it stays outside the unconditional guarantees. The sample-split construction that gives the held-out decomposition in Section~5.4 is an inductive use of the fixed-$K$ core, not a fourth clusterer. The main results label which variant each number comes from, so the guaranteed sub-procedure and the empirical pipeline are never read as one algorithm.
 
-## 5.6 Scope
+## 5.7 Scope
 
 The guarantee covers the global empirical K-means solution under a fixed K, a fixed or frozen feature transformation, bounded features, and the alignment and level-set assumptions. It does not cover automatic K selection, full-pool standardization, or finite-initialization Lloyd, and it does not establish that the unlabeled EEG satisfies the conditions. Those components are reported as empirical or transductive procedures, outside the unconditional claims. The stronger route—proving alignment on a structured distribution class through a capture or exchange argument—is left as future work.
