@@ -45,6 +45,7 @@ DSCOLOR = {"ds007541": C["blue"], "ds008099": C["orange"],
            "on004362": C["green"]}
 DSLABEL = {"ds007541": "ds007541", "ds008099": "ds008099",
            "on004362": "on004362"}
+DSMARKER = {"ds007541": "X", "ds008099": "*", "on004362": "P"}
 
 d = np.load(os.path.join(OUT, "recording_features.npz"), allow_pickle=True)
 F, DS = d["features"], d["datasets"]
@@ -123,12 +124,13 @@ pcs = PCA(n_components=2).fit_transform(X)
 fig, ax = plt.subplots(figsize=(4.6, 3.6))
 for ds in sorted(set(y)):
     m = y == ds
-    ax.scatter(pcs[m, 0], pcs[m, 1], s=22, color=DSCOLOR[ds],
-               edgecolor="white", linewidth=0.4, label=DSLABEL[ds])
+    ax.scatter(pcs[m, 0], pcs[m, 1], s=28, marker=DSMARKER[ds],
+               color=DSCOLOR[ds], edgecolor="white", linewidth=0.4,
+               label=DSLABEL[ds])
 ax.set_xlabel("PC 1")
 ax.set_ylabel("PC 2")
 ax.legend(frameon=False, loc="best")
-ax.set_title("Recording features (balanced 90), colored by source")
+ax.set_title("Recording features (balanced 90), by source")
 fig.savefig(os.path.join(OUT, "fig2_pca_scatter.pdf"))
 fig.savefig(os.path.join(OUT, "fig2_pca_scatter.png"))
 plt.close(fig)
