@@ -159,10 +159,10 @@ $$R_T(\widehat c)-R^\star\le 2\varepsilon_M+\delta_{\rm opt}.$$
 | 诊断量 | mean | range |
 |---|---|---|
 | $\min M_{ef}$ | 1.199 | [1.053, 1.397] |
-| $\max\pi_e S_e(2)$ | .772 | [.609, .989] |
-| 分离噪声比 $\Delta/\max\sigma$ | .907 | [.793, 1.021] |
+| $\max\pi_e S_e(2)$ | 0.772 | [0.609, 0.989] |
+| 分离噪声比 $\Delta/\max\sigma$ | 0.907 | [0.793, 1.021] |
 
-EEG 不满足 A3（.91 vs 要求 4），A4' 又无独立诊断，故真实数据只能支持：
+EEG 不满足 A3（0.91 vs 要求 4），A4' 又无独立诊断，故真实数据只能支持：
 
 > *recording-level covariance features contain source-associated structure under a balanced known-$K$ diagnostic analysis.*
 

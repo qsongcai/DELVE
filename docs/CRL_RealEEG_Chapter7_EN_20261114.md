@@ -38,11 +38,11 @@ All permutation tests use the same rule, a one-sided upper tail with the plus-on
 
 $$p=\frac{1+\#\{b:T_b\ge T_{\mathrm{obs}}\}}{B+1}.$$
 
-The smallest reportable value is one over $B+1$, and a statistic at that floor is reported as the exact value rather than as strictly smaller. Each p-value is labeled with its resampling count and its unit. Descriptive window-level figures, including the window ARI near $.26$, stay descriptive and carry no independent p-value.
+The smallest reportable value is one over $B+1$, and a statistic at that floor is reported as the exact value rather than as strictly smaller. Each p-value is labeled with its resampling count and its unit. Descriptive window-level figures, including the window ARI near $0.26$, stay descriptive and carry no independent p-value.
 
 ## 7.3 Recovery under a known number of sources
 
-The clearest positive evidence comes from the balanced cross-source design. With only two sources pooled, every paired combination is recovered, with ARI between $.48$ and $.64$. Pooling all three sources and fixing the number at the oracle value of three strengthens the result. On the balanced ninety-recording design, recording-level ARI reaches $.608$, with a recording permutation at the smallest reportable value, and the result holds across six balanced seeds at a mean of $.582$.
+The clearest positive evidence comes from the balanced cross-source design. With only two sources pooled, every paired combination is recovered, with ARI between $0.48$ and $0.64$. Pooling all three sources and fixing the number at the oracle value of three strengthens the result. On the balanced ninety-recording design, recording-level ARI reaches $0.608$, with a recording permutation at the smallest reportable value, and the result holds across six balanced seeds at a mean of $0.582$.
 
 This is read for exactly what it is: recording-level, oracle-$K$ evidence that the source label can be reconstructed from the covariance features, a repeatability result across independent sources. It is not an external validation of the fully blind pipeline, and it is not a subject-level claim.
 
@@ -55,20 +55,20 @@ This is read for exactly what it is: recording-level, oracle-$K$ evidence that t
 
 ## 7.4 Blind selection fails, and the failure is a headline
 
-The pre-specified blind selector does not reproduce the oracle result. It returns two clusters rather than three, with ARI $.279$, and the merge is systematic. Across every balanced seed the same two sources are joined, while the third stays apart. The contingency table shows the merged cluster absorbing nearly equal numbers from the two joined sources, and that cluster separates cleanly into the two true components once the correct number is restored.
+The pre-specified blind selector does not reproduce the oracle result. It returns two clusters rather than three, with ARI $0.279$, and the merge is systematic. Across every balanced seed the same two sources are joined, while the third stays apart. The contingency table shows the merged cluster absorbing nearly equal numbers from the two joined sources, and that cluster separates cleanly into the two true components once the correct number is restored.
 
 The stability gate is what drives the under-selection, not the BIC term, which on its own prefers the larger values. No pre-specified automatic rule recovers the oracle number, and the one-standard-error rule instead runs to the grid boundary. We present this as a primary finding rather than a caveat: covariance structure can be recoverable at a fixed $K$ while the number of sources is itself not identifiable by the blind procedure. The framing stays neutral on whether a reviewer reads it as a method failure, and both readings are left open.
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.85\columnwidth]{fig1_k_sensitivity.pdf}
-\caption{Adjusted Rand index, normalized mutual information, and silhouette across $K=2,\dots,6$ on the balanced ninety-recording design. The blind selector stops at two clusters with ARI $.279$, whereas the oracle value of three gives $.608$, and the scores plateau before declining as extra clusters split the sources.}
+\caption{Adjusted Rand index, normalized mutual information, and silhouette across $K=2,\dots,6$ on the balanced ninety-recording design. The blind selector stops at two clusters with ARI $0.279$, whereas the oracle value of three gives $0.608$, and the scores plateau before declining as extra clusters split the sources.}
 \label{fig:ksens}
 \end{figure}
 
 ## 7.5 Balance is a necessary condition
 
-The balanced design is doing real work, and removing it lowers the point estimate. On the full unbalanced pool the recording-level ARI falls to $.371$. The most direct plug-in, which runs the procedure once over all subjects without resampling or rebalancing, is weaker still. With a hundred and seventy-one subjects in unequal group sizes, the subject-level ARI is only $.241$. The large source is split across several clusters and the small sources merge, the same mechanism seen in the unbalanced recording result. Balance is therefore a condition for recovery, not a cosmetic detail, and the weak plug-in is reported alongside the balanced figure rather than hidden.
+The balanced design is doing real work, and removing it lowers the point estimate. On the full unbalanced pool the recording-level ARI falls to $0.371$. The most direct plug-in, which runs the procedure once over all subjects without resampling or rebalancing, is weaker still. With a hundred and seventy-one subjects in unequal group sizes, the subject-level ARI is only $0.241$. The large source is split across several clusters and the small sources merge, the same mechanism seen in the unbalanced recording result. Balance is therefore a condition for recovery, not a cosmetic detail, and the weak plug-in is reported alongside the balanced figure rather than hidden.
 
 The four primary designs are consolidated in one table, so the point estimate is never read apart from the design that produced it.
 
@@ -77,21 +77,21 @@ The four primary designs are consolidated in one table, so the point estimate is
 \hline
 design & $K$ & balance & unit & ARI\\
 \hline
-oracle-$K$ (DELVE-G) & 3 & balanced & recording & .608\\
-blind selector (DELVE-B) & 2 & balanced & recording & .279\\
-fixed $K=3$ & 3 & unbalanced & recording & .371\\
-full plug-in & selected & unbalanced & subject & .241\\
+oracle-$K$ (DELVE-G) & 3 & balanced & recording & 0.608\\
+blind selector (DELVE-B) & 2 & balanced & recording & 0.279\\
+fixed $K=3$ & 3 & unbalanced & recording & 0.371\\
+full plug-in & selected & unbalanced & subject & 0.241\\
 \hline
 \end{tabular}
 \end{center}
 
-The $.608$ is a balanced oracle-$K$ diagnostic, not a general performance number for the blind pipeline. The balanced oracle-$K$ result holds across six seeds at a mean of $.582$, and the cross-fitted fold gives $.610$; the other three rows report the blind and unbalanced regimes as primary results rather than footnotes.
+The $0.608$ is a balanced oracle-$K$ diagnostic, not a general performance number for the blind pipeline. The balanced oracle-$K$ result holds across six seeds at a mean of $0.582$, and the cross-fitted fold gives $0.610$; the other three rows report the blind and unbalanced regimes as primary results rather than footnotes.
 
 ## 7.6 Subject-level uncertainty
 
-Treating the subject as the independent unit, a subject-cluster bootstrap with five hundred resamples confirms the balanced recovery does not rest on treating repeated recordings as independent. Three designs are compared. The subject-aggregated bootstrap gives a mean of $.616$ with a ninety-five percent interval from $.31$ to $.81$, the cluster-preserving design gives $.554$ with a slightly wider interval, and the naive recording bootstrap gives $.603$. All three intervals exclude zero. A subject-level permutation reaches the smallest reportable value, with the null distribution centered near zero.
+Treating the subject as the independent unit, a subject-cluster bootstrap with five hundred resamples confirms the balanced recovery does not rest on treating repeated recordings as independent. Three designs are compared. The subject-aggregated bootstrap gives a mean of $0.616$ with a ninety-five percent interval from $0.31$ to $0.81$, the cluster-preserving design gives $0.554$ with a slightly wider interval, and the naive recording bootstrap gives $0.603$. All three intervals exclude zero. A subject-level permutation reaches the smallest reportable value, with the null distribution centered near zero.
 
-Two honest qualifications attach. The single balanced subject realization at seed zero is $.523$, a single draw from the same resampling mechanism whose bootstrap mean is $.616$, and it is not a point estimate on its own. The intervals are not widened by clustering in the way one might expect, because only one source carries repeated recordings and subject aggregation lowers the per-row noise, which offsets the loss of independent units. With roughly thirty subjects per source the intervals remain wide, and the bootstrap is a finite-sample approximation rather than a proof.
+Two honest qualifications attach. The single balanced subject realization at seed zero is $0.523$, a single draw from the same resampling mechanism whose bootstrap mean is $0.616$, and it is not a point estimate on its own. The intervals are not widened by clustering in the way one might expect, because only one source carries repeated recordings and subject aggregation lowers the per-row noise, which offsets the loss of independent units. With roughly thirty subjects per source the intervals remain wide, and the bootstrap is a finite-sample approximation rather than a proof.
 
 The resampling protocol is stated in full so the intervals are read for what they are.
 
@@ -113,13 +113,13 @@ The target parameter is the recording-level ARI, an external metric that needs t
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.85\columnwidth]{fig3_bootstrap_ci.pdf}
-\caption{Subject-cluster bootstrap means and ninety-five percent intervals for three resampling designs. All three intervals exclude zero and sit near the recording point estimate of $.608$, while the all-subject plug-in of $.241$ marks the weaker unbalanced regime.}
+\caption{Subject-cluster bootstrap means and ninety-five percent intervals for three resampling designs. All three intervals exclude zero and sit near the recording point estimate of $0.608$, while the all-subject plug-in of $0.241$ marks the weaker unbalanced regime.}
 \label{fig:bootstrap}
 \end{figure}
 
 ## 7.7 Where recovery stops
 
-The same data trace the boundary. In the single-source repeated-session setting, recording-level ARI is $.009$, with a nonparametric recording bootstrap interval from $-.018$ to $.114$ that contains zero, and free and paired permutations give $.291$ and $.136$, both non-significant. This is consistent with the non-identifiability regime rather than a proof of it, and the negative result is stable across the control conditions. The contrast with the cross-source figure is the point: the signal appears across sources and fades within a single source, where no latent environment varies.
+The same data trace the boundary. In the single-source repeated-session setting, recording-level ARI is $0.009$, with a nonparametric recording bootstrap interval from $-0.018$ to $0.114$ that contains zero, and free and paired permutations give $0.291$ and $0.136$, both non-significant. This is consistent with the non-identifiability regime rather than a proof of it, and the negative result is stable across the control conditions. The contrast with the cross-source figure is the point: the signal appears across sources and fades within a single source, where no latent environment varies.
 
 ## 7.8 De-confounding and the technical label
 
@@ -127,11 +127,11 @@ A set of checks asks whether the separation is carried by subject structure rath
 
 ## 7.9 Alternative spatial representations
 
-A predictable concern is that the recovery is an artifact of the common-average reference or of one bad channel. Recording features are re-derived under two alternative spatial representations. A reference-free bipolar montage lowers the balanced ARI to $.415$, and a surface Laplacian raises it to $.678$, with both clearly positive. The Laplacian is not a pure re-reference, since it uses a different montage and a spatial transform, and the figures are read with that boundary. Dropping any one of the four shared channels leaves ARI between $.34$ and $.42$, so no single channel drives the result, though distributed bad channels or a shared device fingerprint are not excluded. Recovery persists across representations while its magnitude is representation-dependent, and strict reference invariance is not claimed. Bad-channel marking is a relative heuristic with no interpolation, and an absolute quality threshold remains unbuilt.
+A predictable concern is that the recovery is an artifact of the common-average reference or of one bad channel. Recording features are re-derived under two alternative spatial representations. A reference-free bipolar montage lowers the balanced ARI to $0.415$, and a surface Laplacian raises it to $0.678$, with both clearly positive. The Laplacian is not a pure re-reference, since it uses a different montage and a spatial transform, and the figures are read with that boundary. Dropping any one of the four shared channels leaves ARI between $0.34$ and $0.42$, so no single channel drives the result, though distributed bad channels or a shared device fingerprint are not excluded. Recovery persists across representations while its magnitude is representation-dependent, and strict reference invariance is not claimed. Bad-channel marking is a relative heuristic with no interpolation, and an absolute quality threshold remains unbuilt.
 
 ## 7.10 Novelty detection and inductive assignment
 
-Pooled label recovery does not establish generalization to unseen data. Each source is held out in turn, the scaler and two centers are fitted on the other two and frozen, and the held-out recordings are mapped without a refit. Two held-out sources are clearly detectable as novel, with ROC AUC between $.89$ and $.93$, while the third is only weakly separated at $.70$, near the training false-alarm rate. The ranking is stable across seeds even though the absolute threshold is not, and held-out recordings split about evenly between the two seen centers rather than collapsing into one, which places them outside the training clusters. When all three sources enter training, a cross-fitted fold assigns held-out recordings with ARI $.610$, essentially matching the transductive $.608$, and this corresponds directly to the sample-split mechanism in the theory. Novelty detection is not the same as correctly labeling a new environment, and full cross-domain generalization remains unproved.
+Pooled label recovery does not establish generalization to unseen data. Each source is held out in turn, the scaler and two centers are fitted on the other two and frozen, and the held-out recordings are mapped without a refit. Two held-out sources are clearly detectable as novel, with ROC AUC between $0.89$ and $0.93$, while the third is only weakly separated at $0.70$, near the training false-alarm rate. The ranking is stable across seeds even though the absolute threshold is not, and held-out recordings split about evenly between the two seen centers rather than collapsing into one, which places them outside the training clusters. When all three sources enter training, a cross-fitted fold assigns held-out recordings with ARI $0.610$, essentially matching the transductive $0.608$, and this corresponds directly to the sample-split mechanism in the theory. Novelty detection is not the same as correctly labeling a new environment, and full cross-domain generalization remains unproved.
 
 \begin{figure}[htbp]
 \centering
@@ -142,7 +142,7 @@ Pooled label recovery does not establish generalization to unseen data. Each sou
 
 ## 7.11 Auxiliary diagnostics
 
-Phase locking is a non-covariance diagnostic and is kept in that role. The pooled multiband phase-locking value gives a high dataset ARI of $.915$, yet the weighted version collapses to $.016$ and single bands run only $.17$ to $.38$. The fingerprint is robust to the reference, since a bipolar montage on the same two sources gives the same $.915$, which removes the hypothesis that the average reference drives it. The contrast is consistent with sensitivity to zero-lag or common-source structure, and it does not establish that such structure is the causal source of the separation. It is not used to support DELVE.
+Phase locking is a non-covariance diagnostic and is kept in that role. The pooled multiband phase-locking value gives a high dataset ARI of $0.915$, yet the weighted version collapses to $0.016$ and single bands run only $0.17$ to $0.38$. The fingerprint is robust to the reference, since a bipolar montage on the same two sources gives the same $0.915$, which removes the hypothesis that the average reference drives it. The contrast is consistent with sensitivity to zero-lag or common-source structure, and it does not establish that such structure is the causal source of the separation. It is not used to support DELVE.
 
 On the Riemannian geometry, the between-source distance exceeds the within-source distance, yet clustering gives near-zero agreement, and the density-based clusterer produces only noise across the tested configurations, with one marginal exception carrying sixty percent noise. The honest conclusion is confined to the tested configurations: no stable dataset-consistent clusters form there, and no claim is made about low-density gaps in general.
 
@@ -157,26 +157,26 @@ The covariance representation varies the estimator and the matrix mapping, with 
 \hline
 estimator \textbackslash\ mapping & logm & raw & sqrtm\\
 \hline
-Empirical & .232 & .049 & .163\\
-Ledoit–Wolf & .581 & .049 & .163\\
-OAS & .457 & .049 & .163\\
+Empirical & 0.232 & 0.049 & 0.163\\
+Ledoit–Wolf & 0.581 & 0.049 & 0.163\\
+OAS & 0.457 & 0.049 & 0.163\\
 \hline
 \end{tabular}
 \end{center}
 
-The logarithm is the decisive mapping, with raw and square-root features near zero, and shrinkage is indispensable at the available sample size: empirical shrinkage with the log reaches only $.232$, against $.581$ for Ledoit–Wolf. The clusterer and the non-covariance features are compared on the same fixed design.
+The logarithm is the decisive mapping, with raw and square-root features near zero, and shrinkage is indispensable at the available sample size: empirical shrinkage with the log reaches only $0.232$, against $0.581$ for Ledoit–Wolf. The clusterer and the non-covariance features are compared on the same fixed design.
 
 \begin{center}
 \begin{tabular}{llll}
 \hline
 clusterer & ARI & non-covariance feature & ARI\\
 \hline
-GMM & .795 & phase locking (PLV) & .915\\
-agg-complete & .649 & correlation & .393\\
-spectral & .582 & band power & .108\\
-K-means & .581 & phase lag index & .100\\
-agg-ward & .317 & &\\
-agg-average & .024 & &\\
+GMM & 0.795 & phase locking (PLV) & 0.915\\
+agg-complete & 0.649 & correlation & 0.393\\
+spectral & 0.582 & band power & 0.108\\
+K-means & 0.581 & phase lag index & 0.100\\
+agg-ward & 0.317 & &\\
+agg-average & 0.024 & &\\
 \hline
 \end{tabular}
 \end{center}

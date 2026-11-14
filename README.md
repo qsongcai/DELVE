@@ -75,13 +75,13 @@ Run order is top to bottom. All paths resolve through `DELVE_DATA_DIR`.
 | Reported result | Script |
 |---|---|
 | 203 x 10 recording features (`recording_features.npz`) | `experiments/cache_recording_features.py` |
-| Known-K ARI .608 vs blind K=2 ARI .279; K=2..6 curves | `experiments/k_uncertainty_analysis.py` |
+| Known-K ARI 0.608 vs blind K=2 ARI 0.279; K=2..6 curves | `experiments/k_uncertainty_analysis.py` |
 | Subject-cluster bootstrap CIs and subject permutation | `experiments/subject_cluster_bootstrap.py` |
-| Unbalanced plug-in ARI .241 (all 171 subjects) | `experiments/plugin_subject_ari.py` |
+| Unbalanced plug-in ARI 0.241 (all 171 subjects) | `experiments/plugin_subject_ari.py` |
 | Split/merge descriptive diagnostics | `experiments/anti_splitting_diagnostic.py` |
 | Result B synthetic validation (zero violations; negative control) | `experiments/result_b_synthetic_validation.py` |
-| Recording-level formal evidence, ARI .009, bootstrap CI | `experiments/setting_a_recording_level.py` |
-| Leave-one-source novelty, cross-fitted ARI .610 | `experiments/leave_one_source_inductive.py` |
+| Recording-level formal evidence, ARI 0.009, bootstrap CI | `experiments/setting_a_recording_level.py` |
+| Leave-one-source novelty, cross-fitted ARI 0.610 | `experiments/leave_one_source_inductive.py` |
 | Bipolar / CSD / leave-one-channel robustness | `experiments/reference_robustness_cache.py`, `reference_robustness_analysis.py` |
 | One-SE held-out cost rule (K=6 boundary) | `experiments/k_one_se_rule.py` |
 | Label-aware oracle reference (11% error) | `experiments/oracle_q_support.py` |
