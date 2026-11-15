@@ -9,7 +9,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import KMeans
 from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.model_selection import StratifiedKFold, cross_val_score
+from sklearn.model_selection import StratifiedKFold, GroupKFold, cross_val_score
 from sklearn.metrics import adjusted_rand_score, silhouette_score
 
 FEAT_NPZ = "figures/recording_features.npz"
@@ -50,6 +50,11 @@ def main():
     acc_nw = cross_val_score(tree, nw, y, cv=cv)
     print("nwin-only decision-tree CV accuracy = %.3f (folds %s)"
           % (acc_nw.mean(), np.round(acc_nw, 3)))
+    # subject-grouped CV: all recordings of one subject stay in the same fold
+    gcv = GroupKFold(5)
+    acc_g = cross_val_score(tree, nw, y, groups=sub, cv=gcv)
+    print("nwin-only subject-grouped CV accuracy = %.3f (folds %s, %d subject groups)"
+          % (acc_g.mean(), np.round(acc_g, 3), len(set(sub))))
     # ranges
     for s in sources:
         v = nwin[y == s]
@@ -59,7 +64,9 @@ def main():
     for name, clf in [("logistic", LogisticRegression(max_iter=2000)),
                       ("decision-tree", DecisionTreeClassifier(random_state=0))]:
         acc = cross_val_score(clf, M, y, cv=cv)
-        print("metadata+%s CV accuracy = %.3f" % (name, acc.mean()))
+        acc_gg = cross_val_score(clf, M, y, groups=sub, cv=GroupKFold(5))
+        print("metadata+%s CV accuracy = %.3f, subject-grouped = %.3f"
+              % (name, acc.mean(), acc_gg.mean()))
 
     print("\n=== B2: same-device control (within-source clustering) ===")
     for s in sources:

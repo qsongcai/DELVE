@@ -36,6 +36,7 @@ The following stay **outside** the unconditional guarantees and are reported as 
 │   ├── oracle_q_support.py
 │   ├── teff_estimation.py
 │   ├── k_uncertainty_analysis.py
+│   ├── device_metadata_controls.py
 │   └── bulk_download.py
 └── docs/                      # formal theory statements
 ```
@@ -87,6 +88,7 @@ Run order is top to bottom. All paths resolve through `DELVE_DATA_DIR`.
 | Label-aware oracle reference (11% error) | `experiments/oracle_q_support.py` |
 | Effective window count | `experiments/teff_estimation.py` |
 | Strong baselines (estimators, mappings, six clusterers) | `delve_strong_baselines.py` |
+| Metadata-only source baselines, stratified and subject-grouped CV | `experiments/device_metadata_controls.py` |
 
 ## Documentation
 

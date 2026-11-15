@@ -73,7 +73,17 @@ $$E[XX^\top]=\tfrac12(I+K)+\tfrac12(I-K)=I,$$
 so the frame is whitened by construction. The object the theorem identifies is the unordered component covariance pair $\{I+K,I-K\}$, not the pooled covariance fixed at $I$, and not any recording assignment.
 
 \begin{theorem}[point identification of the component covariance pair]\label{thm:pointid}
-In the symmetric two-component model above, with $K$ symmetric and every eigenvalue of $K$ lying strictly inside $(-1,1)$, the fourth-order cumulant tensor determines the two eigenvalues of $K$ and, when they are unequal, their eigenvectors in $d=2$, and so determines $K$ up to a global sign. It hence determines the unordered component covariance pair uniquely. The global sign $K\leftrightarrow-K$ is exactly the label permutation that exchanges the two components.
+In the symmetric two-component model above, with $K$ symmetric and every eigenvalue of $K$ lying strictly inside $(-1,1)$, the fourth-order cumulant tensor determines $K$ up to the global sign $K\leftrightarrow-K$ in $d=2$, and hence determines the unordered component covariance pair uniquely. Write $K=Q\operatorname{diag}(\lambda_1,\lambda_2)Q^\top$. The following cases are exhaustive.
+
+\textbf{Case (i): $\lambda_1^2\ne\lambda_2^2$.} The contraction $T$ has two distinct eigenvalues, and diagonalizing it recovers the eigenbasis; the eigenvalue magnitudes and their relative sign follow from the diagonal cumulants.
+
+\textbf{Case (ii): $\lambda_1=-\lambda_2\ne0$, so $\operatorname{tr}K=0$ and $T$ is scalar.} The entries of $K$ are recovered directly from the full tensor by the algebraic identities~\eqref{eq:direct-recover}, with no ratio and no singular direction; the swap configuration $K_{11}=0$ is included.
+
+\textbf{Case (iii): $\lambda_1=\lambda_2\ne0$, so $K=\lambda_1 I$ is isotropic.} There is no basis to recover, and the single value follows from $\kappa_{1111}/3$.
+
+\textbf{Case (iv): $\lambda_1=\lambda_2=0$, so $K=0$.} The zero cumulant tensor forces $K=0$ uniquely, but the two component covariances coincide at $I$; two distinct components and an eigenbasis are not identified.
+
+The only genuine observational freedom is the global sign $K\leftrightarrow-K$, which is exactly the label permutation exchanging $I+K$ with $I-K$. Replacing an eigenvector by its negative leaves $Q\Lambda Q^\top$ and the rank-one projector unchanged and is not a separate freedom, and permuting the eigenvalues together with the eigenvectors leaves the same matrix on the label-permutation quotient.
 \end{theorem}
 
 \begin{proof}
@@ -113,7 +123,17 @@ When $\lambda_1^2\ne\lambda_2^2$, the two $\tau_i$ are distinct, and diagonalizi
 
 fixing both magnitudes and their relative sign.
 
-Two boundary cases remain. If $\lambda_1=\lambda_2$, then $K=\lambda_1 I$ is isotropic and no basis is needed; the single value follows from $\kappa'_{1111}/3$. If $\lambda_1=-\lambda_2$, the matrix $T$ is scalar and its eigenvectors are not unique. Writing the eigenvector of $\lambda_1$ as $q=(\cos\phi,\sin\phi)$ gives $K=\lambda_1(2qq^\top-I)$, and the direction follows from $\tan(2\phi)=\kappa_{1112}/\kappa_{1111}$, that is $\phi=\tfrac12\arctan(\kappa_{1112}/\kappa_{1111})$.
+The remaining cases have $\lambda_1^2=\lambda_2^2$, so $T$ is scalar and cannot locate a basis.
+
+If $\lambda_1=-\lambda_2\ne0$, write $\lambda=\lambda_1$ and parametrize $K=\lambda(2qq^\top-I)$ with $q=(\cos\phi,\sin\phi)$. In the fixed whitened coordinates the entries obey $K_{22}=-K_{11}$, with $K_{11}=\lambda\cos2\phi$ and $K_{12}=\lambda\sin2\phi$. Recover the entries directly from the tensor, with no division and hence no singular direction,
+\begin{equation}\label{eq:direct-recover}
+K_{11}^2=\frac{\kappa_{1111}}3,\qquad
+K_{12}^2=\frac{\kappa_{1122}+K_{11}^2}{2}
+=\frac{\kappa_{1122}+\kappa_{1111}/3}{2}.
+\end{equation}
+The second identity uses $\kappa_{1122}=-K_{11}^2+2K_{12}^2$. Fix the relative sign through $\kappa_{1112}=3K_{11}K_{12}$. When $K_{11}\ne0$, choose $K_{11}=+\sqrt{\kappa_{1111}/3}$ and set $\operatorname{sign}K_{12}=\operatorname{sign}\kappa_{1112}$; the opposite choice reproduces $-K$. When $K_{11}=0$, which is exactly the swap configuration $K=\lambda[[0,1],[1,0]]$ at $\phi=\pi/4$, one has $\kappa_{1111}=\kappa_{1112}=0$ and $K_{12}^2=\kappa_{1122}/2=\lambda^2$, so the entry is still recovered and its sign is the global sign. The magnitude closes as $|\lambda|=\sqrt{K_{11}^2+K_{12}^2}$.
+
+If $\lambda_1=\lambda_2\ne0$, then $K=\lambda_1 I$ is isotropic and no basis exists; the single value follows from $\kappa_{1111}/3$. If $\lambda_1=\lambda_2=0$, every cumulant vanishes and the identities force $K=0$; the matrix is unique, but $I+K=I-K=I$ are coincident and no two distinct components, eigenbasis, or direction are identified.
 
 The one freedom that remains is the global sign $K\mapsto-K$. Every component of $\kappa$ is quadratic or a product and is unchanged by it, and it sends $K$ to $-K$, which exchanges $I+K$ with $I-K$. That is the component label permutation, not a distinct parameter. The unordered pair $\{I+K,I-K\}$ is therefore unique, and the positivity condition $I\pm K\succ0$ is checked on the recovered eigenvalues.
 \end{proof}

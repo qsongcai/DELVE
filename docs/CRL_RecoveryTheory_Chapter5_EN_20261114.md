@@ -81,17 +81,36 @@ $$M_{ef}=\frac{\pi_e\pi_f}{\pi_e+\pi_f}\|\mu_e-\mu_f\|^2,$$
 the comparison between the smallest merge cost $M_{\min}$ and the largest weighted split gain $S_{\max}^{\rm tot}=\max_e\pi_e\sup_m S_e(m)$ carries useful intuition. It does not establish population optimality. A hard ball keeps points inside their own ball; it does not stop a center from landing between two balls and serving both at once. The loss from removing a center is bounded by the conditional optimum only when the current centers already realize that optimum, and the merge term $M_{ef}$ describes two whole environments re-centered together, not the gain a new center produces inside a running multi-center configuration. The local exchange argument built on these quantities has been withdrawn. We report them as descriptive diagnostics only.
 
 \begin{assumption}[closed level sets]\label{a:closed}
-The misclassification function $\mathrm{Err}(c,Z)$ is upper semicontinuous on the center domain; equivalently, every level set $\mathcal C_q=\{c:\mathrm{Err}(c,Z)\ge q\}$ is closed.
+The misclassification function $\mathrm{Err}(c,Z)$ is upper semicontinuous on the center domain; equivalently, every level set $\mathcal C_q=\{c:\mathrm{Err}(c,Z)\ge q\}$ is closed. On a non-degenerate center domain this follows from Lemma~\ref{lem:closed}; on the full domain, including coincident centers, it is retained as an explicit assumption.
 \end{assumption}
 
-\begin{lemma}[boundary-tube vanishing gives closed level sets]\label{lem:closed}
-Suppose the law of $X$ is absolutely continuous with a density that stays bounded in a neighborhood of every Voronoi boundary. Then $\mathrm{Err}(c,Z)$ is continuous, and hence upper semicontinuous, on the center domain, and every level set $\mathcal C_q$ is closed.
+\begin{lemma}[boundary-tube vanishing on a non-degenerate center domain]\label{lem:closed}
+Work in the bounded frame $\|X\|\le B$ almost surely, and let the law of $X$ be absolutely continuous with a density bounded by $f_{\max}$, either globally or in a neighborhood of every Voronoi boundary. Fix $d_{\min}>0$ and define the non-degenerate center domain
+$$\mathcal C_{B,d_{\min}}=\{c\in\mathcal C_B:\|c_i-c_j\|\ge d_{\min}\ \text{for all }i\ne j\}.$$
+On $\mathcal C_{B,d_{\min}}$, $\mathrm{Err}(c,Z)$ is continuous, hence upper semicontinuous, and every level set $\mathcal C_q$ intersected with $\mathcal C_{B,d_{\min}}$ is closed.
 \end{lemma}
 
 \begin{proof}
-For a fixed permutation $\tau$, write $e_\tau(c)=P\{g_c(X)\ne\tau(Z)\}$ and let $c_n\to c$. A point on which $g_{c_n}(x)\ne g_c(x)$ must lie inside a tube of width $O(\|c_n-c\|)$ around the Voronoi boundary of $c$: away from that boundary the winning center has a strictly positive margin, and center perturbations of that size cannot overturn it. The Voronoi boundary is a finite union of level sets of the quadratic functions $\|x-c_k\|^2-\|x-c_j\|^2$, so it is Lebesgue-null; under the bounded density, the mass of its width-$w$ tube tends to zero as $w\downarrow0$. Hence $P\{g_{c_n}(X)\ne g_c(X)\}\to0$, and
-$|e_\tau(c_n)-e_\tau(c)|\le P\{g_{c_n}\ne g_c\}\to0$, so $e_\tau$ is continuous. Since $\mathrm{Err}(c)=\min_\tau e_\tau(c)$ is the minimum of finitely many continuous functions, it is continuous, hence upper semicontinuous, and the preimage $\mathcal C_q=\mathrm{Err}^{-1}([q,1])$ is closed. Tie points carry zero probability under absolute continuity, so the tie-breaking rule does not enter the argument, and a center exchange is only a relabeling already quotiented out.
+For a fixed permutation $\tau$, write $e_\tau(c)=P\{g_c(X)\ne\tau(Z)\}$. The Voronoi boundary between centers $i$ and $j$ is the affine hyperplane
+$$H_{ij}(c)=\{x:2x^\top(c_j-c_i)=\|c_j\|^2-\|c_i\|^2\}.$$
+Because $\|c_j-c_i\|\ge d_{\min}>0$, its normal is non-degenerate and $H_{ij}$ is a genuine hyperplane; the full Voronoi boundary is a finite union of at most $K(K-1)/2$ such hyperplanes. Let $V_{p-1}$ denote the volume of the unit $(p-1)$-ball, and write $\mathrm{tube}_w$ for the set of points within distance $w$ of that boundary. Inside $\mathcal B_p(B)$, a width-$w$ tube around one hyperplane has volume at most $2w\,V_{p-1}B^{p-1}$, so
+\begin{equation}\label{eq:tube-mass}
+\begin{aligned}
+P\{X\in\mathrm{tube}_w(\partial V(c))\}
+&\le f_{\max}\,\frac{K(K-1)}2\,2V_{p-1}B^{p-1}\,w\\
+&= C_{\mathrm{geom}}(K,p,B)\,f_{\max}\,w\;\longrightarrow\;0.
+\end{aligned}
+\end{equation}
+If the density is bounded only in a neighborhood, the same expression holds with the local supremum after restricting to that neighborhood.
+
+Now let $c_n\to c$ with both configurations in $\mathcal C_{B,d_{\min}}$. Away from the Voronoi boundary of $c$, the winning center has a strictly positive margin, and on this fixed non-degenerate domain the margin geometry is uniform with constants depending only on $d_{\min}$ and $B$. A point on which $g_{c_n}(x)\ne g_c(x)$ therefore lies inside a tube of width $O(\|c_n-c\|)$ around the boundary. Applying~\eqref{eq:tube-mass},
+$$P\{g_{c_n}(X)\ne g_c(X)\}\le C_{\mathrm{geom}}f_{\max}\,O(\|c_n-c\|)\to0.$$
+Hence $|e_\tau(c_n)-e_\tau(c)|\le P\{g_{c_n}\ne g_c\}\to0$, so $e_\tau$ is continuous. Since $\mathrm{Err}(c)=\min_\tau e_\tau(c)$ is the minimum of finitely many continuous functions, it is continuous, hence upper semicontinuous, and the preimage $\mathcal C_q=\mathrm{Err}^{-1}([q,1])$ is closed. Tie points carry zero probability under absolute continuity, so the tie-breaking rule does not enter the argument, and a center exchange is only a relabeling already quotiented out.
 \end{proof}
+
+\begin{remark}[the lemma does not cover coincident centers]\label{rem:coincident}
+The full center domain $\mathcal C_B$ allows $c_i=c_j$. At such a configuration the equidistant set $\{x:\|x-c_i\|=\|x-c_j\|\}$ is the whole space rather than a Lebesgue-null hyperplane, and an arbitrarily small perturbation can place the new bisector through a region of positive probability. In one dimension, take $X$ uniform on $[-1,1]$, $c_1=c_2=0$ with ties assigned to the first center, and perturb to $c_n=(-a,a)$; the two rules then disagree on a half-space of mass $1/2$ for every $a>0$, so the change does not vanish. Quotienting by the center permutation does not remove this, because the coincident point can split in distinct directions. The lemma therefore makes no claim at coincident centers, and the closed level-set condition there is assumed directly through Assumption~\ref{a:closed} rather than derived.
+\end{remark}
 
 \begin{assumption}[quadratic growth]\label{a:growth}
 $R(c)-R^\star\ge\kappa\,d(c,\mathcal C^\star)^2$.
@@ -160,17 +179,14 @@ Let $\widehat R_M$ be the empirical risk on $M$ independent recordings, let $\va
 R(\widehat c)-R^\star\le 2\varepsilon_M+\delta_{\rm opt}.
 \end{equation}
 
-\begin{theorem}[finite-sample recovery]\label{thm:C}
-Suppose Assumption~\ref{a:align} and Assumption~\ref{a:closed} hold, so that $\psi(q)$ is well defined. If
-$$2\varepsilon_M+\delta_{\rm opt}<\psi(q),$$
-then
-\begin{equation}\label{eq:error-bound}
-\mathrm{Err}(\widehat c,Z)<q.
-\end{equation}
-\end{theorem}
+\begin{lemma}[risk transfer]\label{lem:transfer}
+Fix $q>0$, and suppose the level set $\mathcal C_q$ is closed so that $\psi(q)$ is well defined; this is Assumption~\ref{a:closed} on the compact center domain. For any center configuration $\widehat c$,
+$$R(\widehat c)-R^\star<\psi(q)\quad\Longrightarrow\quad \mathrm{Err}(\widehat c,Z)<q.$$
+Combined with the excess-risk decomposition~\eqref{eq:risk-gap}, the condition $2\varepsilon_M+\delta_{\rm opt}<\psi(q)$ therefore implies $\mathrm{Err}(\widehat c,Z)<q$.
+\end{lemma}
 
 \begin{proof}
-If $\mathrm{Err}(\widehat c,Z)\ge q$, then $\widehat c\in\mathcal C_q$, which forces $R(\widehat c)-R^\star\ge\psi(q)$, contradicting the excess-risk bound.
+If $\mathrm{Err}(\widehat c,Z)\ge q$, then $\widehat c\in\mathcal C_q$, which by the definition of $\psi(q)$ forces $R(\widehat c)-R^\star\ge\psi(q)$, a contradiction. The argument is a conditional implication only; it does not assume alignment and does not assert that $\psi(q)$ is positive.
 \end{proof}
 
 For bounded features with $\|X\|\le B$ and centers in $\mathcal C=(\mathcal B_p(B))^K$, the uniform deviation admits an explicit grid bound. Stacking the centers into a $Kp$-vector with the product Frobenius norm gives a domain of radius $\sqrt K B$, and an $\eta$-net of size
@@ -197,6 +213,22 @@ $$\varepsilon_M\le\sqrt{\frac{8B^4\log(2N_\eta/\alpha)}{M}}+8B\eta.$$
 
 A global empirical minimizer has $\delta_{\rm opt}=0$. Lloyd's algorithm only approximates it, and a center outside the ball can be projected back without increasing risk; the Lloyd result is therefore stated with an explicit $\delta_{\rm opt}$ and kept separate.
 
+Write the high-probability bound as a function of the net resolution,
+$$h(M,\eta)=\sqrt{\frac{8B^4\log(2N_\eta/\alpha)}{M}}+8B\eta.$$
+The preceding Hoeffding and union-bound argument states that $\mathbb P\{\varepsilon_M\le h(M,\eta)\}\ge1-\alpha$. This converts the conditional transfer into a checkable finite-sample statement.
+
+\begin{corollary}[nontrivial finite-sample recovery]\label{cor:finite}
+Suppose every assumption of Theorem~\ref{thm:B} holds, namely Assumptions~\ref{a:weights}--\ref{a:sep}, Assumption~\ref{a:align}, and Assumption~\ref{a:closed}, and choose $q$ with $\psi(q)>0$. For a global empirical minimizer, $\delta_{\rm opt}=0$, and if
+$$2h(M,\eta)<\psi(q),$$
+then with probability at least $1-\alpha$,
+$$\mathrm{Err}(\widehat c,Z)<q.$$
+For a finite-initialization Lloyd solution the same conclusion holds with probability at least $1-\alpha$ under $2h(M,\eta)+\delta_{\rm opt}<\psi(q)$.
+\end{corollary}
+
+\begin{proof}
+On the event $\varepsilon_M\le h(M,\eta)$, which has probability at least $1-\alpha$, the excess-risk decomposition gives $R(\widehat c)-R^\star\le2h(M,\eta)+\delta_{\rm opt}<\psi(q)$. Applying the risk-transfer lemma~\ref{lem:transfer} yields $\mathrm{Err}(\widehat c,Z)<q$. The positivity $\psi(q)>0$ is the content of Theorem~\ref{thm:B} and is what makes the condition attainable; without it the bound is the empty conditional of the lemma.
+\end{proof}
+
 ## 5.5 The DELVE procedure
 
 The estimand and the guarantee above are operationalized by one procedure. Algorithm~\ref{alg:delve} lists the complete staged sequence from the raw recordings to the assignment and its diagnostics. The bracketed tags separate standard components from this paper's estimand and guarantee.
@@ -212,12 +244,12 @@ The estimand and the guarantee above are operationalized by one procedure. Algor
 \textbf{Stage 1} & [standard] per window $\widehat\Sigma_w=\mathrm{LedoitWolf}$; $x_w=\operatorname{vech}(\log\widehat\Sigma_w)$\\
 \textbf{Stage 2} & [this paper's estimand] $x_r=\frac1{W_r}\sum_w x_w$; $X=\mathrm{StandardScaler}$ across recordings\\
 \textbf{Stage 3} & [standard] nearest-centroid labels, with K-means as the realization; BIC, silhouette, and stability score; $\hat K$\\
-\textbf{Stage 4} & [this paper's guarantee] misclassification bound $=\mathrm{term}_1(T_{\rm eff})+\mathrm{term}_2(E_{\rm center})$\\
+\textbf{Stage 4} & [theoretical guarantee, not a computed output] the conditional misclassification statement of Corollary~\ref{cor:finite}; its terms are population quantities (uniform deviation and center error), and the procedure evaluates no numeric bound\\
 \textbf{Stage 5} & [standard] co-assignment and resampling stability\\
 \textbf{Stage 6} & [standard] assignment bootstrap and perturbation sensitivity\\
 \textbf{Stage 7} & post-hoc interpretation using metadata, not an algorithm output\\
 \end{tabular}
-\caption{The DELVE procedure for recording-level environment recovery. The standard components (Stages 0--1, 3, 5--6) are not claimed as novel; the contribution lies in the unified recording-level estimand (Stage 2) and the conditional misclassification guarantee (Stage 4), while automatic $K$ selection and the full-pool scaler stay outside the unconditional guarantees.}
+\caption{The DELVE procedure for recording-level environment recovery. The standard components (Stages 0--1, 3, 5--6) are not claimed as novel; the contribution lies in the unified recording-level estimand (Stage 2) and the conditional misclassification guarantee (Stage 4), which is a population-level statement attached to the procedure rather than a number it computes. Automatic $K$ selection and the full-pool scaler stay outside the unconditional guarantees.}
 \label{alg:delve}
 \end{algorithm}
 
