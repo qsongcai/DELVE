@@ -24,7 +24,14 @@ T_\#P_Z=P_Z,\qquad \sigma'=\sigma\circ T,\qquad \sigma'\notin\{\sigma,\ 1-\sigma
 \end{equation}
 \end{theorem}
 
-\emph{Proof sketch.} Work in two dimensions. Let $z$ be uniform on the unit disk, take the mixing to be the identity, and use two environments of equal weight. The first assignment is $\sigma(z)=\mathbb 1[z_1\ge0]$. The quarter turn $T(z_1,z_2)=(-z_2,z_1)$ preserves the disk and its uniform measure, so the pooled distribution is unchanged, and the second assignment is $\sigma'(z)=\mathbb 1[z_2\le0]$. The two disagree on the second and fourth quadrants, so $P_Z(\sigma\ne\sigma')=\tfrac12$. A global label permutation cannot produce a half-set disagreement, hence $\sigma'$ is not a relabeling. The full construction is given in Appendix A.2.
+\emph{Proof sketch.} Work in two dimensions. Let $z$ be uniform on the unit disk, take the mixing to be the identity, and use two environments of equal weight. The first assignment is $\sigma(z)=\mathbb 1[z_1\ge0]$. The quarter turn $T(z_1,z_2)=(-z_2,z_1)$ preserves the disk and its uniform measure, so the pooled distribution is unchanged, and the second assignment is $\sigma'(z)=\mathbb 1[z_2\le0]$. The two disagree on the first and third quadrants, so $P_Z(\sigma\ne\sigma')=\tfrac12$. A global label permutation cannot produce a half-set disagreement, hence $\sigma'$ is not a relabeling. The full construction is given in Appendix A.2. Figure~\ref{fig:witness} depicts the two assignments and the disagreement region.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.92\columnwidth]{fig5_witness.pdf}
+\caption{The $d=2$ non-identification witness. Left: the assignment $\sigma=\mathbb 1[z_1\ge0]$ splits the disk by the first coordinate. Right: the rotated assignment $\sigma_T=\sigma'=\sigma\circ T=\mathbb 1[z_2\le0]$; the hatched first and third quadrants are where the two disagree, with total probability $1/2$, while the quarter turn $T$ leaves the pooled distribution unchanged.}
+\label{fig:witness}
+\end{figure}
 
 The label $E$ is an unobserved categorical variable, and $P_X$ fixes only the marginal of $X$; the set of couplings of $P_X$ with the label marginal is convex and shrinks to a singleton only in degenerate cases. On $2\times10^5$ draws the disagreement fraction is $0.5000$, and the squared maximum-mean-discrepancy between $Z$ and $T(Z)$ is $0.00058$, finite-sample noise around a population value of zero. The result is a single $d=2$ witness on the class of arbitrary measurable assignments, not a claim that every pooled distribution is non-identifiable. If the component laws are restricted to a structured family, the witness need not remain inside that smaller class.
 

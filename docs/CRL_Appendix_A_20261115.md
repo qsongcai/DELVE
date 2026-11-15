@@ -76,7 +76,7 @@ The rotation preserves the disk and its uniform measure, so $T_\#P_Z=P_Z$ and th
 
 $$\sigma'(z)=\sigma(Tz)=\mathbb 1[z_2\le 0],$$
 
-which splits the disk by the sign of the second coordinate. The two partitions disagree on the second and fourth quadrants, where the coordinates have opposite signs:
+which splits the disk by the sign of the second coordinate. The two partitions disagree on the first and third quadrants, where the coordinates have the same sign:
 
 \begin{equation}\label{eq:disagreement}
 P_Z(\sigma\ne\sigma')=\tfrac12.

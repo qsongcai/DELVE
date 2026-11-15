@@ -167,6 +167,15 @@ The estimand and the guarantee are operationalized by one procedure, listed in A
 \label{alg:delve}
 \end{algorithm}
 
+The same staged flow is shown as a diagram in Figure~\ref{fig:pipeline}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.74\columnwidth]{fig6_pipeline.pdf}
+\caption{Flow of the staged DELVE core from pooled unlabeled EEG to recovered covariance environments. The recording-level estimand (Stage 2) is highlighted, and the sample-split branch leads to the conditional misclassification guarantee (Stage 4), a theoretical statement rather than a computed numeric bound. The remaining stages are standard components.}
+\label{fig:pipeline}
+\end{figure}
+
 The sample-split variant fits the scaler and centers on one half and freezes them for the held-out half, an inductive use of the same staged core rather than a separate procedure. Three operational variants are kept apart, and the full comparison is in Supplementary Table S6. DELVE-G fixes $K$ and freezes the transformation, and a global empirical minimizer has zero optimization error, so it is covered in full by the risk-gap guarantee. DELVE-L keeps the same fixed-$K$ setting but obtains its centers from finite-initialization Lloyd, so its statement carries the explicit $\delta_{\rm opt}$. DELVE-B is the blind pipeline with a full-pool scaler and a pre-specified selector, and it carries no unconditional guarantee.
 
 The guarantee covers the global empirical K-means solution under fixed $K$, a fixed or frozen transformation, bounded features, and the alignment and level-set assumptions. Automatic $K$ selection, full-pool standardization, and finite-initialization Lloyd fall outside it, and the paper does not establish that the unlabeled EEG satisfies the conditions. The stronger route, proving alignment on a structured distribution class through a capture or exchange argument, is left as future work.

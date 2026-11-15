@@ -17,7 +17,14 @@ At signal-to-noise ratio six, the alignment and level-set conditions are checked
 
 One premise is not met by this design. Gaussian noise has unbounded support, so no finite $\rho$ makes the almost-sure hard-ball condition hold; what the reference shows is an empirical truncation, not the probability-one condition. The alignment and level-set premises are checked empirically and the risk-gap implication is observed without violation, but the theorem as a whole does not apply because the hard-ball premise fails. We read this arm as an empirical robustness study under model misspecification, not as a validation of the theorem.
 
-Across the finite-sample sweep, sixty independent repetitions are drawn at each sample size, and the global empirical solution is scored on the held-out reference. Excess risk falls from about $2.35$ at the smallest size to under one tenth at the largest, and misclassification falls with it, from about nine per thousand to three. Whenever the excess sits below the gap for a level, the error stays below that level, with no violation in any repetition. The misclassification shows the sharp phase transition the theorem predicts.
+Across the finite-sample sweep, sixty independent repetitions are drawn at each sample size, and the global empirical solution is scored on the held-out reference. Excess risk falls from about $2.35$ at the smallest size to under one tenth at the largest, and misclassification falls with it, from about nine per thousand to three. Whenever the excess sits below the gap for a level, the error stays below that level, with no violation in any repetition. The misclassification shows the sharp phase transition the theorem predicts. Figure~\ref{fig:sweep} plots the sweep against the theoretical gap thresholds and the target levels.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{fig7_ch6_sweep.pdf}
+\caption{Finite-sample sweep over sixty repetitions. Left: excess risk against sample size with the theoretical gap thresholds $\psi(0.05)$ and $\psi(0.20)$; the excess crosses $\psi(0.05)$ near $M=10$. Right (log scale): misclassification falls below the target level $q=0.05$ after the crossing for the aligned arm, while the negative control stays on a plateau near $0.6$.}
+\label{fig:sweep}
+\end{figure}
 
 The hard-ball premise deserves a design that satisfies it rather than approximating it. A second synthetic keeps the same geometry but replaces the Gaussian noise with isotropic noise uniform on a ball of radius $\rho$. The hard-ball condition then holds almost surely by construction, and the equilateral spacing is set to $\Delta=6\rho$, which strictly exceeds the $4\rho$ the margin requires. On the reference, the empirical maximum noise norm is exactly $\rho$, and the nearest-center classifier at the true centers makes no error at all. The finite-sample sweep repeats the same fit across the same sizes and sixty repetitions: excess risk falls from about $0.19$ to under one hundredth, misclassification stays at zero, and the gap implication has no violation.
 
