@@ -1,0 +1,123 @@
+\subsection{What identifiability
+means}\label{what-identifiability-means}
+
+Let \(P_X\) be the pooled marginal, and write a mixture as a measure
+over component laws, \(\mu=\sum_e a_e\delta_{G_e}\), with \(a_e>0\) and
+\(\sum_e a_e G_e=P_X\). The decomposition set is
+
+\begin{equation}\label{eq:identified-set}
+\mathcal D(P_X)=\left\{\mu=\sum_e a_e\delta_{G_e}:\ a_e>0,\ \sum_e a_e G_e=P_X\right\}.
+\end{equation}
+
+The structure is identified up to label permutation when
+\(\mathcal D(P_X)\) is a singleton. With only \(P_X\) in hand, the joint
+law of \((X,E)\) is not fixed. Any Markov kernel \(\kappa(e\mid x)\)
+whose integral against \(P_X\) matches the label marginal is a valid
+assignment, and outside degenerate cases the set of such kernels
+contains more than one point. The next result makes this concrete with
+an explicit witness.
+
+\subsection{Partition
+non-identification}\label{partition-non-identification}
+
+\begin{theorem}[the pooled marginal does not determine the partition]\label{thm:d2}
+There exist two environment assignments $\sigma$ and $\sigma'$, not related by a global label permutation, that hold simultaneously under one and the same observation distribution. A measure-preserving bijection $T$ on the latent space satisfies
+\begin{equation}\label{eq:witness}
+T_\#P_Z=P_Z,\qquad \sigma'=\sigma\circ T,\qquad \sigma'\notin\{\sigma,\ 1-\sigma\}.
+\end{equation}
+\end{theorem}
+
+\emph{Proof sketch.} Work in two dimensions. Let \(z\) be uniform on the
+unit disk, take the mixing to be the identity, and use two environments
+of equal weight. The first assignment is
+\(\sigma(z)=\mathbb 1[z_1\ge0]\). The quarter turn
+\(T(z_1,z_2)=(-z_2,z_1)\) preserves the disk and its uniform measure, so
+the pooled distribution is unchanged, and the second assignment is
+\(\sigma'(z)=\mathbb 1[z_2\le0]\). The two disagree on the first and
+third quadrants, so \(P_Z(\sigma\ne\sigma')=\tfrac12\). A global label
+permutation cannot produce a half-set disagreement, hence \(\sigma'\) is
+not a relabeling. The full construction is given in Appendix A.2.
+Figure~\ref{fig:witness} depicts the two assignments and
+the disagreement region.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.92\columnwidth]{fig5_witness.pdf}
+\caption{The $d=2$ non-identification witness. Left: the assignment $\sigma=\mathbb 1[z_1\ge0]$ splits the disk by the first coordinate. Right: the rotated assignment $\sigma_T=\sigma'=\sigma\circ T=\mathbb 1[z_2\le0]$; the hatched first and third quadrants are where the two disagree, with total probability $1/2$, while the quarter turn $T$ leaves the pooled distribution unchanged.}
+\label{fig:witness}
+\end{figure}
+
+The label \(E\) is an unobserved categorical variable, and \(P_X\) fixes
+only the marginal of \(X\); the set of couplings of \(P_X\) with the
+label marginal is convex and shrinks to a singleton only in degenerate
+cases. On \(2\times10^5\) draws the disagreement fraction is \(0.5000\),
+and the squared maximum-mean-discrepancy between \(Z\) and \(T(Z)\) is
+\(0.00058\), finite-sample noise around a population value of zero. The
+result is a single \(d=2\) witness on the class of arbitrary measurable
+assignments, not a claim that every pooled distribution is
+non-identifiable. If the component laws are restricted to a structured
+family, the witness need not remain inside that smaller class.
+
+\subsection{Point identification in a symmetric two-component
+covariance-mixture
+model}\label{point-identification-in-a-symmetric-two-component-covariance-mixture-model}
+
+Tighten the setting and the decomposition set collapses to a point. Let
+\(E\in\{+1,-1\}\) carry equal weight, with zero-mean Gaussian components
+
+\[X\mid E=+1\sim N(0,I+K),\qquad X\mid E=-1\sim N(0,I-K),\]
+
+where \(K\) is symmetric and every eigenvalue of \(K\) lies strictly
+inside \((-1,1)\). The pooled covariance is \(I\), so the frame is
+whitened. The object identified is the unordered component covariance
+pair \(\{I+K,I-K\}\), not the pooled covariance and not any recording
+assignment.
+
+\begin{theorem}[point identification of the component covariance pair]\label{thm:pointid}
+In the symmetric two-component model above, the fourth-order cumulant tensor determines $K$ up to the global sign $K\leftrightarrow-K$ in $d=2$, and hence determines the unordered component covariance pair uniquely. Write $K=Q\operatorname{diag}(\lambda_1,\lambda_2)Q^\top$. The following cases are exhaustive.
+
+\textbf{Case (i): $\lambda_1^2\ne\lambda_2^2$.} The contraction $T$ has two distinct eigenvalues, and diagonalizing it recovers the eigenbasis; the eigenvalue magnitudes and their relative sign follow from the diagonal cumulants.
+
+\textbf{Case (ii): $\lambda_1=-\lambda_2\ne0$, so $\operatorname{tr}K=0$ and $T$ is scalar.} The entries of $K$ are recovered directly from the full tensor by the algebraic identities~\eqref{eq:direct-recover}, with no ratio and no singular direction; the swap configuration $K_{11}=0$ is included.
+
+\textbf{Case (iii): $\lambda_1=\lambda_2\ne0$, so $K=\lambda_1 I$ is isotropic.} There is no basis to recover, and the single value follows from $\kappa_{1111}/3$.
+
+\textbf{Case (iv): $\lambda_1=\lambda_2=0$, so $K=0$.} The zero cumulant tensor forces $K=0$ uniquely, but the two component covariances coincide at $I$; two distinct components and an eigenbasis are not identified.
+
+The only genuine observational freedom is the global sign $K\leftrightarrow-K$, which is exactly the label permutation exchanging $I+K$ with $I-K$.
+\end{theorem}
+
+\emph{Proof sketch.} The fourth cumulant of the pooled law reduces to
+
+\[\kappa_{ijkl}=K_{ij}K_{kl}+K_{ik}K_{jl}+K_{il}K_{jk}.\]
+
+Contracting the middle indices gives
+\(T_{ij}=2(K^2)_{ij}+\operatorname{tr}(K)K_{ij}\), which commutes with
+\(K\) and shares its eigenvectors. When \(\lambda_1^2\ne\lambda_2^2\),
+the two eigenvalues of \(T\) are distinct and diagonalizing it recovers
+the eigenbasis, after which the magnitudes and relative sign follow from
+the diagonal cumulants. When \(T\) is scalar, the entries of \(K\) are
+recovered directly from the tensor by the algebraic
+identities~\eqref{eq:direct-recover}, with no ratio and
+no singular direction, and the isotropic and zero cases follow from
+\(\kappa_{1111}/3\). The full derivation, including the swap
+configuration and the sign recovery, is given in Appendix A.1.
+
+The same calculation extends formally to higher dimensions, where
+locating the eigenbasis is a symmetric tensor decomposition; we state
+that as a tensor-decomposition result rather than prove it, and the
+formal theorem is claimed for \(d=2\). This is a constrained special
+case. Whitening, the two-component restriction, equal weights, and
+symmetry do the work, and the result is not a generic fourth-order
+theorem, whose generic injectivity threshold for centered Gaussian
+mixtures sits at sixth order.
+
+\subsection{Scope}\label{scope-4}
+
+These results operate on one pooled marginal and identify either the
+partition witness or the unordered component parameters. They do not
+identify recording assignments, establish finite-sample recovery, or
+support the DELVE algorithm in Section 5. The two mechanisms are kept
+separate on purpose, and no implication runs from one to the other. The
+generic non-Gaussian, fully blind identification problem remains open
+and is stated in the limitations.

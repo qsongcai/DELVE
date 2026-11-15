@@ -1,0 +1,307 @@
+\subsection{S1. Data and processing
+details}\label{s1.-data-and-processing-details}
+
+The implementation is not an object of the theoretical guarantees, so
+the processing is fixed in code and the choices that determine the
+output are listed here in full.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Sources, versions, and links.} ds007541 is the
+  \emph{Multi-identity Information Authentication EEG Dataset},
+  OpenNeuro snapshots v1.0.0--v1.0.2, at
+  \url{https://openneuro.org/datasets/ds007541}. ds008099 is the
+  \emph{Pizza-topping meat/vegetarian word categorization with consumer
+  EEG (EMOTIV EPOC X)}, snapshot v1.0.0, at
+  \url{https://openneuro.org/datasets/ds008099/versions/1.0.0}; both are
+  also indexed on NEMAR under the matching on-prefixed identifiers and
+  released under CC0. on004362 is the PhysioNet \emph{EEG Motor
+  Movement/Imagery Dataset} (eegmmidb), v1.0.0, at
+  \url{https://physionet.org/content/eegmmidb/1.0.0/}, and is cited
+  through Goldberger et al.~\cite{goldberger2000}.
+\item
+  \textbf{Inclusion and exclusion.} Files are selected by fixed glob
+  patterns, the verification run-01 BrainVision files, the per-subject
+  EDF files, and the R01 PhysioNet EDF files, where R01 is the eyes-open
+  baseline run, the first of the two one-minute baseline runs in the
+  protocol rather than a label inferred from the filename. A recording
+  that fails to load is skipped and named, and a recording with fewer
+  than three windows is excluded. In the realized run, every targeted
+  file loaded successfully and every retained recording passed the
+  three-window rule, so the post-download exclusion count is zero and
+  there is no exclusion list to report; missing channels are not
+  interpolated. The retained counts are 64, 30, and 109 recordings from
+  32, 30, and 109 subjects, with all 109 PhysioNet subjects retained.
+\item
+  \textbf{Channel mapping, reference, and order.} The four shared
+  channels F3, F4, O1, and O2 are picked by name, and the trailing dots
+  in the PhysioNet EDF names are stripped. A common-average reference is
+  applied first, then the band-pass and notch, and resampling last, so
+  the filters run at each device's native rate before any downsampling.
+  Resampling uses the default FFT method with automatic padding.
+\item
+  \textbf{Filter design.} Processing uses MNE 1.12.1 with FIR,
+  zero-phase, windowed-sinc (firwin) filters and a Hamming window. The
+  one-to-forty-hertz band-pass uses automatic transition bandwidths and
+  an automatic length; the fifty-hertz notch uses a one-hertz transition
+  bandwidth with an automatic length. The filter is therefore fully
+  determined by the MNE version and these calls, and the released code
+  reproduces it without custom coefficients.
+\item
+  \textbf{Covariance level.} Ledoit--Wolf is fitted once per four-second
+  window, never once per recording. The matrix logarithm is taken on
+  each window covariance, and the recording feature is the unweighted
+  mean of the window log-covariances.
+\item
+  \textbf{Symmetrization and the logarithm.} No explicit symmetrization
+  is applied; the shrinkage covariance is symmetric by construction. The
+  SciPy matrix logarithm is used and its real part is kept to discard
+  negligible numerical imaginary residue, with no eigenvalue clipping. A
+  logarithm failure would surface as a load failure and the recording
+  would be skipped under item 2; none occurs in the retained set.
+\item
+  \textbf{Scaler.} The scaler is fitted on the analysis subset rather
+  than the full pool for the fixed-transformation theorem, and it is
+  refitted inside every bootstrap, resampling, and held-out draw. A
+  scaler fitted once on the entire pool appears only in the transductive
+  variant and is not part of the theorem.
+\item
+  \textbf{Blind number selection.} For each candidate \(K\), three
+  scores are produced. The BIC comes from a diagonal Gaussian mixture,
+  \texttt{GaussianMixture(K, covariance\_type='diag', n\_init=5, reg\_covar=$10^{-4}$)},
+  and is a penalized-likelihood score; the hard K-means partition gives
+  the silhouette; and a bootstrap stability score is computed. The BIC
+  model and the final clusterer are deliberately different. BIC is used
+  only as a pre-specified ranking criterion among candidate numbers that
+  already pass the geometry and stability gates, not as a claim that the
+  data are Gaussian and not as the output partition, which stays
+  K-means. The stability score has an exact definition. On each of sixty
+  bootstrap rounds, \(M\) indices are drawn with replacement, K-means is
+  fitted on the resampled recordings, and its centroids are frozen;
+  those centroids assign the original, unresampled recordings through
+  nearest-centroid prediction, and the round score is the ARI between
+  that prediction and the original K-means labels. The reported
+  stability is the mean of the sixty ARIs. The selection threshold is
+  \(\min(0.85,0.9\max_K\text{stability})\); candidates with stability
+  above the threshold and a positive silhouette are eligible, and the
+  eligible candidate with the smallest BIC is chosen. If none is
+  eligible, the largest silhouette is used, and if no silhouette is
+  positive the smallest BIC is used.
+\item
+  \textbf{Balanced randomization.} For a given integer seed,
+  \texttt{numpy.random\allowbreak.default\_rng(seed)} draws thirty
+  recordings from each source without replacement, or all recordings
+  when a source has fewer. The seed fixes the recording composition
+  exactly, so every draw is reproducible.
+\item
+  \textbf{Baseline parameters.} The K-means used for the reported
+  partition and the risk-gap setting uses fifty initializations with the
+  default Lloyd stopping rule. The full-covariance GMM baseline
+  clusterer uses eight initializations with \texttt{reg\_covar}
+  \(10^{-4}\); agglomerative clustering uses ward, complete, and average
+  linkage with Euclidean affinity; spectral clustering uses a
+  nearest-neighbor affinity. Every randomized baseline takes the seed as
+  its random state.
+\item
+  \textbf{Cross-fitted construction.} The cross-fitted column of the
+  per-seed table in the main text uses the recording as its unit. Thirty
+  recordings are first balanced per source, then within each source
+  twenty are assigned to training and ten to the held-out fold, giving
+  sixty training and thirty unseen recordings. The scaler and a \(K=3\)
+  K-means are fitted on the training recordings only, and the frozen
+  centers assign the unseen recordings by nearest centroid; the fold ARI
+  is computed between those assignments and the true source labels. No
+  held-out recording enters any fitted object.
+\item
+  \textbf{Seeds, versions, and call parameters.} The six balanced seeds
+  are the integers \(0\) through \(5\) and fix both the recording
+  composition and every randomized fit. The processing runs on Python
+  3.10.12 with NumPy, scikit-learn 1.7.2, SciPy, and MNE 1.12.1; the
+  complete call arguments, random states, and the scripts that generate
+  each table and figure are released in the public code repository, so
+  no parameter is left to be inferred.
+\end{enumerate}
+
+\subsection{S2. Baseline and component
+ablations}\label{s2.-baseline-and-component-ablations}
+
+The baseline matrix was run on the two-source design, ninety-four
+recordings and sixty-two subjects, with the same harmonization and a
+blind fit; metadata entered only in post-hoc scoring. The numbers are
+two-source, \(K=2\) evidence and are not compared with the three-source
+main experiment.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Recording-level ARI across covariance estimators and matrix mappings on the fixed two-source, $K=2$ design (94 recordings, 62 subjects, blind fit). The matrix logarithm is decisive and Ledoit--Wolf shrinkage is indispensable at the available sample size.}
+\label{tab:covrep}
+\begin{tabular}{llll}
+\hline
+estimator \textbackslash\ mapping & logm & raw & sqrtm\\
+\hline
+Empirical & 0.232 & 0.049 & 0.163\\
+Ledoit–Wolf & 0.581 & 0.049 & 0.163\\
+OAS & 0.457 & 0.049 & 0.163\\
+\hline
+\end{tabular}
+
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Recording-level ARI across clusterers and non-covariance features on the same fixed two-source, $K=2$ design. GMM and phase locking outperform hard K-means, but phase locking is an acquisition-sensitive diagnostic rather than evidence for the covariance framework.}
+\label{tab:clusterers}
+\begin{tabular}{llll}
+\hline
+clusterer & ARI & non-covariance feature & ARI\\
+\hline
+GMM & 0.795 & phase locking (PLV) & 0.915\\
+agg-complete & 0.649 & correlation & 0.393\\
+spectral & 0.582 & band power & 0.108\\
+K-means & 0.581 & phase lag index & 0.100\\
+agg-ward & 0.317 & &\\
+agg-average & 0.024 & &\\
+\hline
+\end{tabular}
+
+\end{table}
+
+The pooled multiband phase-locking value gives a high dataset ARI of
+\(0.915\), yet the weighted version collapses to \(0.016\) and single
+bands run only \(0.17\) to \(0.38\). On the Riemannian geometry, the
+density-based clusterer produces only noise across the tested
+configurations, and no stable dataset-consistent clusters form there.
+The earlier recording-averaging and standardization steps are not
+separately ablated, and that gap is stated rather than filled with an
+unmeasured number.
+
+\subsection{S3. Metadata controls}\label{s3.-metadata-controls}
+
+The number of windows is nine for every recording in the first source,
+fifteen in the third, and ranges from eighty to a hundred and fourteen
+in the second; the three ranges do not overlap. A decision tree given
+only this field predicts the source with perfect cross-validated
+accuracy. Subject-grouped folds, which keep every recording of one
+subject in a single fold across the 171 subject groups, also give
+accuracy one. Adding the device metadata constant within a source holds
+the accuracy at one for both logistic and tree models. Across the ten
+covariance features, the absolute correlation with window count reaches
+\(0.663\) and averages \(0.210\). A length-matched control is infeasible
+because the three window-count ranges have no common support.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Metadata baselines and the same-device and same-task controls. Trivial metadata already separates the sources, no stable structure appears within a device, and the two resting sources still separate despite sharing a task.}
+\label{tab:metactrl}
+\begin{tabular}{ll}
+\hline
+diagnostic & result\\
+\hline
+source prediction from window count only & CV accuracy 1.000\\
+source prediction from full device metadata & CV accuracy 1.000\\
+within-source silhouette ($K=2,3$) & 0.18--0.22\\
+within-source ARI vs subject (ds007541) & 0.02--0.03\\
+same-task two-source $K=2$ ARI (resting sources) & 0.53 (0.56 over seeds)\\
+\hline
+\end{tabular}
+
+\end{table}
+
+\subsection{S4. Resampling and subject-level
+uncertainty}\label{s4.-resampling-and-subject-level-uncertainty}
+
+The subject-cluster bootstrap uses five hundred resamples and refits the
+scaler and centers on each draw. The subject-aggregated bootstrap gives
+a mean of \(0.616\) with a ninety-five percent interval from \(0.31\) to
+\(0.81\), the cluster-preserving design gives \(0.554\) with a wider
+interval, and the naive recording bootstrap gives \(0.603\). All three
+intervals exclude zero. The single balanced subject realization at seed
+zero is \(0.523\), a single draw from the same resampling mechanism
+rather than a point estimate on its own.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{The three resampling designs used to quantify subject-level uncertainty. All three refit the scaler and centers on each draw and report percentile intervals rather than a coverage theorem.}
+\label{tab:resampling}
+\begin{tabular}{lllll}
+\hline
+design & resampling unit & scaler \& centers & $B$ & interval\\
+\hline
+subject aggregate & subject & refit & 500 & 2.5/97.5\\
+cluster, keep recordings & subject & refit & 500 & 2.5/97.5\\
+naive recording & recording & refit & 500 & 2.5/97.5\\
+\hline
+\end{tabular}
+
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.85\columnwidth]{fig3_bootstrap_ci.pdf}
+\caption{Subject-cluster bootstrap means and ninety-five percent intervals for three resampling designs. All three intervals exclude zero and sit near the recording point estimate of $0.608$, while the all-subject plug-in of $0.241$ marks the weaker unbalanced regime.}
+\label{fig:bootstrap}
+\end{figure}
+
+\subsection{S5. Secondary analyses and alternative
+representations}\label{s5.-secondary-analyses-and-alternative-representations}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.85\columnwidth]{fig2_pca_scatter.pdf}
+\caption{The balanced ninety recording features projected onto their first two principal components and colored by the true source. One source separates along the first component, while the other two occupy closer but still structured regions; the geometry is consistent with an oracle-$K$ recovery rather than three fully disjoint clouds.}
+\label{fig:pca}
+\end{figure}
+
+A reference-free bipolar montage lowers the balanced ARI to \(0.415\),
+and a surface Laplacian raises it to \(0.678\), both clearly positive.
+Dropping any one of the four shared channels leaves ARI between \(0.34\)
+and \(0.42\), so no single channel drives the result, though distributed
+bad channels or a shared device fingerprint are not excluded. Recovery
+persists across representations while its magnitude is
+representation-dependent, and strict reference invariance is not
+claimed.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{fig4_spatial_novelty.pdf}
+\caption{Left: recording-level ARI under common-average, bipolar, and surface-Laplacian (CSD) spatial representations across six seeds, with the magnitude varying but staying positive. Right: leave-one-source novelty ROC AUC, high for two sources and weak for the third.}
+\label{fig:spatial}
+\end{figure}
+
+For novelty detection, each source is held out in turn, the scaler and
+two centers are fitted on the other two and frozen, and the held-out
+recordings are mapped without a refit. Two held-out sources are clearly
+detectable as novel, with ROC AUC between \(0.89\) and \(0.93\), while
+the third is weakly separated at \(0.70\). Novelty detection is not the
+same as correctly labeling a new environment, and full cross-domain
+generalization remains unproved.
+
+\subsection{S6. Operational variants}\label{s6.-operational-variants}
+
+The name DELVE covers more than one object, and the guarantee attaches
+to exactly one of them. The population alignment that the theorems use
+is a compatibility condition, assumed on the population objective rather
+than derived from the covariance generative model.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{The three operational variants of DELVE and the guarantee attached to each. Only DELVE-G, with fixed $K$, a frozen scaler, and a global K-means optimizer, is covered in full by the risk-gap guarantee.}
+\label{tab:variants}
+\begin{tabular}{lllll}
+\hline
+Variant & $K$ & scaler & optimizer & guarantee\\
+\hline
+DELVE-G & fixed & frozen & global K-means & risk-gap\\
+DELVE-L & fixed & frozen & finite Lloyd & explicit $\delta_{\rm opt}$\\
+DELVE-B & blind & full-pool & Lloyd + selector & none\\
+\hline
+\end{tabular}
+
+\end{table}

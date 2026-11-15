@@ -1,16 +1,8 @@
+*.aux
+*.log
+*.out
+*.toc
+*.blg
+*.spl
 __pycache__/
-*.py[cod]
-*.egg-info/
-.venv/
-venv/
-.DS_Store
-
-# derived features and raw EEG are downloaded/regenerated, not committed
-*.npz
-*.npy
-*.edf
-*.eeg
-*.vhdr
-*.vmrk
-*.bdf
-data/
+*.pyc

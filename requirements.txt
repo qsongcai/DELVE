@@ -1,6 +1,0 @@
-numpy>=2.0
-scipy>=1.13
-scikit-learn>=1.4
-mne>=1.6
-requests>=2.31
-boto3>=1.34

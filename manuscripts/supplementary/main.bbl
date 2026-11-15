@@ -1,0 +1,17 @@
+\begin{thebibliography}{1}
+\expandafter\ifx\csname url\endcsname\relax
+  \def\url#1{\texttt{#1}}\fi
+\expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
+\expandafter\ifx\csname href\endcsname\relax
+  \def\href#1#2{#2} \def\path#1{#1}\fi
+
+\bibitem{goldberger2000}
+A.~L. Goldberger, L.~A.~N. Amaral, L.~Glass, J.~M. Hausdorff, P.~C. Ivanov,
+  R.~G. Mark, J.~E. Mietus, G.~B. Moody, C.-K. Peng, H.~E. Stanley,
+  {PhysioBank, PhysioToolkit, and PhysioNet}: Components of a new research
+  resource for complex physiologic signals, Circulation 101~(23) (2000)
+  e215--e220.
+\newblock \href {https://doi.org/10.1161/01.CIR.101.23.e215}
+  {\path{doi:10.1161/01.CIR.101.23.e215}}.
+
+\end{thebibliography}

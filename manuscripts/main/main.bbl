@@ -1,0 +1,162 @@
+\begin{thebibliography}{10}
+\expandafter\ifx\csname url\endcsname\relax
+  \def\url#1{\texttt{#1}}\fi
+\expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
+\expandafter\ifx\csname href\endcsname\relax
+  \def\href#1#2{#2} \def\path#1{#1}\fi
+
+\bibitem{scholkopf2021}
+B.~Sch{\"o}lkopf, F.~Locatello, S.~Bauer, N.~R. Ke, N.~Kalchbrenner, A.~Goyal,
+  Y.~Bengio, Toward causal representation learning, Proceedings of the IEEE
+  109~(5) (2021) 612--634.
+\newblock \href {https://doi.org/10.1109/JPROC.2021.3058954}
+  {\path{doi:10.1109/JPROC.2021.3058954}}.
+
+\bibitem{comon1994}
+P.~Comon, Independent component analysis, a new concept?, Signal Processing
+  36~(3) (1994) 287--314.
+\newblock \href {https://doi.org/10.1016/0165-1684(94)90029-9}
+  {\path{doi:10.1016/0165-1684(94)90029-9}}.
+
+\bibitem{hyvarinen2017}
+A.~Hyv{\"a}rinen, H.~Morioka,
+  \href{https://proceedings.mlr.press/v54/hyvarinen17a.html}{Nonlinear {ICA} of
+  temporally dependent stationary sources}, in: Proceedings of the 20th
+  International Conference on Artificial Intelligence and Statistics, Vol.~54
+  of Proceedings of Machine Learning Research, 2017, pp. 460--469.
+\newline\urlprefix\url{https://proceedings.mlr.press/v54/hyvarinen17a.html}
+
+\bibitem{ahuja2023}
+K.~Ahuja, D.~Mahajan, Y.~Wang, Y.~Bengio,
+  \href{https://proceedings.mlr.press/v202/ahuja23a.html}{Interventional causal
+  representation learning}, in: Proceedings of the 40th International
+  Conference on Machine Learning, Vol. 202 of Proceedings of Machine Learning
+  Research, 2023, pp. 372--407.
+\newline\urlprefix\url{https://proceedings.mlr.press/v202/ahuja23a.html}
+
+\bibitem{squires2023}
+C.~Squires, A.~Seigal, S.~S. Bhate, C.~Uhler,
+  \href{https://proceedings.mlr.press/v202/squires23a.html}{Linear causal
+  disentanglement via interventions}, in: Proceedings of the 40th International
+  Conference on Machine Learning, Vol. 202 of Proceedings of Machine Learning
+  Research, 2023, pp. 32540--32560.
+\newline\urlprefix\url{https://proceedings.mlr.press/v202/squires23a.html}
+
+\bibitem{varici2025}
+B.~Var{\i}c{\i}, E.~Acart{\"u}rk, K.~Shanmugam, A.~Kumar, A.~Tajer, Score-based
+  causal representation learning: Linear and general transformations, Journal
+  of Machine Learning Research 26~(112) (2025) 1--90.
+
+\bibitem{rosenfeld2021}
+E.~Rosenfeld, P.~K. Ravikumar, A.~Risteski, The risks of invariant risk
+  minimization, in: International Conference on Learning Representations, 2021.
+
+\bibitem{creager2021}
+E.~Creager, J.-H. Jacobsen, R.~Zemel,
+  \href{https://proceedings.mlr.press/v139/creager21a.html}{Environment
+  inference for invariant learning}, in: Proceedings of the 38th International
+  Conference on Machine Learning, Vol. 139 of Proceedings of Machine Learning
+  Research, 2021, pp. 2189--2200.
+\newline\urlprefix\url{https://proceedings.mlr.press/v139/creager21a.html}
+
+\bibitem{kanamori2026}
+T.~Kanamori, Y.~Hirose, S.~Yamamoto,
+  \href{https://arxiv.org/abs/2606.07914}{Identifiability and estimation for
+  unlabeled finite mixtures under marginal independence}, preprint,
+  arXiv:2606.07914 (2026).
+\newline\urlprefix\url{https://arxiv.org/abs/2606.07914}
+
+\bibitem{chen2026}
+X.~Chen, A.~Rambachan, E.~Tamer,
+  \href{https://arxiv.org/abs/2606.15031}{Partial identification from {LLM}
+  prompts}, preprint, arXiv:2606.15031 (2026).
+\newline\urlprefix\url{https://arxiv.org/abs/2606.15031}
+
+\bibitem{manski2003}
+C.~F. Manski, Partial Identification of Probability Distributions, Springer
+  Series in Statistics, Springer, New York, 2003, iSBN 978-0-387-21786-4.
+
+\bibitem{teicher1963}
+H.~Teicher, Identifiability of finite mixtures, The Annals of Mathematical
+  Statistics 34~(4) (1963) 1265--1269.
+\newblock \href {https://doi.org/10.1214/aoms/1177703862}
+  {\path{doi:10.1214/aoms/1177703862}}.
+
+\bibitem{yakowitz1968}
+S.~J. Yakowitz, J.~D. Spragins, On the identifiability of finite mixtures, The
+  Annals of Mathematical Statistics 39~(1) (1968) 209--214.
+\newblock \href {https://doi.org/10.1214/aoms/1177698520}
+  {\path{doi:10.1214/aoms/1177698520}}.
+
+\bibitem{blomenhofer2023}
+A.~Taveira~Blomenhofer, A.~Casarotti, A.~Oneto, M.~Michal{\l}ek,
+  Identifiability for mixtures of centered gaussians and sums of powers of
+  quadratics, Bulletin of the London Mathematical Society 55~(5) (2023)
+  2407--2424, expanded version in Algebraic Statistics, 16(1):1--28, 2025.
+\newblock \href {https://doi.org/10.1112/blms.12871}
+  {\path{doi:10.1112/blms.12871}}.
+
+\bibitem{yao2025}
+D.~Yao, D.~Rancati, R.~Cadei, M.~Fumero, F.~Locatello, Unifying causal
+  representation learning with the invariance principle, in: International
+  Conference on Learning Representations, 2025.
+
+\bibitem{murata2025}
+T.~Murata, A.~Nitanda, T.~Suzuki, Clustered invariant risk minimization, in:
+  Proceedings of the 28th International Conference on Artificial Intelligence
+  and Statistics, Vol. 258 of Proceedings of Machine Learning Research, 2025,
+  pp. 1612--1620.
+
+\bibitem{ng2025}
+I.~Ng, S.~Xie, X.~Dong, P.~Spirtes, K.~Zhang, Causal representation learning
+  from general environments under nonparametric mixing, in: Proceedings of the
+  28th International Conference on Artificial Intelligence and Statistics, Vol.
+  258 of Proceedings of Machine Learning Research, 2025, pp. 3700--3708.
+
+\bibitem{pollard1981}
+D.~Pollard, Strong consistency of $k$-means clustering, The Annals of
+  Statistics 9~(1) (1981) 135--140.
+\newblock \href {https://doi.org/10.1214/aos/1176345339}
+  {\path{doi:10.1214/aos/1176345339}}.
+
+\bibitem{lloyd1982}
+S.~P. Lloyd, Least squares quantization in {PCM}, IEEE Transactions on
+  Information Theory 28~(2) (1982) 129--137.
+\newblock \href {https://doi.org/10.1109/TIT.1982.1056489}
+  {\path{doi:10.1109/TIT.1982.1056489}}.
+
+\bibitem{arsigny2007}
+V.~Arsigny, P.~Fillard, X.~Pennec, N.~Ayache, Geometric means in a novel vector
+  space structure on symmetric positive-definite matrices, SIAM Journal on
+  Matrix Analysis and Applications 29~(1) (2007) 328--347.
+
+\bibitem{pennec2006}
+X.~Pennec, P.~Fillard, N.~Ayache, A riemannian framework for tensor computing,
+  International Journal of Computer Vision 66~(1) (2006) 41--66.
+
+\bibitem{ledoit2004}
+O.~Ledoit, M.~Wolf, A well-conditioned estimator for large-dimensional
+  covariance matrices, Journal of Multivariate Analysis 88~(2) (2004) 365--411.
+\newblock \href {https://doi.org/10.1016/S0047-259X(03)00096-4}
+  {\path{doi:10.1016/S0047-259X(03)00096-4}}.
+
+\bibitem{ledoit2012}
+O.~Ledoit, M.~Wolf, Nonlinear shrinkage estimation of large-dimensional
+  covariance matrices, The Annals of Statistics 40~(2) (2012) 1024--1060.
+
+\bibitem{lotte2018}
+F.~Lotte, L.~Bougrain, A.~Cichocki, M.~Clerc, M.~Congedo, A.~Rakotomamonjy,
+  F.~Yger, A review of classification algorithms for {EEG}-based
+  brain--computer interfaces: A 10 year update, Journal of Neural Engineering
+  15~(3) (2018) 031005.
+
+\bibitem{goldberger2000}
+A.~L. Goldberger, L.~A.~N. Amaral, L.~Glass, J.~M. Hausdorff, P.~C. Ivanov,
+  R.~G. Mark, J.~E. Mietus, G.~B. Moody, C.-K. Peng, H.~E. Stanley,
+  {PhysioBank, PhysioToolkit, and PhysioNet}: Components of a new research
+  resource for complex physiologic signals, Circulation 101~(23) (2000)
+  e215--e220.
+\newblock \href {https://doi.org/10.1161/01.CIR.101.23.e215}
+  {\path{doi:10.1161/01.CIR.101.23.e215}}.
+
+\end{thebibliography}

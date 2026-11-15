@@ -1,0 +1,127 @@
+\documentclass[preprint,12pt]{elsarticle}
+
+\usepackage{lmodern}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{url}
+\mathchardef\UrlBreakPenalty=10000
+\mathchardef\UrlBigBreakPenalty=10000
+\usepackage{graphicx}
+\usepackage{float}
+\newfloat{algorithm}{htbp}{loa}
+\floatname{algorithm}{Algorithm}
+\renewcommand{\topfraction}{0.95}
+\renewcommand{\bottomfraction}{0.85}
+\renewcommand{\textfraction}{0.08}
+\renewcommand{\floatpagefraction}{0.8}
+\setcounter{topnumber}{2}
+\setcounter{bottomnumber}{2}
+\setcounter{totalnumber}{3}
+
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\tolerance=2000
+\emergencystretch=2em
+\hbadness=2000
+
+\journal{Neurocomputing}
+
+\usepackage{lineno}
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{Identifiability Boundaries and Conditional Recovery of Covariance-Based Environments}
+
+\author[inst1]{Qingsong Cai\corref{cor1}}
+\ead{caiqs@btbu.edu.cn}
+\author[inst1]{Jieping Lu}
+\ead{2531062236@st.btbu.edu.cn}
+\author[inst1]{Tianze Hao}
+\ead{2531062234@st.btbu.edu.cn}
+\cortext[cor1]{Corresponding author}
+\affiliation[inst1]{organization={Beijing Technology and Business University, School of Computer and Artificial Intelligence},
+            city={Beijing},
+            country={China}}
+
+\begin{abstract}
+\input{abs.tex}
+\end{abstract}
+
+\begin{keyword}
+Causal representation learning \sep Identifiability \sep Latent environment discovery \sep K-means clustering \sep Electroencephalography
+\end{keyword}
+
+\end{frontmatter}
+\linenumbers
+
+\section{Introduction}
+\input{ch1.tex}
+
+\section{Related Work}
+\input{ch2.tex}
+
+\section{Problem Formulation}
+\input{ch3.tex}
+
+\section{Identifiability Boundary}
+\input{ch4.tex}
+
+\section{Recovery Theory}
+\input{ch5.tex}
+
+\section{Synthetic and Semi-synthetic Experiments}
+\input{ch6.tex}
+
+\section{Real EEG: Blind Environment Recovery without Labels}
+\input{ch7.tex}
+
+\section{Limitations and Conclusion}
+\input{ch8.tex}
+
+\appendix
+\section{Proofs and detailed derivations}
+\input{appA.tex}
+
+
+\section*{Declaration of Competing Interest}
+The authors declare that they have no known competing financial interests or personal relationships that could have appeared to influence the work reported in this paper.
+
+\section*{Funding}
+This research did not receive any specific grant from funding agencies in the public, commercial, or not-for-profit sectors.
+
+\section*{Data Availability}
+The EEG data analyzed in this study are publicly available without access restrictions. The OpenNeuro datasets ds007541 and ds008099 are available at \url{https://openneuro.org/datasets/ds007541} and \url{https://openneuro.org/datasets/ds008099}, and the EEG Motor Movement/Imagery Dataset (eegmmidb) is available on PhysioNet at \url{https://physionet.org/content/eegmmidb/1.0.0/}. The processed recording-level features and the code to reproduce all analyses are available in the public DELVE repository at \url{https://github.com/qsongcai/DELVE}.
+
+\section*{CRediT Authorship Contribution Statement}
+\textbf{Qingsong Cai:} Conceptualization, Methodology, Formal analysis, Software, Writing -- original draft, Writing -- review \& editing, Supervision, Project administration. \textbf{Jieping Lu:} Software, Validation, Data curation, Visualization, Writing -- review \& editing. \textbf{Tianze Hao:} Software, Investigation, Data curation, Writing -- review \& editing.
+
+\bibliographystyle{elsarticle-num}
+\begingroup
+\sloppy
+\setlength{\emergencystretch}{3em}
+\mathchardef\UrlBreakPenalty=10000
+\mathchardef\UrlBigBreakPenalty=10000
+\let\newline\relax
+\def\urlprefix{\unskip\hskip 0.5em plus 0.2em}
+\bibliography{references}
+\endgroup
+
+\end{document}

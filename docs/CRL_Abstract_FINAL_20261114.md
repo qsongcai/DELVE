@@ -1,8 +1,0 @@
-# Abstract (final, 2026-11-14)
-
-Working title: *Identifiability Boundaries and Conditional Recovery of Covariance-Based Environments*
-Status: finalized. Every conditional qualifier is retained; the abstract does not imply a guarantee for the full pipeline.
-
----
-
-Identifying latent environments is an important upstream problem in causal representation learning (CRL), as downstream analyses may depend on how observations are grouped across environments. Yet pooled observations generally do not identify their latent environment assignments. We illustrate this non-identifiability with two distinct partitions that induce the same distribution, and establish point identification of component covariance parameters in a constrained, whitened two-component Gaussian model. For recording-level recovery, we derive a finite-sample risk-gap guarantee for global empirical $K$-means under fixed $K$, fixed features, and an explicit population-alignment condition that is assumed rather than derived; it is a conditional risk-transfer statement, and the result does not cover blind selection of $K$ or finite-initialization optimization. Across three EEG datasets, oracle-$K$ clustering achieves an adjusted Rand index (ARI) of 0.608 on a balanced 90-recording design, while the prespecified blind selector chooses $K=2$ and achieves 0.279. Performance falls to 0.371 on the unbalanced recording pool and 0.241 in the subject-level plug-in analysis. Thus, covariance structure can be recovered under a fixed cluster number, but blind cluster-number selection remains unresolved. The EEG results indicate dataset-level technical differences, not biological or causal environments.
