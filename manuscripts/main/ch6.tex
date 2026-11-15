@@ -20,11 +20,20 @@ population alignment by comparing the optimal three-center and
 two-center empirical risks rather than assuming the former, and it
 estimates the reference risk-gap curve \(\widehat\psi_{\rm ref}(q)\)
 through center perturbation. The diagnostic is consistent with, but does
-not establish, the population condition. The reference estimate is a
-diagnostic proxy for the population gap \(\psi(q)\), not the population
-value that appears in Corollary~\ref{cor:finite}; it
-carries no finite-sample guarantee for that quantity. Two arms are run,
-one at signal-to-noise ratio six and one at nine tenths. The second
+not establish, the population condition. The reference estimate is not
+the population value that appears in
+Corollary~\ref{cor:finite}; it carries no finite-sample
+guarantee for that quantity. The perturbation diagnostic is built on a
+fixed candidate set rather than the full center space. Twenty
+perturbation radii from zero to five are crossed with sixteen random
+unit-direction sets in the ten-dimensional feature space, giving three
+hundred and twenty candidate configurations, and
+\(\widehat\psi_{\rm ref}(q)\) is the smallest risk difference among the
+candidates whose misclassification rate reaches \(q\). It is therefore a
+reference-sample perturbation diagnostic, a finite candidate-set
+minimum, not the population infimum over all center configurations, and
+it carries no guarantee of reaching the population value. Two arms are
+run, one at signal-to-noise ratio six and one at nine tenths. The second
 matches the order of the separation measured on the real EEG, which
 makes it the relevant negative control rather than a straw case.
 
@@ -44,10 +53,13 @@ One premise is not met by this design. Gaussian noise has unbounded
 support, so no finite \(\rho\) makes the almost-sure hard-ball condition
 hold; what the reference shows is an empirical truncation, not the
 probability-one condition. The alignment and level-set premises are
-finite-reference diagnostics and the risk-gap implication is observed
-without violation, but the theorem as a whole does not apply because the
-hard-ball premise fails. We read this arm as an empirical robustness
-study under model misspecification, not as a validation of the theorem.
+finite-reference diagnostics, and the observed pattern is consistent
+with the risk-gap implication with no violation, but this does not
+validate the theorem because the relevant population quantities are
+estimated from a reference sample; the theorem as a whole does not apply
+because the hard-ball premise fails. We read this arm as an empirical
+robustness study under model misspecification, not as a validation of
+the theorem.
 
 Across the finite-sample sweep, sixty independent repetitions are drawn
 at each sample size, and the global empirical solution is scored on the
@@ -55,15 +67,16 @@ held-out reference. Excess risk falls from about \(2.35\) at the
 smallest size to under one tenth at the largest, and misclassification
 falls with it, from about nine per thousand to three. Whenever the
 excess sits below the gap for a level, the error stays below that level,
-with no violation in any repetition. The misclassification shows the
-sharp phase transition the theorem predicts.
+with no violation in any repetition. The misclassification displays a
+sharp phase transition consistent with the risk-gap implication, but it
+does not validate the theorem because the gap is reference-estimated.
 Figure~\ref{fig:sweep} plots the sweep against the
 reference-estimated gap thresholds and the target levels.
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=\textwidth]{fig7_ch6_sweep.pdf}
-\caption{Finite-sample sweep over sixty repetitions. Left: excess risk against sample size with the reference-estimated gap thresholds $\widehat\psi_{\rm ref}(0.05)$ and $\widehat\psi_{\rm ref}(0.20)$; the excess crosses $\widehat\psi_{\rm ref}(0.05)$ near $M=10$. These are reference-sample estimates used as diagnostic thresholds, not population quantities, and they carry no finite-sample confidence guarantee. Right (log scale): misclassification falls below the target level $q=0.05$ after the crossing for the aligned arm, while the negative control stays on a plateau near $0.6$. In the figure the same estimates are rendered as $\psi_{\rm ref}$ because the plotting font lacks a hat glyph. The Gaussian arm is a robustness experiment because the hard-ball assumption fails. The bounded-uniform arm is the only arm whose support condition holds analytically.}
+\caption{Finite-sample sweep over sixty repetitions. Left: excess risk against sample size with the reference-estimated gap thresholds $\widehat\psi_{\rm ref}(0.05)$ and $\widehat\psi_{\rm ref}(0.20)$; the excess crosses $\widehat\psi_{\rm ref}(0.05)$ near $M=10$. These are reference-sample estimates used as diagnostic thresholds, not population quantities, and they carry no finite-sample confidence guarantee. Right (log scale): misclassification falls below the target level $q=0.05$ after the crossing for the aligned arm, while the negative control stays on a plateau near $0.6$. In the figure the same estimates are rendered as $\psi_{\rm ref}$ because the plotting font lacks a hat glyph. These thresholds come from a finite candidate-set reference-sample perturbation diagnostic, not a numerical validation of the population condition in Corollary~\ref{cor:finite}, and they carry no infimum guarantee. The Gaussian arm is a robustness experiment because the hard-ball assumption fails. The bounded-uniform arm is the only arm whose support condition holds analytically.}
 \label{fig:sweep}
 \end{figure}
 
@@ -123,12 +136,12 @@ recovery numbers are diagnostic rather than validation.
 \subsection{Summary}\label{summary-6}
 
 The experiments establish four facts. On the Gaussian arm, where the
-hard-ball support condition fails, the risk-gap implication is
-nevertheless observed with no violations and a clear phase transition,
-an empirical robustness result rather than a theorem check. The
-bounded-noise design meets the hard-ball premise and the margin
-analytically by construction, while its alignment and gap curve are
-finite-reference diagnostics, so it numerically diagnoses the chain
+hard-ball support condition fails, the observed pattern stays consistent
+with the risk-gap implication with no violations and a clear phase
+transition, an empirical robustness result rather than a theorem
+validation. The bounded-noise design meets the hard-ball premise and the
+margin analytically by construction, while its alignment and gap curve
+are finite-reference diagnostics, so it numerically diagnoses the chain
 rather than validating it, classifying with zero error and zero
 violations. When the population optimum is misaligned, more data leave a
 stable error plateau, and the same is true under unknown non-Gaussian

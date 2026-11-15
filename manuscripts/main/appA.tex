@@ -81,8 +81,8 @@ P_Z(\sigma\ne\sigma')=\tfrac12.
 A global label permutation flips either every point or none, measured by the assignment, so it cannot produce a half-set disagreement. Hence $\sigma'$ is not a relabeling of $\sigma$.
 \end{proof}
 
-The construction transports under a reparameterization. For a
-full-column-rank linear mixing \(x=Gz\), the rotation becomes the linear
+The construction transports under a reparameterization. For an
+invertible linear mixing \(x=Gz\), the rotation becomes the linear
 conjugate \(GTG^{-1}\) and the same witness applies, and a smooth change
 of coordinates carries it over in the same way. No separate theorem is
 built from this; the \(d=2\) rotation is the explicit result, and the
@@ -209,5 +209,5 @@ The full center domain $\mathcal C_B$ allows $c_i=c_j$. At such a configuration 
 \end{remark}
 
 \begin{proof}
-The space $\mathcal C_B$ is a closed and bounded subset of the finite-dimensional space $\mathbb R^{Kp}$, so it is compact by the Heine–Borel theorem. If a center $c_k$ lies outside the ball, project it to $\bar c_k=Bc_k/\|c_k\|$. The ball is convex, and for every $x$ with $\|x\|\le B$ the projection does not increase the distance, $\|x-\bar c_k\|\le\|x-c_k\|$; replacing every out-of-ball center therefore cannot raise the risk, which places an optimizer inside $\mathcal C_B$. For continuity, write $\ell(c,x)=\min_k\|x-c_k\|^2$. Each map $c\mapsto\|x-c_k\|^2$ is continuous, and the minimum of finitely many continuous functions is continuous. Since $\ell$ is bounded on $\mathcal C_B$, taking the expectation preserves continuity, so $R(c)=E[\ell(c,X)]$ is continuous. The misclassification used in $\mathrm{Err}(c,Z)$ is computed after matching the fitted labels to the true labels by the optimal permutation, so the label permutation is quotient out and does not create extra points.
+The space $\mathcal C_B$ is a closed and bounded subset of the finite-dimensional space $\mathbb R^{Kp}$, so it is compact by the Heine–Borel theorem. If a center $c_k$ lies outside the ball, project it to $\bar c_k=Bc_k/\|c_k\|$. The ball is convex, and for every $x$ with $\|x\|\le B$ the projection does not increase the distance, $\|x-\bar c_k\|\le\|x-c_k\|$; replacing every out-of-ball center therefore cannot raise the risk, which places an optimizer inside $\mathcal C_B$. For continuity, write $\ell(c,x)=\min_k\|x-c_k\|^2$. Each map $c\mapsto\|x-c_k\|^2$ is continuous, and the minimum of finitely many continuous functions is continuous. Since $\ell$ is bounded on $\mathcal C_B$, taking the expectation preserves continuity, so $R(c)=E[\ell(c,X)]$ is continuous. The misclassification used in $\mathrm{Err}(c,Z)$ is computed after matching the fitted labels to the true labels by the optimal permutation, so the label permutation is quotiented out and does not create extra points.
 \end{proof}

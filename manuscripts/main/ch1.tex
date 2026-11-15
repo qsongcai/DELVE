@@ -1,10 +1,15 @@
-In causal representation learning, questions about the environment arise
-early: what it is, and whether it can be recovered without labels. A
-downstream predictor, invariant estimator, or causal claim is defined
-against a partition, and a partition that is wrong or merely assumed can
-weaken the analysis that uses it. This paper investigates whether a
-covariance-based environment structure stays identifiable once the
-labels are removed and the observations are pooled.
+In multi-environment causal representation learning, environment
+information can be useful for separating stable structure from
+environment-specific variation. The validity of such downstream
+analyses, however, depends on whether the relevant environment structure
+can be identified or reasonably approximated from the available
+unlabeled data. This paper focuses on that preceding problem rather than
+on causal representation learning itself. We ask what latent structure
+is identifiable from pooled observations and when recording-level
+clustering can recover groups under explicit assumptions. More
+specifically, we investigate whether a covariance-based environment
+structure stays identifiable once the labels are removed and the
+observations are pooled.
 
 Most multi-environment theory takes the partition as given. The index
 set of every environment is assumed known and assumed unique, so
@@ -105,11 +110,19 @@ exact construction used. Our main contributions are:
   \textbf{A pre-specified, unit-aware empirical protocol over three
   independent EEG datasets.} The independent statistical unit is the
   recording. Source-associated structure is recoverable at a known \(K\)
-  and a balanced design, the blind selector under-counts, the unbalanced
+  and a balanced design, the blind selector is seed-sensitive and merges
+  the same source pair whenever it selects two clusters, the unbalanced
   plug-in is weak, and within-source recovery is absent. The recovered
   object is a technical, dataset-level structure tied to acquisition and
   protocol, and the negative findings appear as boundary checks.
 \end{enumerate}
+
+Across these contributions, the stance stays upstream of causal
+representation learning. We clarify the identifiability and recovery
+limitations that arise before unlabeled environment grouping can be used
+in downstream causal representation learning. Such learning is a
+potential downstream use of the groups we study, not a task this paper
+completes.
 
 The remainder of this paper is organized as follows. Section 2 reviews
 the related work and positions the paper against it. Section 3

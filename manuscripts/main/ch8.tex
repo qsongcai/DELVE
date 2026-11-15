@@ -37,9 +37,9 @@ and preprocessing whose driver cannot be separated, and no biological or
 causal reading is available. The three-source design gives repeatability
 evidence rather than a generality proof, and full cross-domain
 generalization is not established. The partial-identification framing is
-descriptive rather than a proved sharp set, the resampling intervals
-carry no coverage guarantee, and the general non-Gaussian, fully blind
-problem remains open.
+descriptive, not a proved sharp set, the resampling intervals carry no
+coverage guarantee, and the general non-Gaussian, fully blind problem
+remains open.
 
 \subsection{Conclusion}\label{conclusion}
 
@@ -66,10 +66,19 @@ term stays explicit. The standard components are not presented as novel;
 the contribution lies in the estimand, the conditional guarantee, and
 the repeatable failure boundary. On three independent EEG sources,
 source-associated structure is recoverable under a known \(K\) and a
-balanced design and survives subject-level resampling, while the blind
-selector's cluster-number choice is unstable across seeds, the weak
-unbalanced plug-in, and absent within-source recovery are all reported
-as findings.
+balanced design, and the subject-cluster bootstrap distribution stays
+centered above zero as a finite-sample diagnostic without a coverage
+guarantee, while the blind selector's cluster-number choice is unstable
+across seeds, the weak unbalanced plug-in, and absent within-source
+recovery are all reported as findings.
+
+The recovered recording-level groups should be interpreted as candidate
+environments rather than validated causal environments. We do not
+establish that these groups identify a causal representation, an
+invariant mechanism, or a causal graph. A natural next step is to
+propagate uncertainty in the recovered grouping into downstream causal
+representation learning and to test whether the resulting groups improve
+cross-environment generalization or causal identifiability.
 
 Deriving the compatibility condition from a structured distribution
 class, establishing the identifiability of \(K\), closing the

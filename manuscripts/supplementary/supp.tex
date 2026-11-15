@@ -116,12 +116,24 @@ output are listed here in full.
   held-out recording enters any fitted object.
 \item
   \textbf{Seeds, versions, and call parameters.} The six balanced seeds
-  are the integers \(0\) through \(5\) and fix both the recording
-  composition and every randomized fit. The processing runs on Python
-  3.10.12 with NumPy, scikit-learn 1.7.2, SciPy, and MNE 1.12.1; the
-  complete call arguments, random states, and the scripts that generate
-  each table and figure are released in the public code repository, so
-  no parameter is left to be inferred.
+  are the integers \(0\) through \(5\), and each design seed fixes the
+  recording composition through \texttt{default\_rng(seed)}. Two
+  clustering conventions are used. The oracle fits pass the design seed
+  directly as the \(K\)-means random state. The blind selector instead
+  instantiates a fixed auxiliary generator, \texttt{default\_rng(2026)},
+  separately for each design seed, and draws the \(K\)-means and GMM
+  random states and the internal bootstrap indices from it; the first
+  integer this generator emits is \(914669162\). Because the auxiliary
+  generator is re-instantiated for every design seed, it starts from the
+  same state each time. The bootstrap confidence intervals use
+  deterministic offset seeds, \texttt{default\_rng(100+b)} for the
+  subject draws and analogous ranges for the other resampling schemes.
+  Every stream is fixed, so each table and figure is reproducible, but
+  the oracle and blind columns do not share a clustering random state.
+  The processing runs on Python 3.10.12 with NumPy, scikit-learn 1.7.2,
+  SciPy, and MNE 1.12.1; the complete call arguments, random states, and
+  the scripts that generate each table and figure are released in the
+  public code repository, so no parameter is left to be inferred.
 \end{enumerate}
 
 \subsection{S2. Baseline and component
@@ -301,6 +313,26 @@ Variant & $K$ & scaler & optimizer & guarantee\\
 DELVE-G & fixed & frozen & global K-means & risk-gap\\
 DELVE-L & fixed & frozen & finite Lloyd & explicit $\delta_{\rm opt}$\\
 DELVE-B & blind & full-pool & Lloyd + selector & none\\
+\hline
+\end{tabular}
+
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\footnotesize
+\caption{Blind selector eligibility diagnostics. The parenthesized yes/no marks whether each candidate passes the eligibility gate, stability at or above the adaptive threshold and a positive silhouette. Candidates $K=4,5,6$ never pass the gate in any seed. When both $K=2$ and $K=3$ are eligible, the lower BIC selects $K=3$.}
+\label{tab:gatediag}
+\begin{tabular}{llllllll}
+\hline
+seed & K=2 sil & K=2 stab & K=3 sil & K=3 stab & threshold & eligible & chosen\\
+\hline
+0 & .319 & .899 (yes) & .203 & .724 (no) & .809 & 2 & 2\\
+1 & .302 & .893 (yes) & .247 & .849 (yes) & .804 & 2,3 & 3\\
+2 & .290 & .803 (yes) & .230 & .831 (yes) & .748 & 2,3 & 3\\
+3 & .309 & .907 (yes) & .219 & .824 (yes) & .816 & 2,3 & 3\\
+4 & .304 & .840 (yes) & .215 & .624 (no) & .756 & 2 & 2\\
+5 & .288 & .795 (yes) & .214 & .691 (no) & .716 & 2 & 2\\
 \hline
 \end{tabular}
 

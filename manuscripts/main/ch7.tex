@@ -90,11 +90,15 @@ is a technical one.
 
 The association with metadata is quantified rather than asserted. Across
 the ten covariance features, the absolute correlation with window count
-reaches \(0.663\) and averages \(0.210\). A length-matched control would
-be natural, but the data do not permit one. The three window-count
-ranges have no common support, and trimming to an overlap would leave an
-empty design. We state this as an infeasibility rather than replace it
-with a different control.
+reaches \(0.663\) and averages \(0.210\). The window count is not a
+field the clustering uses, but it is a potential confound, and the
+available design cannot separate its contribution from other
+source-associated factors. A length-matched control would be natural,
+but the data do not permit one. The three window-count ranges have no
+common support, and trimming to an overlap would leave an empty design,
+so the data cannot identify the separate roles of duration and the other
+source differences. We state this as an infeasibility rather than
+replace it with a different control.
 
 Two controls check where the structure appears. The same-device control
 pools recordings within one source and repeats the clustering there. The
@@ -115,7 +119,7 @@ selection}\label{recovery-under-a-known-number-and-blind-selection}
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=\textwidth]{fig8_main_results.pdf}
-\caption{Four-panel main EEG result. (a) Two-dimensional PCA projection of the balanced ninety-recording features, colored by source. (b) Source x cluster contingency at the oracle value $K=3$, normalized within each source, with the diagonal dominant. (c) Recording-level ARI across the four primary designs, with mean and standard deviation for the multi-seed designs and diamonds for single-run realizations. (d) Blind selector: selected $K$ (bars) and bootstrap stability (line) across six balanced seeds. The figure consolidates evidence otherwise spread across the tables and the supplementary.}
+\caption{Four-panel main EEG result. (a) Two-dimensional PCA projection of the balanced ninety-recording features, colored by source. (b) Source x cluster contingency for the seed 0, balanced oracle-$K$ fit, normalized within each source, with a dominant diagonal. Across the six balanced seeds, every fit remains diagonal-dominant after label alignment, with diagonal fractions between 0.70 and 0.93, and panel (b) is shown as the seed-0 representative visualization rather than a cross-seed aggregate. (c) Recording-level ARI across the four primary designs, with mean and standard deviation for the multi-seed designs and diamonds for single-run realizations. (d) Blind selector: selected $K$ (bars) and bootstrap stability (line) across six balanced seeds. The figure consolidates evidence otherwise spread across the tables and the supplementary.}
 \label{fig:main}
 \end{figure}
 
@@ -168,19 +172,25 @@ Whenever \(K=2\) is fitted, the same two sources, ds007541 and ds008099,
 are joined, while on004362 stays apart, and the merged cluster separates
 cleanly into the two true components once the correct number is
 restored. The forced two-cluster ARI averages \(0.277\pm0.043\) across
-the seeds. The stability gate drives the under-selection, not the BIC
-term, which on its own prefers the larger values, and no prespecified
-rule recovers the oracle number on every seed. We present this as a
-primary finding rather than a caveat. Covariance structure can be
-recoverable at a fixed \(K\) while the number of sources is itself not
-reliably selected by the blind procedure. The \(K\) sensitivity across
-the full grid is shown in Figure~\ref{fig:ksens}, and
-the per-seed numbers are in Table~\ref{tab:blind}.
+the seeds. The eligibility gate, not the BIC term, settles the choice.
+In the three seeds that return two clusters, the \(K=3\) stability falls
+below the adaptive threshold while its silhouette stays positive, so
+\(K=3\) is ineligible and only \(K=2\) remains, even though its BIC is
+lower; in the other three seeds both \(K=2\) and \(K=3\) clear the gate
+and the lower BIC of \(K=3\) selects it. The per-seed silhouettes,
+stabilities, gate decisions, and BIC ranks are tabulated in
+Supplementary Table~ S6, and no prespecified rule recovers
+the oracle number on every seed. We present this as a primary finding
+rather than a caveat. Covariance structure can be recoverable at a fixed
+\(K\) while the number of sources is itself not reliably selected by the
+blind procedure. The \(K\) sensitivity across the full grid is shown in
+Figure~\ref{fig:ksens}, and the per-seed numbers are in
+Table~\ref{tab:blind}.
 
 \begin{table}[htbp]
 \centering
 \small
-\caption{Per-seed blind selection on the balanced ninety-recording design. Each balanced seed uses a fresh \texttt{default\_rng(2026)} for the clustering randomness. The automatic choice is unstable, two clusters in three seeds and three in the other three, but forcing two clusters always merges the same pair, ds007541 and ds008099, with on004362 kept mostly apart. Stability is the bootstrap cluster-agreement at the selected $K$. Alternative RNG constructions retain the same pattern and never select $K=3$ in all six seeds.}
+\caption{Per-seed blind selection on the balanced ninety-recording design. For each balanced seed the blind selector instantiates the same fixed auxiliary generator \texttt{default\_rng(2026)}, which supplies the clustering random states; the oracle table instead uses the design seed as its random state, so same-seed values across the two tables are not the same $K$-means run. At seed 3 the oracle $K=3$ fit with random state $3$ gives ARI $0.535$, while the selector's $K=3$ fit with random state $914669162$ gives $0.561$ on the identical ninety recordings, and the gap is initialization-driven. The automatic choice is unstable, two clusters in three seeds and three in the other three, but forcing two clusters always merges the same pair, ds007541 and ds008099, with on004362 kept mostly apart. Stability is the bootstrap cluster-agreement at the selected $K$. Alternative RNG constructions retain the same pattern and never select $K=3$ in all six seeds.}
 \label{tab:blind}
 \begin{tabular}{ccccc}
 \hline
@@ -221,37 +231,39 @@ Table~\ref{tab:designs}.
 \begin{table}[htbp]
 \centering
 \small
-\caption{ARI across the four primary designs, with the statistical scope stated for each row. The balanced oracle-$K$ design is the strongest; the blind selector is seed-dependent and does not recover the oracle number, while unbalanced pooling and the subject plug-in weaken further.}
+\setlength{\tabcolsep}{3pt}
+\caption{ARI across the four primary designs, with the statistical scope stated for each row. The balanced oracle-$K$ design is the strongest; the blind selector is data-driven and seed-dependent and does not recover the oracle number, while unbalanced pooling and the subject plug-in weaken further.}
 \label{tab:designs}
 \begin{tabular}{lllll}
 \hline
-design & $K$ & balance & unit & ARI\\
+design & selected $K$ & frequency & unit & ARI\\
 \hline
-oracle-$K$ (DELVE-G) & 3 & balanced & recording & $0.582\pm0.068$\\
-blind selector (DELVE-B) & 2 or 3 & balanced & recording & $0.419\pm0.140$\\
-fixed $K=3$ & 3 & unbalanced & recording & $0.371$\\
-full plug-in & selected & unbalanced & subject & $0.241$\\
+oracle-$K$ (balanced) & 3 (fixed) & -- & recording & $0.582\pm0.068$\\
+blind selector (balanced) & 2 or 3 & 3/6 each & recording & $0.419\pm0.140$\\
+fixed $K=3$ (unbalanced) & 3 (fixed) & -- & recording & $0.371$\\
+full plug-in (unbalanced) & selected & -- & subject & $0.241$\\
 \hline
 \multicolumn{5}{@{}p{\textwidth}@{}}{\footnotesize Seed-averaged rows report mean$\pm$standard deviation across six prespecified balanced seeds.}\\
-\multicolumn{5}{@{}p{\textwidth}@{}}{\footnotesize The oracle row reaches $0.608$ at seed 0. The blind selector chose $K=2$ in three seeds and $K=3$ in three, and the reported ARI is taken at the selected $K$; the per-seed detail is in Table~\ref{tab:blind}.}\\
+\multicolumn{5}{@{}p{\textwidth}@{}}{\footnotesize The oracle row reaches $0.608$ at seed 0. For the blind row the reported ARI is measured at the $K$ selected within each seed, and the selection frequency is $K=2$ in three seeds and $K=3$ in three. The forced $K=2$ value of $0.277\pm0.043$ is a separate counterfactual reported in Table~\ref{tab:blind}, not the selector's own choice.}\\
 \multicolumn{5}{@{}p{\textwidth}@{}}{\footnotesize The unbalanced and plug-in rows are single realizations, not seed averages.}\\
 \end{tabular}
 
 \end{table}
 
 Treating the subject as the independent unit, a subject-cluster
-bootstrap with five hundred resamples confirms the balanced recovery
-does not rest on treating repeated recordings as independent. The
+bootstrap with five hundred resamples examines whether the balanced
+recovery rests on treating repeated recordings as independent. The
 subject-aggregated bootstrap gives a mean of \(0.616\) with a
 ninety-five percent interval from \(0.31\) to \(0.81\), the
 cluster-preserving design gives \(0.554\) with a wider interval, and the
-naive recording bootstrap gives \(0.603\). All three intervals exclude
-zero. The single balanced subject realization at seed zero is \(0.523\),
-a single draw from the same resampling mechanism rather than a point
-estimate on its own. The intervals are percentile intervals, not BCa,
-and they are finite-sample diagnostics without a coverage theorem. The
-full resampling protocol and the bootstrap figure are in Supplementary
-S4.
+naive recording bootstrap gives \(0.603\). The subject-cluster bootstrap
+distribution stays centered above zero, and all three percentile
+intervals lie above zero. The single balanced subject realization at
+seed zero is \(0.523\), a single draw from the same resampling mechanism
+rather than a point estimate on its own. The intervals are percentile
+intervals, not BCa, and they are finite-sample diagnostics without a
+coverage theorem. The full resampling protocol and the bootstrap figure
+are in Supplementary S4.
 
 \subsection{Secondary analyses}\label{secondary-analyses}
 
@@ -316,8 +328,11 @@ tag, and these cannot be pulled apart from the pooled data.
 The real-data evidence supports one narrow statement and marks its
 limits. Under a known \(K\) and a balanced design, source-associated
 covariance structure is recoverable across three independent sources,
-and the conclusion survives subject-level resampling. The blind selector
-under-counts, the unbalanced plug-in is weak, and within-source recovery
-is absent, all reported as boundary checks. The recovered object is the
-dataset-level technical structure defined in Section 7.1, and the ARI
-figures are not validation of the theorem.
+and the subject-cluster bootstrap distribution stays centered above zero
+in this resampling analysis, a finite-sample diagnostic with no coverage
+guarantee. The blind selector is seed-sensitive, repeatedly merging the
+same source pair when it selects two clusters, the unbalanced plug-in is
+weak, and within-source recovery is absent, all reported as boundary
+checks. The recovered object is the dataset-level technical structure
+defined in Section 7.1, and the ARI figures are not validation of the
+theorem.

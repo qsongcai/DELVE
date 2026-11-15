@@ -76,6 +76,7 @@ not say they solve the population K-means problem.
 \begin{assumption}[population K-means alignment]\label{a:align}
 For fixed $K$ and a fixed transformation, every global minimizer of the population K-means risk assigns exactly one center to each environment:
 $$\mathcal C^\star=\{c:R(c)=R^\star\}=\{(\mu_1,\dots,\mu_K)\text{ up to label permutation}\}.$$
+The set $\mathcal C^\star$ is the optimizer set within the bounded domain $\mathcal C_B$, not an unconstrained full-space minimizer; the radius $B$ is taken large enough that every environment mean lies in $\overline{\mathcal B_p(B)}$, so the means belong to the domain.
 \end{assumption}
 
 This is a direct condition on the geometry of the population objective,
@@ -98,7 +99,7 @@ probability; the one-dimensional counterexample is given in Appendix
 A.5.
 
 \begin{assumption}[quadratic growth]\label{a:growth}
-$R(c)-R^\star\ge\kappa\,d(c,\mathcal C^\star)^2$.
+$R(c)-R^\star\ge\kappa\,d(c,\mathcal C^\star)^2$, where $d(c,\mathcal C^\star)=\min_{\pi\in S_K}\big(\sum_k\|c_k-\mu_{\pi(k)}\|^2\big)^{1/2}$ is the distance on the quotient $\mathcal C_B$, minimized over label permutations.
 \end{assumption}
 
 This is an independent strong assumption. The margin condition does not
