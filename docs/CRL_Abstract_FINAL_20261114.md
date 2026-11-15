@@ -1,6 +1,6 @@
 # Abstract (final, 2026-11-14)
 
-Working title: *Identifiability Boundaries and Conditional Recovery*
+Working title: *Identifiability Boundaries and Conditional Recovery of Covariance-Based Environments*
 Status: finalized. Every conditional qualifier is retained; the abstract does not imply a guarantee for the full pipeline.
 
 ---

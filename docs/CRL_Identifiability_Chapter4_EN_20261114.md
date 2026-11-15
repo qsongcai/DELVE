@@ -1,6 +1,6 @@
 # Identifiability Boundary (Chapter 4, formal English)
 
-Working title: *Identifiability Boundaries and Conditional Recovery*
+Working title: *Identifiability Boundaries and Conditional Recovery of Covariance-Based Environments*
 Date: 2026-11-14. Status: formal manuscript section. This is mechanism A: a single pooled distribution, with no environment labels. The results below do not imply the DELVE recovery guarantees in Chapter 5.
 
 ---

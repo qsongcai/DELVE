@@ -23,6 +23,9 @@ os.makedirs(OUT, exist_ok=True)
 
 plt.rcParams.update({
     "font.family": "serif",
+    "font.serif": ["DejaVu Serif"],
+    "pdf.fonttype": 42,
+    "ps.fonttype": 42,
     "font.size": 9,
     "axes.labelsize": 9,
     "axes.titlesize": 9.5,
@@ -189,7 +192,8 @@ a2.set_ylabel("novelty AUC")
 a2.set_title("Leave-one-source novelty detection")
 for i, v in enumerate(vals):
     a2.text(i, v + 0.01, f"{v:.3f}", ha="center", fontsize=8)
-plt.setp(a2.get_xticklabels(), rotation=15, ha="right")
+plt.setp(a2.get_xticklabels(), rotation=0, ha="center")
+fig.tight_layout()
 fig.savefig(os.path.join(OUT, "fig4_spatial_novelty.pdf"))
 fig.savefig(os.path.join(OUT, "fig4_spatial_novelty.png"))
 plt.close(fig)

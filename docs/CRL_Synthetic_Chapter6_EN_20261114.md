@@ -1,6 +1,6 @@
 # Synthetic and Semi-synthetic Experiments (Chapter 6, formal English)
 
-Working title: *Identifiability Boundaries and Conditional Recovery*
+Working title: *Identifiability Boundaries and Conditional Recovery of Covariance-Based Environments*
 Date: 2026-11-14. Status: formal manuscript section. The bounded-noise experiment satisfies the hard-ball and margin premises by construction and gives a finite-sample numerical diagnosis of the recovery chain; the Gaussian arm is an empirical robustness study under unbounded noise. Neither upgrades the compatibility assumption to a consequence of a generative model.
 
 ---

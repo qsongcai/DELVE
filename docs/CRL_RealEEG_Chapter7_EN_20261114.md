@@ -1,6 +1,6 @@
 # Real EEG: Diagnosing Cross-Source Technical Separability without Labels (Chapter 7, formal English)
 
-Working title: *Identifiability Boundaries and Conditional Recovery*
+Working title: *Identifiability Boundaries and Conditional Recovery of Covariance-Based Environments*
 Date: 2026-11-14. Status: formal manuscript section. Every real-data conclusion is limited to dataset-level, source-associated technical structure. The environment here is not a biological or causal environment.
 
 ---
@@ -101,9 +101,9 @@ std & 0.068 & 0.072\\
 \label{tab:perseed}
 \end{table}
 
-\begin{figure}[htbp]
+\begin{figure}[ht]
 \centering
-\includegraphics[width=0.72\columnwidth]{fig2_pca_scatter.pdf}
+\includegraphics[width=0.85\columnwidth]{fig2_pca_scatter.pdf}
 \caption{The balanced ninety recording features projected onto their first two principal components and colored by the true source. One source separates along the first component, while the other two occupy closer but still structured regions; the geometry is consistent with an oracle-$K$ recovery rather than three fully disjoint clouds.}
 \label{fig:pca}
 \end{figure}

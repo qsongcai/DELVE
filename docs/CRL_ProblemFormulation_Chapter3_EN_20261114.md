@@ -1,6 +1,6 @@
 # Problem Formulation (Chapter 3, formal English)
 
-Working title: *Identifiability Boundaries and Conditional Recovery*
+Working title: *Identifiability Boundaries and Conditional Recovery of Covariance-Based Environments*
 Date: 2026-11-14. Status: formal manuscript section. Notation set here is used throughout Chapters 4 and 5.
 
 ---

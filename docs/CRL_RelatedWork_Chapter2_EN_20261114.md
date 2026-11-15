@@ -1,6 +1,6 @@
 # Related Work (Chapter 2, formal English)
 
-Working title: *Identifiability Boundaries and Conditional Recovery*
+Working title: *Identifiability Boundaries and Conditional Recovery of Covariance-Based Environments*
 Date: 2026-11-14. Status: formal manuscript section. Citations use numbered references; preprints are marked as such.
 
 ---

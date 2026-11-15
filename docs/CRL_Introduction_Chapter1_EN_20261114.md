@@ -1,6 +1,6 @@
 # Introduction (Chapter 1, formal English)
 
-Working title: *Identifiability Boundaries and Conditional Recovery*
+Working title: *Identifiability Boundaries and Conditional Recovery of Covariance-Based Environments*
 Date: 2026-11-14. Status: formal manuscript section. Every conditional qualifier is retained.
 
 ---

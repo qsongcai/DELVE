@@ -1,6 +1,6 @@
 # Recovery Theory (Chapter 5, formal English)
 
-Working title: *Identifiability Boundaries and Conditional Recovery*
+Working title: *Identifiability Boundaries and Conditional Recovery of Covariance-Based Environments*
 Date: 2026-11-14. Status: formal manuscript section, conditional framing. Symbols follow the conservative bridge.
 
 ---
@@ -233,7 +233,7 @@ On the event $\varepsilon_M\le h(M,\eta)$, which has probability at least $1-\al
 
 The estimand and the guarantee above are operationalized by one procedure. Algorithm~\ref{alg:delve} lists the complete staged sequence from the raw recordings to the assignment and its diagnostics. The bracketed tags separate standard components from this paper's estimand and guarantee.
 
-\begin{algorithm}[htbp]
+\begin{algorithm}[H]
 \centering
 \small
 \renewcommand{\arraystretch}{1.15}

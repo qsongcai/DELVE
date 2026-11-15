@@ -2,7 +2,7 @@
 
 **Recording-level Discovery of Latent Covariance Environments from Pooled Observations.**
 
-DELVE is the companion code for *Identifiability Boundaries and Conditional Recovery*. It studies whether a covariance-based environment structure stays identifiable once environment labels are removed and observations are pooled. The name is descriptive: there is no deep model, and the procedure does not claim fully blind discovery.
+DELVE is the companion code for *Identifiability Boundaries and Conditional Recovery of Covariance-Based Environments*. It studies whether a covariance-based environment structure stays identifiable once environment labels are removed and observations are pooled. The name is descriptive: there is no deep model, and the procedure does not claim fully blind discovery.
 
 ## What the theory does and does not cover
 
