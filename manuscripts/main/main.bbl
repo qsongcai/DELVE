@@ -59,43 +59,6 @@ E.~Creager, J.-H. Jacobsen, R.~Zemel,
   Research, 2021, pp. 2189--2200.
 \newline\urlprefix\url{https://proceedings.mlr.press/v139/creager21a.html}
 
-\bibitem{kanamori2026}
-T.~Kanamori, Y.~Hirose, S.~Yamamoto,
-  \href{https://arxiv.org/abs/2606.07914}{Identifiability and estimation for
-  unlabeled finite mixtures under marginal independence}, preprint,
-  arXiv:2606.07914 (2026).
-\newline\urlprefix\url{https://arxiv.org/abs/2606.07914}
-
-\bibitem{chen2026}
-X.~Chen, A.~Rambachan, E.~Tamer,
-  \href{https://arxiv.org/abs/2606.15031}{Partial identification from {LLM}
-  prompts}, preprint, arXiv:2606.15031 (2026).
-\newline\urlprefix\url{https://arxiv.org/abs/2606.15031}
-
-\bibitem{manski2003}
-C.~F. Manski, Partial Identification of Probability Distributions, Springer
-  Series in Statistics, Springer, New York, 2003, iSBN 978-0-387-21786-4.
-
-\bibitem{teicher1963}
-H.~Teicher, Identifiability of finite mixtures, The Annals of Mathematical
-  Statistics 34~(4) (1963) 1265--1269.
-\newblock \href {https://doi.org/10.1214/aoms/1177703862}
-  {\path{doi:10.1214/aoms/1177703862}}.
-
-\bibitem{yakowitz1968}
-S.~J. Yakowitz, J.~D. Spragins, On the identifiability of finite mixtures, The
-  Annals of Mathematical Statistics 39~(1) (1968) 209--214.
-\newblock \href {https://doi.org/10.1214/aoms/1177698520}
-  {\path{doi:10.1214/aoms/1177698520}}.
-
-\bibitem{blomenhofer2023}
-A.~Taveira~Blomenhofer, A.~Casarotti, A.~Oneto, M.~Michal{\l}ek,
-  Identifiability for mixtures of centered gaussians and sums of powers of
-  quadratics, Bulletin of the London Mathematical Society 55~(5) (2023)
-  2407--2424, expanded version in Algebraic Statistics, 16(1):1--28, 2025.
-\newblock \href {https://doi.org/10.1112/blms.12871}
-  {\path{doi:10.1112/blms.12871}}.
-
 \bibitem{yao2025}
 D.~Yao, D.~Rancati, R.~Cadei, M.~Fumero, F.~Locatello, Unifying causal
   representation learning with the invariance principle, in: International
@@ -113,6 +76,43 @@ I.~Ng, S.~Xie, X.~Dong, P.~Spirtes, K.~Zhang, Causal representation learning
   28th International Conference on Artificial Intelligence and Statistics, Vol.
   258 of Proceedings of Machine Learning Research, 2025, pp. 3700--3708.
 
+\bibitem{teicher1963}
+H.~Teicher, Identifiability of finite mixtures, The Annals of Mathematical
+  Statistics 34~(4) (1963) 1265--1269.
+\newblock \href {https://doi.org/10.1214/aoms/1177703862}
+  {\path{doi:10.1214/aoms/1177703862}}.
+
+\bibitem{yakowitz1968}
+S.~J. Yakowitz, J.~D. Spragins, On the identifiability of finite mixtures, The
+  Annals of Mathematical Statistics 39~(1) (1968) 209--214.
+\newblock \href {https://doi.org/10.1214/aoms/1177698520}
+  {\path{doi:10.1214/aoms/1177698520}}.
+
+\bibitem{kanamori2026}
+T.~Kanamori, Y.~Hirose, S.~Yamamoto,
+  \href{https://arxiv.org/abs/2606.07914}{Identifiability and estimation for
+  unlabeled finite mixtures under marginal independence}, preprint,
+  arXiv:2606.07914 (2026).
+\newline\urlprefix\url{https://arxiv.org/abs/2606.07914}
+
+\bibitem{blomenhofer2023}
+A.~Taveira~Blomenhofer, A.~Casarotti, A.~Oneto, M.~Michal{\l}ek,
+  Identifiability for mixtures of centered gaussians and sums of powers of
+  quadratics, Bulletin of the London Mathematical Society 55~(5) (2023)
+  2407--2424, expanded version in Algebraic Statistics, 16(1):1--28, 2025.
+\newblock \href {https://doi.org/10.1112/blms.12871}
+  {\path{doi:10.1112/blms.12871}}.
+
+\bibitem{manski2003}
+C.~F. Manski, Partial Identification of Probability Distributions, Springer
+  Series in Statistics, Springer, New York, 2003, iSBN 978-0-387-21786-4.
+
+\bibitem{chen2026}
+X.~Chen, A.~Rambachan, E.~Tamer,
+  \href{https://arxiv.org/abs/2606.15031}{Partial identification from {LLM}
+  prompts}, preprint, arXiv:2606.15031 (2026).
+\newline\urlprefix\url{https://arxiv.org/abs/2606.15031}
+
 \bibitem{pollard1981}
 D.~Pollard, Strong consistency of $k$-means clustering, The Annals of
   Statistics 9~(1) (1981) 135--140.
@@ -124,6 +124,17 @@ S.~P. Lloyd, Least squares quantization in {PCM}, IEEE Transactions on
   Information Theory 28~(2) (1982) 129--137.
 \newblock \href {https://doi.org/10.1109/TIT.1982.1056489}
   {\path{doi:10.1109/TIT.1982.1056489}}.
+
+\bibitem{rakhlin2007}
+A.~Rakhlin, A.~Caponnetto, Stability of {$K$}-means clustering, in: Advances in
+  Neural Information Processing Systems 19, 2007, pp. 216--222.
+
+\bibitem{ostrovsky2012}
+R.~Ostrovsky, Y.~Rabani, L.~J. Schulman, C.~Swamy, The effectiveness of
+  lloyd-type methods for the {$k$}-means problem, Journal of the ACM 59~(6)
+  (2012) 25:1--25:22.
+\newblock \href {https://doi.org/10.1145/2395116.2395117}
+  {\path{doi:10.1145/2395116.2395117}}.
 
 \bibitem{arsigny2007}
 V.~Arsigny, P.~Fillard, X.~Pennec, N.~Ayache, Geometric means in a novel vector

@@ -1,144 +1,156 @@
-\subsection{Causal representation learning and the identifiability
-program}\label{causal-representation-learning-and-the-identifiability-program}
+\subsection{Causal representation learning and environment
+inference}\label{causal-representation-learning-and-environment-inference}
 
 Schölkopf et al.~\cite{scholkopf2021} cast
 representation learning as a causal problem and organize the field
-around a single divide: representations learned under independent and
-identically distributed sampling on one side, representations tied to an
-underlying causal model on the other. Identifiability sits at the center
-of that program. Without a structural anchor, a representation is
-determined only up to a broad class of transformations, and downstream
-causal claims inherit the ambiguity.
+around a divide between representations learned under i.i.d. sampling
+and those tied to an underlying causal model. Identifiability sits at
+the center: without a structural anchor, a representation is determined
+only up to a broad class of transformations, and downstream causal
+claims inherit the ambiguity.
 
-That anchor has taken several forms.
-Comon~\cite{comon1994} defines independent component
-analysis as the search for a linear transform that maximizes component
-independence; under non-Gaussianity this anchor identifies the sources
-up to permutation and scale. Hyvärinen and
+That anchor has taken several forms. Classical linear ICA establishes
+source identifiability up to permutation and scaling under independence
+and suitable non-Gaussianity
+conditions~\cite{comon1994}. Hyvärinen and
 Morioka~\cite{hyvarinen2017} identify a nonlinear
-independent-component model from temporal dependence alone, without
-interventions. Interventions supply a second anchor. Ahuja et
-al.~\cite{ahuja2023} show that interventional data
-identify the latent variables up to componentwise nonlinearities, using
-a degree-counting argument. Squires et
-al.~\cite{squires2023} work the linear case and pin down
-how many interventions are required when the mixing matrix is unknown,
-and the score-based treatment of Varıcı et
-al.~\cite{varici2025} reaches identification under
-sparsity and faithfulness through score matching. The anchors differ,
-yet the premise is shared. Independence, temporal structure, and
-interventions all identify latent components while the environment or
-intervention index is treated as available. That index is the object
-this paper treats as missing, and once it is removed none of the
-guarantees transfers directly.
+independent-component model from temporal dependence alone.
+Interventions supply a further anchor. Ahuja et
+al.~\cite{ahuja2023} show interventional data identify
+latent variables up to componentwise nonlinearities, Squires et
+al.~\cite{squires2023} pin down how many interventions
+the linear case requires, and Varıcı et
+al.~\cite{varici2025} reach identification under
+sparsity and faithfulness through score matching. These results obtain
+identification from different sources of structure, including
+independence, temporal dependence, and interventions, and they concern
+latent representations under their respective observation models. They
+do not share a single premise that a known environment index is
+required. Our focus is instead on what unlabeled pooled observations
+determine about a latent decomposition, and on the additional conditions
+required for recording-level grouping.
 
-A parallel line on the estimation side exposes the same premise.
-Rosenfeld et al.~\cite{rosenfeld2021} show that even a
-solved invariant objective can admit near-optimal solutions that do no
-better than empirical risk once the environments shift, a warning that
-the partition is no harmless input. Creager et
-al.~\cite{creager2021} face the missing-label problem
-directly and infer a partition that is maximally informative for
-downstream invariant learning. Their environment inference is the
-closest neighbor in spirit to our blind recovery, but the partition is
-chosen to serve a predictive invariant objective rather than to match a
-covariance structure, and its correctness is scored against worst-group
-performance. The open question is whether the index is recoverable from
-a pooled covariance, with no predictive objective to define it.
+A related line studies multi-environment learning and asks what happens
+when the environment partition is not handed to the analyst. Rosenfeld
+et al.~\cite{rosenfeld2021} show that a solved invariant
+objective can admit near-optimal solutions that do no better than
+empirical risk once the environments shift. Creager et
+al.~\cite{creager2021} infer a partition maximally
+informative for downstream invariant learning and score it against
+worst-group performance. Yao et al.~\cite{yao2025}
+formulate multi-environment learning under a known index and an explicit
+uniqueness condition, and Murata et
+al.~\cite{murata2025} extend invariant-risk objectives
+to a clustered setting and characterize the environmental complexity
+needed for recovery. Ng et al.~\cite{ng2025} study
+causal representation learning from general environments under
+nonparametric mixing transformations and state the conditions under
+which the components separate. These partitions serve a predictive or
+invariance objective. The question we keep separate is whether groups
+can be recovered without such an objective defining them, under the two
+observation settings made precise below.
 
-The unlabeled-mixture line continues along signals we do not use.
-Kanamori et al.~\cite{kanamori2026} recover latent
-components and the mixing matrix from marginal independence, a
-component-level result that leaves the partition of pooled observations
-untouched. Chen et al.~\cite{chen2026} develop sharp
-partial-identification bounds for a latent prevalence from large-model
-panels. The term partial identification enters statistics through
-Manski~\cite{manski2003}, where the identified object is
-the set of parameter values consistent with the constraints and the
-bounds are often sharp. Here it denotes the set of covariance
-environment parameters consistent with the relaxed assumptions, a
-descriptive framing rather than a proved sharp set, and the accompanying
-resampling intervals are finite-sample diagnostics rather than
-confidence sets with an unconditional coverage theorem.
+\subsection{Mixture identifiability from distributions and
+moments}\label{mixture-identifiability-from-distributions-and-moments}
 
-\subsection{Mixture identifiability and the moment-order
-threshold}\label{mixture-identifiability-and-the-moment-order-threshold}
-
-A separate line asks what a single pooled distribution can reveal about
-its components. The classical result holds that a finite mixture of
-normal distributions is identifiable up to permutation from the full
-distribution~\cite{teicher1963}. Yakowitz and
+A separate line asks what a single pooled distribution reveals about its
+components. A finite mixture of normal distributions is identifiable up
+to permutation from the full
+distribution~\cite{teicher1963}, and Yakowitz and
 Spragins~\cite{yakowitz1968} state the general
 mechanism: identifiability follows whenever the component families are
-linearly independent, which reduces the problem to the linear
-independence of the component measures. Both statements identify the
-component parameters and say nothing about the assignment of individual
-observations.
+linearly independent. Both identify the component parameters and say
+nothing about the assignment of individual observations.
 
-Once only a finite collection of moments is available, the picture
-changes. The pooled covariance, a single second moment, is
-underdetermined. At fourth order the generic map for centered Gaussian
-mixtures is non-injective through the parallelogram identity, and
-generic injectivity is reached only at sixth order, within explicit rank
-bounds on the number of
-components~\cite{blomenhofer2023}. What gets identified
-there is the unordered collection of component quadratic forms, modulo
-permutation and a third-root-of-unity symmetry, neither a partition nor
-a finite-sample statement. These propositions draw a boundary rather
-than support an algorithm. We keep them separate from our own
-constrained fourth-order result, where whitening and a symmetric
-two-component frame remove the generic fourth-order freedom. The
-moment-order line does not imply recording-level recovery, and we make
-no claim that it does.
+An unlabeled finite-mixture model can also be identified from marginal
+independence without observing the partition. Kanamori et
+al.~\cite{kanamori2026} recover the latent components
+and the mixing matrix from such independence, a route that relies on
+different identifying assumptions from the covariance-based construction
+in this paper.
 
-\subsection{Environment discovery, clustering, and the covariance
-geometry}\label{environment-discovery-clustering-and-the-covariance-geometry}
+Identifiability from the full distribution does not imply
+identifiability from a fixed collection of moments. A single pooled
+covariance, which is one second moment, is underdetermined. For centered
+Gaussian mixtures, the injectivity of moment maps depends on the model
+class, the number of components, and the available moment
+order~\cite{blomenhofer2023}. The fourth-order map is
+non-injective for the generic class through the parallelogram identity,
+and injectivity at higher order is established within explicit rank and
+parameter-space conditions, not as a universal threshold for every real
+positive-definite model. What those results identify is the unordered
+collection of component quadratic forms, not a partition or a
+finite-sample statement. Our result concerns a restricted fourth-order
+inversion in a two-dimensional, equally weighted, zero-mean Gaussian
+mixture with component covariances \(I+K\) and \(I-K\). It identifies
+the unordered covariance pair and does not establish recovery of
+individual labels.
 
-The line that comes closest in spirit studies environments without
-treating them as fully given. Yao et al.~\cite{yao2025}
-formulate multi-environment learning under a known index and an explicit
-uniqueness condition, the assumption our impossibility witness
-interrogates. Murata~\cite{murata2025} extends
-invariant-risk objectives to a clustered setting and characterizes the
-environmental complexity needed for recovery, while
-Ng~\cite{ng2025} treats nonparametric mixtures across
-general environments and states the conditions under which components
-separate.
+The vocabulary of partial identification is useful when a single
+parameter value is no longer determined.
+Manski~\cite{manski2003} provides a systematic treatment
+in which the target is a set of parameter values compatible with the
+observed distribution and the maintained assumptions. Chen et
+al.~\cite{chen2026} apply the same set-valued logic to a
+latent prevalence and construct bounds from restricted information,
+which is the idea we borrow when describing the covariance structures
+consistent with relaxed assumptions. We use the term descriptively and
+do not claim a sharp set, a set-valued estimator, or a coverage result.
 
-The recovery mechanism rests on clustering theory that predates these
-works. Pollard~\cite{pollard1981} proves strong
-consistency of the \(K\)-means minimizer, so the empirical solution
-converges almost surely to a population optimum under moment and
-nondegeneracy conditions, and the algorithm in everyday use is the Lloyd
-iteration~\cite{lloyd1982}. Consistency concerns the
-global empirical minimizer, not the finite-initialization Lloyd path
-that can stop at a local optimum, and the paper keeps the two objects
-apart. The signal on which clustering runs has its own geometry. Arsigny
-et al.~\cite{arsigny2007} build the log-Euclidean
-vector-space structure on positive-definite matrices, which turns the
-matrix logarithm into a Euclidean feature, and Pennec et
-al.~\cite{pennec2006} equip the same cone with an
-affine-invariant Riemannian metric. The log-Euclidean frame is a flat
-space that admits ordinary nearest-centroid clustering, whereas the
-Riemannian metric stays on the manifold and induces a different
-distance.
+\subsection{Clustering theory and covariance
+representations}\label{clustering-theory-and-covariance-representations}
 
-The standard components carry no novelty. Shrinkage covariance
-estimation is an established family, from the linear construction of
-Ledoit and Wolf~\cite{ledoit2004} to the later nonlinear
-spectral estimator~\cite{ledoit2012}, and the
-log-Euclidean feature, nearest-centroid clustering, and the resampling
-diagnostics are equally established tools, each cited for the exact
-construction used. The empirical setting sits inside a mature EEG
-literature. Lotte et al.~\cite{lotte2018} survey the
-classification algorithms used in EEG-based brain--computer interfaces,
-and the PhysioNet resource that supplies one source is documented by
-Goldberger et al.~\cite{goldberger2000}. The recovered
-label is a source-associated technical structure, not a state of the
-brain, and we do not present it as a BCI classification result.
-Pollard's consistency delivers convergence to a population optimum but
-stays silent on whether that optimum aligns with the true environment,
-and the log-Euclidean geometry supplies a coordinate system without
-supplying identification. The paper states the alignment as an explicit
-compatibility premise and proves a risk-gap guarantee on top of it,
-rather than deriving the alignment from the geometry.
+Environment discovery connects the learning-theoretic work above to the
+clustering mechanism that performs the recovery. Our unrestricted
+partition example illustrates why uniqueness requires explicit
+structural assumptions when the grouping is unobserved; it does not
+refute the uniqueness assumptions used inside structured causal models.
+
+The statistical foundation is the K-means theory.
+Pollard~\cite{pollard1981} proves strong consistency of
+the K-means minimizer, so under moment and nondegeneracy conditions the
+empirical solution converges almost surely to a population optimum. The
+Lloyd iteration~\cite{lloyd1982} is the algorithm in
+everyday use, and finite-initialization Lloyd solutions retain an
+explicit optimization-error term that is not controlled here. Stability
+and approximation results add a complementary picture. Rakhlin and
+Caponnetto~\cite{rakhlin2007} analyze the stability of
+K-means clustering under distributional perturbations, and Ostrovsky et
+al.~\cite{ostrovsky2012} give conditions under which
+Lloyd-type methods are effective and the cluster structure is well
+separated. Pollard's consistency delivers convergence to a population
+optimum but stays silent on whether that optimum aligns with the true
+environment, which is the point where our finite-sample argument begins.
+We state population alignment as an explicit compatibility premise and
+build a risk-gap guarantee on top of it, then convert the excess risk
+into a control on assignment error.
+
+The signal on which clustering runs has its own geometry. The matrix
+logarithm turns positive-definite matrices into Euclidean coordinates
+within the log-Euclidean framework~\cite{arsigny2007}. A
+separate construction, the affine-invariant Riemannian
+metric~\cite{pennec2006}, gives a different geometry on
+the same cone. Our pipeline uses averaged log-covariance features and
+Euclidean K-means. Ledoit and Wolf~\cite{ledoit2004}
+provide the linear shrinkage estimator used to stabilize the sample
+covariance, and the later nonlinear spectral
+construction~\cite{ledoit2012} is a separate estimator
+we do not adopt.
+
+The empirical setting sits inside a mature EEG literature. Lotte et
+al.~\cite{lotte2018} survey EEG-based BCI classification
+algorithms, and the PhysioNet resource is documented by Goldberger et
+al.~\cite{goldberger2000}. The label we recover is a
+source-associated technical structure, not a state of the brain or a BCI
+classification result.
+
+Our analysis distinguishes two observation settings. Under pooled
+observations, we study unrestricted partition non-identifiability and a
+constrained fourth-order identification result for component covariance
+parameters. Under repeated recordings, we study how excess K-means risk
+controls assignment error under explicit population-alignment and
+regularity assumptions. The EEG experiments evaluate source-associated
+grouping, cluster-number selection, and sensitivity to the analysis
+design. The covariance estimators, feature mappings, and clustering
+algorithms are established components used to investigate these
+questions.

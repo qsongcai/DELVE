@@ -26,10 +26,10 @@ output are listed here in full.
   patterns, the verification run-01 BrainVision files, the per-subject
   EDF files, and the R01 PhysioNet EDF files, where R01 is the eyes-open
   baseline run, the first of the two one-minute baseline runs in the
-  protocol rather than a label inferred from the filename. A recording
-  that fails to load is skipped and named, and a recording with fewer
-  than three windows is excluded. In the realized run, every targeted
-  file loaded successfully and every retained recording passed the
+  protocol, not a label inferred from the filename. A recording that
+  fails to load is skipped and named, and a recording with fewer than
+  three windows is excluded. In the realized run, every targeted file
+  loaded successfully and every retained recording passed the
   three-window rule, so the post-download exclusion count is zero and
   there is no exclusion list to report; missing channels are not
   interpolated. The retained counts are 64, 30, and 109 recordings from
@@ -62,11 +62,14 @@ output are listed here in full.
   logarithm failure would surface as a load failure and the recording
   would be skipped under item 2; none occurs in the retained set.
 \item
-  \textbf{Scaler.} The scaler is fitted on the analysis subset rather
-  than the full pool for the fixed-transformation theorem, and it is
-  refitted inside every bootstrap, resampling, and held-out draw. A
-  scaler fitted once on the entire pool appears only in the transductive
-  variant and is not part of the theorem.
+  \textbf{Scaler.} The finite-sample theorem uses a pre-given,
+  deterministic transformation. A StandardScaler is fitted on the data
+  and stays random even when frozen, so it is treated as an empirical
+  variant whether it is fitted on the analysis subset or once on the
+  full pool. It is refitted inside every bootstrap, resampling, and
+  held-out draw. A full-pool scaler belongs to the transductive variant.
+  The pre-given identity transformation and the three-way split are
+  reported in Section S7.
 \item
   \textbf{Blind number selection.} For each candidate \(K\), three
   scores are produced. The BIC comes from a diagonal Gaussian mixture,
@@ -145,7 +148,7 @@ blind fit; metadata entered only in post-hoc scoring. The numbers are
 two-source, \(K=2\) evidence and are not compared with the three-source
 main experiment.
 
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
 \small
 \caption{Recording-level ARI across covariance estimators and matrix mappings on the fixed two-source, $K=2$ design (94 recordings, 62 subjects, blind fit). The matrix logarithm is decisive and Ledoit--Wolf shrinkage is indispensable at the available sample size.}
@@ -162,10 +165,10 @@ OAS & 0.457 & 0.049 & 0.163\\
 
 \end{table}
 
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
 \small
-\caption{Recording-level ARI across clusterers and non-covariance features on the same fixed two-source, $K=2$ design. GMM and phase locking outperform hard K-means, but phase locking is an acquisition-sensitive diagnostic rather than evidence for the covariance framework.}
+\caption{Recording-level ARI across clusterers and non-covariance features on the same fixed two-source, $K=2$ design. GMM and phase locking outperform hard K-means, but phase locking is an acquisition-sensitive diagnostic, not evidence for the covariance framework.}
 \label{tab:clusterers}
 \begin{tabular}{llll}
 \hline
@@ -188,7 +191,7 @@ bands run only \(0.17\) to \(0.38\). On the Riemannian geometry, the
 density-based clusterer produces only noise across the tested
 configurations, and no stable dataset-consistent clusters form there.
 The earlier recording-averaging and standardization steps are not
-separately ablated, and that gap is stated rather than filled with an
+separately ablated, and that gap is stated, not filled with an
 unmeasured number.
 
 \subsection{S3. Metadata controls}\label{s3.-metadata-controls}
@@ -205,7 +208,7 @@ covariance features, the absolute correlation with window count reaches
 \(0.663\) and averages \(0.210\). A length-matched control is infeasible
 because the three window-count ranges have no common support.
 
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
 \small
 \caption{Metadata baselines and the same-device and same-task controls. Trivial metadata already separates the sources, no stable structure appears within a device, and the two resting sources still separate despite sharing a task.}
@@ -227,27 +230,50 @@ same-task two-source $K=2$ ARI (resting sources) & 0.53 (0.56 over seeds)\\
 \subsection{S4. Resampling and subject-level
 uncertainty}\label{s4.-resampling-and-subject-level-uncertainty}
 
-The subject-cluster bootstrap uses five hundred resamples and refits the
-scaler and centers on each draw. The subject-aggregated bootstrap gives
-a mean of \(0.616\) with a ninety-five percent interval from \(0.31\) to
-\(0.81\), the cluster-preserving design gives \(0.554\) with a wider
-interval, and the naive recording bootstrap gives \(0.603\). All three
-intervals exclude zero. The single balanced subject realization at seed
-zero is \(0.523\), a single draw from the same resampling mechanism
-rather than a point estimate on its own.
+The three designs differ in the resampling unit and in whether
+recordings are aggregated. Each draw selects thirty units per source and
+refits the scaler and the three-cluster K-means from scratch, so no
+fitted object is carried across draws. The adjusted Rand index is then
+computed inside the resampled sample, between the new cluster labels and
+the source labels carried by the drawn units. The adjusted Rand index is
+invariant to label permutations, so no cluster alignment is needed. The
+cluster number is fixed at three, so cluster-number selection never
+enters; a fixed-K K-means fit can in principle return an empty cluster,
+and the optimizer handles this within its multiple initializations while
+the adjusted Rand index stays defined.
 
-\begin{table}[htbp]
+The subject-aggregated design first averages all recordings of each
+subject into one subject-level row and then resamples subjects with
+replacement. Its target is the subject-level adjusted Rand index. The
+cluster-preserving design resamples subjects with replacement but keeps
+every recording of each drawn subject, so the within-subject grouping is
+retained, and its target is the recording-level adjusted Rand index
+under subject-level resampling. The naive recording design resamples
+recordings independently and ignores the subject grouping, which treats
+correlated recordings as independent and serves as an overconfident
+contrast.
+
+The subject-aggregated design gives a mean of \(0.616\) with a
+percentile interval from \(0.31\) to \(0.81\), the cluster-preserving
+design gives \(0.554\) with a wider interval, and the naive recording
+design gives \(0.603\). These are resampling diagnostics, not confidence
+intervals with a coverage theorem, and they are not hypothesis tests.
+The single balanced subject realization at seed zero is \(0.523\), a
+single draw from the same resampling mechanism, not a point estimate on
+its own.
+
+\begin{table}[H]
 \centering
 \small
-\caption{The three resampling designs used to quantify subject-level uncertainty. All three refit the scaler and centers on each draw and report percentile intervals rather than a coverage theorem.}
+\caption{The three resampling designs. Every draw refits the scaler and K-means and computes the adjusted Rand index inside the resampled sample. The percentile columns are diagnostics without a coverage theorem, not hypothesis tests.}
 \label{tab:resampling}
-\begin{tabular}{lllll}
+\begin{tabular}{llllll}
 \hline
-design & resampling unit & scaler \& centers & $B$ & interval\\
+design & unit & recordings & target & $B$ & interval\\
 \hline
-subject aggregate & subject & refit & 500 & 2.5/97.5\\
-cluster, keep recordings & subject & refit & 500 & 2.5/97.5\\
-naive recording & recording & refit & 500 & 2.5/97.5\\
+subject aggregate & subject & averaged & subject ARI & 500 & 2.5/97.5\\
+cluster-preserving & subject & all kept & recording ARI & 500 & 2.5/97.5\\
+naive recording & recording & independent & recording ARI & 500 & 2.5/97.5\\
 \hline
 \end{tabular}
 
@@ -256,9 +282,35 @@ naive recording & recording & refit & 500 & 2.5/97.5\\
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.85\columnwidth]{fig3_bootstrap_ci.pdf}
-\caption{Subject-cluster bootstrap means and ninety-five percent intervals for three resampling designs. All three intervals exclude zero and sit near the recording point estimate of $0.608$, while the all-subject plug-in of $0.241$ marks the weaker unbalanced regime.}
+\caption{Subject-cluster bootstrap means and percentile intervals for three resampling designs. The intervals sit near the recording point estimate of $0.608$, while the all-subject plug-in of $0.241$ marks the weaker unbalanced regime. They describe resampling spread and carry no coverage guarantee.}
 \label{fig:bootstrap}
 \end{figure}
+
+A permutation null gives the proper above-chance comparison. The source
+labels are permuted relative to the fixed cluster labels, and the
+adjusted Rand index is recomputed over two thousand permutations. The
+null is centered at zero because the adjusted Rand index is already
+corrected for chance, with a ninety-ninth percentile near \(.05\). Every
+observed balanced value, from \(.476\) to \(.675\), lies above the
+ninety-ninth null percentile.
+
+\begin{table}[H]
+\centering
+\small
+\caption{Permutation null for the balanced adjusted Rand index, with the cluster labels fixed and the source labels permuted. All six observed values exceed the ninety-ninth null percentile. The permutation check supports above-chance association, while the bootstrap intervals remain resampling diagnostics without a coverage theorem.}
+\label{tab:permnull}
+\begin{tabular}{lcc}
+\hline
+quantity & permutation null & observed range\\
+\hline
+mean & .000 & --\\
+95th percentile & .030 & --\\
+99th percentile & .050 & --\\
+adjusted Rand index & -- & .476 to .675\\
+\hline
+\end{tabular}
+
+\end{table}
 
 \subsection{S5. Secondary analyses and alternative
 representations}\label{s5.-secondary-analyses-and-alternative-representations}
@@ -301,24 +353,24 @@ to exactly one of them. The population alignment that the theorems use
 is a compatibility condition, assumed on the population objective rather
 than derived from the covariance generative model.
 
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
 \small
-\caption{The three operational variants of DELVE and the guarantee attached to each. Only DELVE-G, with fixed $K$, a frozen scaler, and a global K-means optimizer, is covered in full by the risk-gap guarantee.}
+\caption{The three operational variants of DELVE and the guarantee attached to each. A fitted StandardScaler is data-dependent even when frozen afterwards, so it is not the pre-given transformation in the theorem and is treated as an empirical variant. Only DELVE-G, with fixed $K$, a pre-given transformation, and a global K-means optimizer, is covered in full by the risk-gap guarantee.}
 \label{tab:variants}
 \begin{tabular}{lllll}
 \hline
 Variant & $K$ & scaler & optimizer & guarantee\\
 \hline
-DELVE-G & fixed & frozen & global K-means & risk-gap\\
-DELVE-L & fixed & frozen & finite Lloyd & explicit $\delta_{\rm opt}$\\
-DELVE-B & blind & full-pool & Lloyd + selector & none\\
+DELVE-G & fixed & pre-given & global K-means & risk-gap\\
+DELVE-L & fixed & pre-given & finite Lloyd & explicit $\delta_{\rm opt}$\\
+DELVE-B & blind & data-dependent & Lloyd + selector & none\\
 \hline
 \end{tabular}
 
 \end{table}
 
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
 \footnotesize
 \caption{Blind selector eligibility diagnostics. The parenthesized yes/no marks whether each candidate passes the eligibility gate, stability at or above the adaptive threshold and a positive silhouette. Candidates $K=4,5,6$ never pass the gate in any seed. When both $K=2$ and $K=3$ are eligible, the lower BIC selects $K=3$.}
@@ -333,6 +385,143 @@ seed & K=2 sil & K=2 stab & K=3 sil & K=3 stab & threshold & eligible & chosen\\
 3 & .309 & .907 (yes) & .219 & .824 (yes) & .816 & 2,3 & 3\\
 4 & .304 & .840 (yes) & .215 & .624 (no) & .756 & 2 & 2\\
 5 & .288 & .795 (yes) & .214 & .691 (no) & .716 & 2 & 2\\
+\hline
+\end{tabular}
+
+\end{table}
+
+\subsection{S7. Pre-given transformation and three-way
+split}\label{s7.-pre-given-transformation-and-three-way-split}
+
+The theorem uses a pre-given, deterministic transformation. Two
+empirical checks separate that setting from the data-dependent
+StandardScaler. Each uses the balanced ninety recordings, thirty per
+source, and the same six seeds as the main table.
+
+\begin{table}[H]
+\centering
+\footnotesize
+\caption{Balanced $K=3$ ARI. The identity transformation is pre-given and gives mean ARI .324 (std .035), above chance but weaker than the fitted StandardScaler at .582 (std .062). The raw feature columns differ in scale, so without scaling K-means is dominated by the large-variance columns. The StandardScaler result is an empirical variant and carries no theorem.}
+\label{tab:prefixed}
+\begin{tabular}{lllllll}
+\hline
+transformation & s0 & s1 & s2 & s3 & s4 & s5\\
+\hline
+pre-given identity ARI & .345 & .365 & .324 & .353 & .290 & .268\\
+StandardScaler ARI & .608 & .589 & .476 & .535 & .607 & .675\\
+\hline
+\end{tabular}
+
+\end{table}
+
+\begin{table}[H]
+\centering
+\footnotesize
+\caption{Strict three-way split. Within each source, ten recordings fit the scaler, ten fit the centers, and ten are held out, so the scaler is independent of the center fit and the evaluation set. Held-out ARI averages .470 (std .101) and NMI averages .528. The center-fit ARI is more variable because it uses only thirty recordings. This is an inductive empirical check, not a conditional theorem.}
+\label{tab:threeway}
+\begin{tabular}{lllllll}
+\hline
+quantity & s0 & s1 & s2 & s3 & s4 & s5\\
+\hline
+center-fit ARI & .802 & .717 & .205 & .578 & .189 & .555\\
+held-out eval ARI & .577 & .613 & .343 & .382 & .403 & .500\\
+held-out eval NMI & .603 & .640 & .378 & .401 & .518 & .626\\
+\hline
+\end{tabular}
+
+\end{table}
+
+\subsection{S8. Fixed-window control}\label{s8.-fixed-window-control}
+
+The fixed-window control rebuilds every recording from nine windows, the
+smallest common count. Recordings with more windows contribute nine
+randomly drawn windows, and the balanced protocol is then run over the
+six clustering seeds. The fixed count also fixes the effective duration
+at thirty-six seconds.
+
+\begin{table}[H]
+\centering
+\footnotesize
+\caption{Fixed-window versus full-window balanced ARI. The fixed-window row averages the ten window draws within each clustering seed. Full-window mean is .582 (std .068) and fixed-window mean is .577 (std .045). Across the ten window draws and six seeds the sixty fixed-window measurements have a standard deviation of .062. The difference is within the run-to-run spread, so equalizing the window count does not materially change the partition. It removes only the window-count confound, not the other dataset-level factors.}
+\label{tab:fixedwindow}
+\begin{tabular}{lllllll}
+\hline
+design & s0 & s1 & s2 & s3 & s4 & s5\\
+\hline
+full-window ARI & .608 & .589 & .476 & .535 & .607 & .675\\
+fixed-window ARI & .589 & .583 & .495 & .563 & .619 & .610\\
+\hline
+\end{tabular}
+
+\end{table}
+
+\subsection{S9. Expanded balanced Monte Carlo and unbalanced macro
+metrics}\label{s9.-expanded-balanced-monte-carlo-and-unbalanced-macro-metrics}
+
+The expanded Monte Carlo repeats the balanced draw independently a
+hundred times. Each draw selects thirty recordings per source, fits the
+scaler and three-cluster K-means, and scores the result against the
+source labels. The six prespecified seeds remain the confirmatory
+subset. Precision and recall are computed after Hungarian alignment,
+which maps each cluster to the source with which it shares the most
+recordings.
+
+\begin{table}[H]
+\centering
+\footnotesize
+\caption{Per-source precision and recall in the balanced Monte Carlo, with macro averages in the overall column, and unbalanced macro precision and recall alongside. The balanced macro F1 is .850 and the unbalanced macro F1 is .710. Balanced ARI is .606 (std .100) and unbalanced ARI is .371. The Monte Carlo spread is a sampling distribution, not a confidence interval with a coverage theorem.}
+\label{tab:montecarlo-supp}
+\begin{tabular}{lcccccc}
+\hline
+quantity & source 1 & source 2 & source 3 & overall & unbalanced & --\\
+\hline
+per-source precision & .863 & .826 & .901 & .863 & .731 & --\\
+per-source recall & .838 & .936 & .777 & .850 & .786 & --\\
+\hline
+\end{tabular}
+
+\end{table}
+
+\subsection{S10. Gate-parameter and candidate-range
+sensitivity}\label{s10.-gate-parameter-and-candidate-range-sensitivity}
+
+The gated selector contains several fixed constants, so the gate is
+recomputed over a grid of stability caps, multipliers, silhouette-gate
+settings, and candidate ranges. The clustering and the per-\(K\) metrics
+are held fixed; only the decision rule changes. The silhouette gate on
+or off gives the same result at every setting, because the candidates
+that reach the stability threshold all have positive silhouette, so only
+the silhouette-on rows are shown.
+
+\begin{table}[H]
+\centering
+\footnotesize
+\caption{Number of seeds selecting $K=3$ across nine cap and multiplier combinations. The entries are the same with the silhouette gate disabled. Across all eighteen variants, including the on/off gate, the mean $K=3$ frequency is 2.56 out of six. The lower multiplier over-splits to four clusters and the higher multiplier merges to two, so no setting raises the recovery rate beyond three seeds.}
+\label{tab:gatesens}
+\begin{tabular}{lccc}
+\hline
+cap \textbackslash{} mult & .8 & .9 & 1.0\\
+\hline
+.80 & 3/6 & 3/6 & 3/6\\
+.85 & 3/6 & 3/6 & 1/6\\
+.90 & 3/6 & 3/6 & 1/6\\
+\hline
+\end{tabular}
+
+\end{table}
+
+\begin{table}[H]
+\centering
+\footnotesize
+\caption{Candidate-range sensitivity at the prespecified cap .85 and multiplier .9. Widening the range does not change the choice, because the decision is settled between two and three clusters before the higher candidates enter. The full baseline comparison is in the main-text selector table.}
+\label{tab:rangesens}
+\begin{tabular}{lcc}
+\hline
+candidate range & selected $K$ (s0–s5) & $K=3$ count\\
+\hline
+2–4 & 2,3,3,3,2,2 & 3/6\\
+2–5 & 2,3,3,3,2,2 & 3/6\\
+2–6 & 2,3,3,3,2,2 & 3/6\\
 \hline
 \end{tabular}
 

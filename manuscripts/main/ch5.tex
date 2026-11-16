@@ -26,14 +26,16 @@ which is invariant to label permutation and takes values in $[0,1]$.
 The model is conditional on the feature the pipeline builds,
 \(X_r=A[\frac1{W_r}\sum_w\operatorname{vech}\{\log(\widehat\Sigma_{rw})\}]+b\).
 Window-level dependence enters the residual, and the recording variance
-is governed by the effective window count \(T_{\rm eff}\) rather than
-the nominal \(W_r\). The systematic
+is governed by the effective window count \(T_{\rm eff}\), not the
+nominal \(W_r\). The systematic
 Ledoit--Wolf~\cite{ledoit2004} and matrix-log bias
-shifts the center, with \(E[\mu_{e,T}]-\mu_e=O(T_w^{-1})\), while the
-random fluctuation is noise. The pair \((A,b)\) is fixed or frozen on
-the training side; a scaler estimated on the full pool belongs to the
-transductive variant and does not enter the fixed-transformation
-theorem.
+shifts the center, with \(E[\mu_{e,T}]-\mu_e=O(T_{\rm eff}^{-1})\),
+while the random fluctuation is noise. The finite-sample theorem treats
+\((A,b)\) as a pre-given, deterministic transformation. A StandardScaler
+fitted on the data stays random even when frozen afterwards, so it does
+not meet this condition. A full-pool scaler belongs to the transductive
+variant, and a scaler fitted on the training subset is treated as an
+empirical variant.
 
 \subsection{Assumptions}\label{assumptions}
 
@@ -62,6 +64,14 @@ $\|\xi_e\|\le\rho$ almost surely.
 $\Delta>4\rho$.
 \end{assumption}
 
+The hard-ball and separation assumptions define an idealized benchmark,
+not the empirical setting of this paper. They are geometric premises
+used to state the conditional transfer cleanly, and they are not
+satisfied by Gaussian or sub-Gaussian residuals, whose support is
+unbounded, or by the EEG covariance features. The experiments do not
+claim otherwise. The next section lifts them to unbounded sub-Gaussian
+tails through a high-probability argument.
+
 For a point from environment \(e\), its distance to its own center is at
 most \(\rho\), while \(\|X-\mu_f\|\ge\Delta-\rho>3\rho>\|X-\mu_e\|\) for
 \(f\ne e\). This gives the next lemma.
@@ -74,16 +84,15 @@ The lemma says only that the true centers classify correctly; it does
 not say they solve the population K-means problem.
 
 \begin{assumption}[population K-means alignment]\label{a:align}
-For fixed $K$ and a fixed transformation, every global minimizer of the population K-means risk assigns exactly one center to each environment:
+For fixed $K$ and a pre-given transformation, every global minimizer of the population K-means risk assigns exactly one center to each environment:
 $$\mathcal C^\star=\{c:R(c)=R^\star\}=\{(\mu_1,\dots,\mu_K)\text{ up to label permutation}\}.$$
-The set $\mathcal C^\star$ is the optimizer set within the bounded domain $\mathcal C_B$, not an unconstrained full-space minimizer; the radius $B$ is taken large enough that every environment mean lies in $\overline{\mathcal B_p(B)}$, so the means belong to the domain.
+The set $\mathcal C^\star$ is the optimizer set within the bounded domain $\mathcal C_B$, not an unconstrained full-space minimizer; the radius $B$ is taken large enough that every environment mean lies in $\overline{\mathcal B_p(B)}$.
 \end{assumption}
 
 This is a direct condition on the geometry of the population objective,
-not a consequence of any split or merge calculation. It is stated rather
-than derived. This assumption is stronger than pairwise mean separation.
-It identifies the entire global optimizer set, not merely the
-correctness of the nearest-mean classifier.
+not a consequence of any split or merge calculation, and it is stronger
+than pairwise mean separation. It identifies the entire global optimizer
+set, not merely the correctness of the nearest-mean classifier.
 
 \begin{lemma}[boundary-tube vanishing on a non-degenerate center domain]\label{lem:closed}
 In the bounded frame $\|X\|\le B$ with the law of $X$ absolutely continuous, on the non-degenerate domain $\mathcal C_{B,d_{\min}}$ where distinct centers stay at least $d_{\min}$ apart, $\mathrm{Err}(c,Z)$ is continuous and every level set is closed.
@@ -99,7 +108,7 @@ probability; the one-dimensional counterexample is given in Appendix
 A.5.
 
 \begin{assumption}[quadratic growth]\label{a:growth}
-$R(c)-R^\star\ge\kappa\,d(c,\mathcal C^\star)^2$, where $d(c,\mathcal C^\star)=\min_{\pi\in S_K}\big(\sum_k\|c_k-\mu_{\pi(k)}\|^2\big)^{1/2}$ is the distance on the quotient $\mathcal C_B$, minimized over label permutations.
+$R(c)-R^\star\ge\kappa_0\,d(c,\mathcal C^\star)^2$, where $d(c,\mathcal C^\star)=\min_{\pi\in S_K}\big(\sum_k\|c_k-\mu_{\pi(k)}\|^2\big)^{1/2}$ is the distance on the quotient $\mathcal C_B$, minimized over label permutations. The constant $\kappa_0$ is distinct from the fourth-order cumulant $\kappa_{ijkl}$ used in Chapter 4.
 \end{assumption}
 
 This is an independent strong assumption. The margin condition does not
@@ -111,10 +120,14 @@ exchange argument built on them has been withdrawn.
 \subsection{The conditional compatibility
 theorem}\label{the-conditional-compatibility-theorem}
 
-The theorem is conditional on the population K-means alignment above,
-which fixes the whole global optimizer set rather than only the
-nearest-mean decision rule; it is not an identification result derived
-from the generative model.
+The recording-level guarantee follows a fixed route: population
+alignment identifies the optimal centers, a positive risk gap converts
+excess risk into a label-error bound, and uniform control of the
+empirical risk turns that into a finite-sample statement. The theorem is
+conditional on the population K-means alignment above, which fixes the
+whole global optimizer set rather than only the nearest-mean decision
+rule; it is not an identification result derived from the generative
+model.
 
 \begin{theorem}[conditional population recovery under K-means alignment]\label{thm:A}
 Suppose Assumptions~\ref{a:weights}--\ref{a:sep} and Assumption~\ref{a:align} hold. Then for some permutation $\pi$,
@@ -122,9 +135,9 @@ $$P\{g_{c^\star}(X)\ne\pi(Z)\}=0.$$
 \end{theorem}
 
 \emph{Proof sketch.} Assumption~\ref{a:align} identifies
-the optimal centers as a permutation of the environment means, and
-Lemma~\ref{lem:truecenter} makes that configuration
-error-free. The full proof is in Appendix A.3.
+the optimal centers as a permutation of the means, which
+Lemma~\ref{lem:truecenter} makes error-free. The full
+proof is in Appendix A.3.
 
 The recovery comes from the alignment that is assumed, not from a
 lower-level generative argument. The Conditional Compatibility Theorem
@@ -149,22 +162,22 @@ Under the assumptions of Theorem~\ref{thm:A} together with Assumption~\ref{a:clo
 \end{equation}
 \end{theorem}
 
-\emph{Proof sketch.} The optimal set has error zero, so \(\mathcal C_q\)
-excludes it. The compact domain and the continuity of \(R\) together
-with the closed level set force the infimum of \(R-R^\star\) to be
-attained and strictly positive. The full proof is in Appendix A.3.
+\emph{Proof sketch.} The optimal set has error zero, so the closed level
+set \(\mathcal C_q\) excludes it. Compactness and continuity then force
+the infimum of \(R-R^\star\) to be attained and strictly positive. The
+full proof is in Appendix A.3.
 
 A quantitative form is available only locally. Let the margin obey
 \(P(X\in\mathcal M_t)\le C_{\rm margin}t^\beta\), with \(\beta=1\) in
 the ordinary case. Inside the local stability region, combining the
 margin relation with Assumption~\ref{a:growth} gives
 
-\[\psi(q)\ge\kappa\Big(\frac{q}{C_{\rm margin}}\Big)^{2/\beta}\quad\text{for }0<q\le q_0.\]
+\[\psi(q)\ge\kappa_0\Big(\frac{q}{C_{\rm margin}}\Big)^{2/\beta}\quad\text{for }0<q\le q_0.\]
 
-For \(\beta=1\), \(\psi(q)\ge(\kappa/C_{\rm margin}^2)q^2\). The cutoff
-\(q_0\) is the largest level at which the local linearization holds. We
-claim no global quantitative bound, and neither \(\kappa\) nor
-\(C_{\rm margin}\) is self-certified.
+For \(\beta=1\), \(\psi(q)\ge(\kappa_0/C_{\rm margin}^2)q^2\). The
+cutoff \(q_0\) is the largest level at which the local linearization
+holds. We claim no global quantitative bound, and neither \(\kappa_0\)
+nor \(C_{\rm margin}\) is self-certified.
 
 \subsection{Finite-sample transfer}\label{finite-sample-transfer}
 
@@ -204,12 +217,48 @@ then with probability at least $1-\alpha$, $\mathrm{Err}(\widehat c,Z)<q$. For a
 \end{corollary}
 
 \emph{Proof sketch.} On the event \(\varepsilon_M\le h(M,\eta)\), the
-excess-risk decomposition gives
-\(R(\widehat c)-R^\star\le2h(M,\eta)+\delta_{\rm opt}<\psi(q)\), and the
+excess-risk decomposition gives excess risk below \(\psi(q)\), and the
 risk-transfer lemma then yields \(\mathrm{Err}(\widehat c,Z)<q\). The
 positivity \(\psi(q)>0\) is the content of
 Theorem~\ref{thm:B}; without it the bound is the empty
-conditional of the lemma.
+conditional.
+
+\subsubsection{High-probability sub-Gaussian
+truncation}\label{high-probability-sub-gaussian-truncation}
+
+The hard-ball radius is a deterministic support bound. A sub-Gaussian
+tail replaces it with a radius that holds with a chosen probability,
+with no bounded-support requirement.
+
+\begin{assumption}[sub-Gaussian residuals]\label{a:sg}
+There is a constant $\sigma\ge 0$ such that, for every environment $e$ and every $v\in\mathbb R^p$, $\|\langle v,\xi_e\rangle\|_{\psi_2}\le \sigma\|v\|$. Here $\|Y\|_{\psi_2}=\inf\{t>0:E[\exp(Y^2/t^2)]\le 2\}$ is the sub-Gaussian Orlicz norm.
+\end{assumption}
+
+For a sub-Gaussian vector in \(\mathbb R^p\), there are universal
+constants \(C_1,c_2>0\) such that
+\[P\big(\|\xi_e\|>C_1\sigma(\sqrt p+t)\big)\le 2\exp(-c_2t^2/\sigma^2).\]
+For \(\delta\in(0,1)\), define the high-probability radius
+\[\rho_\delta=C\sigma\sqrt{p+\log(K/\delta)},\] where \(C\) is
+universal. A union bound over the \(K\) environments gives
+\[P\big(\max_e\|\xi_e\|>\rho_\delta\big)\le\delta.\]
+
+\begin{proposition}[conditional lift under truncation]\label{prop:trunc}
+Let $E_\delta=\{\max_e\|\xi_e\|\le\rho_\delta\}$. On $E_\delta$, which has probability at least $1-\delta$, the hard-ball assumptions hold with $\rho$ replaced by $\rho_\delta$. If $\Delta>4\rho_\delta$ and the population alignment in Assumption~\ref{a:align} holds on the truncated population, the zero-error classification, the conditional recovery of Theorem~\ref{thm:A}, and the finite-sample Corollary~\ref{cor:finite} carry over, conditioned on $E_\delta$, with $\rho_\delta$ in place of $\rho$.
+\end{proposition}
+
+For a finite sample of \(M\) independent recordings, the union bound is
+over the \(M\) observations and the radius becomes
+\(\rho_{\delta,M}=C\sigma\sqrt{p+\log(KM/\delta)}\), with the same
+probability and the same conditional conclusion.
+
+Three qualifications are part of the statement. First, truncation
+relaxes the support condition only; the population alignment remains an
+explicit premise, and the proposition does not derive it. Second, the
+radius and the required separation grow as \(\sqrt{\log(1/\delta)}\), so
+higher confidence demands a larger separation, the cost of unbounded
+support. Third, outside \(E_\delta\), an event of probability at most
+\(\delta\), the hard-ball conclusion is not asserted; with a bounded
+loss the unconditional statement adds a term of order \(\delta\).
 
 \subsection{The DELVE procedure and operational
 variants}\label{the-delve-procedure-and-operational-variants}
@@ -244,27 +293,30 @@ Figure~\ref{fig:pipeline}.
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.74\columnwidth]{fig6_pipeline.pdf}
-\caption{Core DELVE processing pipeline and evaluation-only label usage. The staged core runs from pooled unlabeled EEG to recovered covariance environments; the recording-level estimand (Stage 2) is highlighted, and the sample-split branch leads to the Stage 4 conditional misclassification guarantee, a theoretical statement rather than a computed numeric bound. The source labels (dashed) are used only to construct the prespecified balanced evaluation subset, thirty recordings per source, and for post-hoc scoring; they are not used to construct features, fit the scaler, select centers, or assign clusters. The guarantee conditions and the DELVE-B exclusion are marked in the figure. The remaining stages are standard components.}
+\caption{Core DELVE processing pipeline and evaluation-only label usage. The staged core runs from pooled unlabeled EEG to recovered covariance environments; the recording-level estimand (Stage 2) is highlighted, and the sample-split branch leads to the Stage 4 conditional misclassification guarantee, a theoretical statement, not a computed numeric bound. The source labels (dashed) are used only to construct the prespecified balanced evaluation subset, thirty recordings per source, and for post-hoc scoring; they are not used to construct features, fit the scaler, select centers, or assign clusters. The remaining stages are standard components.}
 \label{fig:pipeline}
 \end{figure}
 
-The sample-split variant fits the scaler and centers on one half and
-freezes them for the held-out half, an inductive use of the same staged
-core rather than a separate procedure. Three operational variants are
-kept apart, and the full comparison is in Supplementary Table S6.
-DELVE-G fixes \(K\) and freezes the transformation, and a global
-empirical minimizer has zero optimization error, so it is covered in
-full by the risk-gap guarantee. DELVE-L keeps the same fixed-\(K\)
-setting but obtains its centers from finite-initialization Lloyd, so its
-statement carries the explicit \(\delta_{\rm opt}\). DELVE-B is the
-blind pipeline with a full-pool scaler and a pre-specified selector, and
-it carries no unconditional guarantee.
+The two-way sample-split fits the scaler and centers on one half and
+freezes them for the held-out half. Because the scaler and centers share
+the same training data, this is an empirical inductive variant, not the
+conditional theorem. A strict three-way split separates the scaler,
+center, and evaluation recordings, so the scaler is independent of the
+center fit and the held-out assignment; we report it as an inductive
+empirical check. The three operational variants, fully compared in
+Supplementary Table S6, are DELVE-G, which fixes \(K\) and uses a
+pre-given transformation and a global minimizer with zero optimization
+error and is covered in full by the risk-gap guarantee; DELVE-L, which
+keeps fixed \(K\) but uses finite-initialization Lloyd and carries the
+explicit \(\delta_{\rm opt}\); and DELVE-B, the blind pipeline with a
+data-dependent scaler and a prespecified selector, which carries no
+unconditional guarantee.
 
-The guarantee covers the global empirical K-means solution under fixed
-\(K\), a fixed or frozen transformation, bounded features, and the
-alignment and level-set assumptions. Automatic \(K\) selection,
-full-pool standardization, and finite-initialization Lloyd fall outside
-it, and the paper does not establish that the unlabeled EEG satisfies
-the conditions. The stronger route, proving alignment on a structured
-distribution class through a capture or exchange argument, is left as
-future work.
+Freezing a fitted scaler does not make it pre-given. The guarantee
+attaches to the global empirical K-means solution under fixed \(K\), a
+pre-given transformation, bounded features, and the alignment and
+level-set assumptions. Automatic \(K\) selection, data-dependent
+standardization, and finite-initialization Lloyd fall outside it, and
+the paper does not establish that the unlabeled EEG satisfies the
+conditions. Proving alignment on a structured distribution class through
+a capture or exchange argument is left as future work.

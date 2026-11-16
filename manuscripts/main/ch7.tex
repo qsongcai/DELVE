@@ -4,8 +4,7 @@ protocol}\label{three-independent-sources-and-one-protocol}
 The empirical study uses three independently collected EEG sources. They
 span a wide spread of acquisition and protocol differences, so the
 recovered label is interpreted only as a source-associated technical
-mixture, and no claim is made that a single device or task can be
-isolated as the cause.
+mixture, and no single device or task is isolated as the cause.
 
 The first source is a research-grade BrainVision study with eight
 channels at a thousand hertz, thirty-two subjects and sixty-four
@@ -23,14 +22,14 @@ notch, and cut into four-second windows. Window covariances use
 Ledoit--Wolf shrinkage and are linearized through the matrix logarithm,
 and the recording feature is the unweighted within-recording average.
 The protocol is fixed before analysis, and each recording receives one
-equal vote. The source-level facts are stated in
-Table~\ref{tab:sources}; the complete data processing,
-versions, links, and call parameters are in Supplementary S1.
+equal vote. Table~\ref{tab:sources} states the
+source-level facts; full processing, versions, links, and call
+parameters are in Supplementary S1.
 
 \begin{table}[htbp]
 \centering
 \small
-\caption{The three independently collected EEG sources and their acquisition characteristics. The harmonized pipeline reduces these heterogeneous sources to a common feature space.}
+\caption{The three independently collected EEG sources and their acquisition characteristics. The harmonized pipeline reduces them to a common feature space.}
 \label{tab:sources}
 \begin{tabular}{lllll}
 \hline
@@ -55,22 +54,21 @@ resampling count and its unit.
 The analyses separate into a primary set and a secondary exploratory
 set. The primary set is the balanced oracle-\(K\) recovery, the blind
 \(K\) selection, the unbalanced full-pool fit, and the subject-level
-aggregation, all on the covariance features with the recording as the
-unit unless stated. The secondary set in Section 7.5 covers alternative
+aggregation, all on covariance features with the recording as the unit
+unless stated. The secondary set in Section 7.5 covers alternative
 spatial representations, channel-drop checks, novelty detection,
 non-covariance phase locking, and component ablations. No prespecified
 multiple-comparison strategy is applied across these analyses, and the
-permutation \(p\)-values, ARI figures, and bootstrap intervals are
-descriptive diagnostics, not confirmatory hypothesis tests with a
-family-wise error guarantee.
+permutation p-values, ARI figures, and bootstrap intervals are
+descriptive diagnostics, not confirmatory tests with a family-wise error
+guarantee.
 
-Before the clustering results, one caveat frames what a recovered label
-can mean. The source labels are fully predictable from recording
-metadata alone, the window count ranges having no overlap across the
-three sources, so the partition the method recovers is a technical
+One caveat frames what a recovered label can mean. The source labels are
+fully predictable from recording metadata alone, the window-count ranges
+having no overlap, so the recovered partition is a technical
 source-associated structure, not a latent biological environment. The
-detailed controls and the feature-to-metadata correlations are in
-Section 7.2.
+detailed controls and feature-to-metadata correlations are in Section
+7.2.
 
 \subsection{Metadata controls}\label{metadata-controls}
 
@@ -79,39 +77,48 @@ information unrelated to latent environments. The number of windows is
 nine for every recording in the first source, fifteen in the third, and
 ranges from eighty to a hundred and fourteen in the second; the three
 ranges do not overlap. A decision tree given only this field predicts
-the source with perfect cross-validated accuracy. Subject-grouped folds,
-which keep every recording of one subject in a single fold across the
-171 subject groups, also give accuracy one, so the result is not
-produced by related recordings crossing between folds. Adding the device
-metadata constant within a source holds the accuracy at one for both
-logistic and tree models. The sources are therefore fully separable from
-trivial metadata alone, the clearest evidence that the recovered label
-is a technical one.
+the source with perfect cross-validated accuracy, and subject-grouped
+folds across the 171 subject groups give the same accuracy, so the
+result is not produced by related recordings crossing folds. Adding
+device metadata holds the accuracy at one for both logistic and tree
+models. The sources are therefore fully separable from trivial metadata
+alone.
 
-The association with metadata is quantified rather than asserted. Across
-the ten covariance features, the absolute correlation with window count
-reaches \(0.663\) and averages \(0.210\). The window count is not a
-field the clustering uses, but it is a potential confound, and the
-available design cannot separate its contribution from other
-source-associated factors. A length-matched control would be natural,
-but the data do not permit one. The three window-count ranges have no
-common support, and trimming to an overlap would leave an empty design,
-so the data cannot identify the separate roles of duration and the other
-source differences. We state this as an infeasibility rather than
-replace it with a different control.
+The association with metadata is quantified, not asserted. Across the
+ten covariance features, the absolute correlation with window count
+reaches \(0.663\) and averages \(0.210\). Window count is not a field
+the clustering uses, but it is a potential confound, and the design
+cannot separate its contribution by trimming because the three ranges
+have no common support. A different control is still available: each
+recording can be rebuilt from the same number of windows.
+
+The fixed-window control rebuilds every recording from nine windows, the
+smallest common count. For recordings with more windows, nine are drawn
+at random, and the same balanced protocol is then run over the six
+clustering seeds. The fixed count also fixes the effective duration at
+thirty-six seconds. The balanced ARI is \(0.577\), with a six-seed
+standard deviation of \(0.045\) after averaging the window draws,
+against \(0.582\pm0.068\) for the full-window design. Across ten window
+draws and six seeds, the sixty measurements have a standard deviation of
+\(0.062\). The change is smaller than the run-to-run spread, so
+equalizing the window count does not materially change the partition.
+The covariance features carry source-separating structure beyond window
+count, which supports stability, but the control does not remove the
+other dataset-level confounds, and the result remains a cross-source
+technical domain identification. The full resampling table is in
+Supplementary S7.
 
 Two controls check where the structure appears. The same-device control
-pools recordings within one source and repeats the clustering there. The
-silhouette stays low, between \(0.18\) and \(0.22\), and the clustering
-agrees with the subject label at an ARI of only \(0.02\) to \(0.03\), so
-no stable within-device structure is recovered. The same-task control
-keeps the two resting sources and drops the third; despite the shared
-task they still separate at two clusters, with a balanced ARI of
-\(0.53\), \(0.56\) over three seeds. A shared task category is therefore
-not sufficient to remove the source difference, but the controls cannot
-name a single driver because device, population, length, reference, and
-preprocessing still differ together. The full metadata table is in
-Supplementary S3.
+pools recordings within one source and repeats the clustering there.
+Silhouette stays low, between \(0.18\) and \(0.22\), and the ARI against
+subject label is only \(0.02\) to \(0.03\), so no stable within-device
+structure is recovered. The same-task control keeps the two resting
+sources and drops the third; despite the shared task they still separate
+at two clusters, with balanced ARI \(0.53\), \(0.56\) over three seeds.
+A shared task category is therefore not sufficient to remove the source
+difference, but the controls cannot name a single driver because device,
+population, length, reference, and preprocessing still differ together.
+The full metadata table is in Supplementary S3.
 
 \subsection{Recovery under a known number and blind
 selection}\label{recovery-under-a-known-number-and-blind-selection}
@@ -119,22 +126,27 @@ selection}\label{recovery-under-a-known-number-and-blind-selection}
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=\textwidth]{fig8_main_results.pdf}
-\caption{Four-panel main EEG result. (a) Two-dimensional PCA projection of the balanced ninety-recording features, colored by source. (b) Source x cluster contingency for the seed 0, balanced oracle-$K$ fit, normalized within each source, with a dominant diagonal. Across the six balanced seeds, every fit remains diagonal-dominant after label alignment, with diagonal fractions between 0.70 and 0.93, and panel (b) is shown as the seed-0 representative visualization rather than a cross-seed aggregate. (c) Recording-level ARI across the four primary designs, with mean and standard deviation for the multi-seed designs and diamonds for single-run realizations. (d) Blind selector: selected $K$ (bars) and bootstrap stability (line) across six balanced seeds. The figure consolidates evidence otherwise spread across the tables and the supplementary.}
+\caption{Four-panel main EEG result. (a) PCA of the balanced ninety-recording features, colored by source. (b) Seed-0 source x cluster contingency, normalized within each source, with a dominant diagonal. Across six seeds every fit stays diagonal-dominant after alignment, with diagonal fractions between 0.70 and 0.93. (c) Recording-level ARI across the four primary designs. (d) Blind selector: selected $K$ and bootstrap stability across six seeds.}
 \label{fig:main}
 \end{figure}
 
 The clearest positive evidence comes from the balanced cross-source
 design. With only two sources pooled, every paired combination is
-recovered, with ARI between \(0.48\) and \(0.64\). Pooling all three
-sources at the oracle value of three strengthens the result. On the
-balanced ninety-recording design, recording-level ARI reaches \(0.608\),
-and the result holds across six balanced seeds at a mean of \(0.582\),
-as detailed in Table~\ref{tab:perseed}.
+recovered, with ARI between \(0.48\) and \(0.64\). Pooling all three at
+the oracle value of three strengthens the result. On the balanced
+ninety-recording design, recording-level ARI reaches \(0.608\), and the
+result holds across six seeds at a mean of \(0.582\), as detailed in
+Table~\ref{tab:perseed}. This is a label-assisted
+evaluation design. The source labels do not enter the features, scaler,
+or cluster fit, but they do select the thirty recordings per source, so
+the balanced oracle-\(K\) result is an upper-bound diagnostic, not a
+measure of blind deployment performance. The blind selector below is the
+realistic deployment result.
 
 \begin{table}[htbp]
 \centering
 \small
-\caption{Per-seed recording-level ARI on the ninety-recording balanced design and on the cross-fitted held-out construction, with the sample mean and standard deviation reported rather than a mean alone. The cross-fitted column is defined in Supplementary S1.}
+\caption{Per-seed recording-level ARI on the balanced design and the cross-fitted held-out construction, with mean and standard deviation. The cross-fitted column is defined in Supplementary S1.}
 \label{tab:perseed}
 \begin{tabular}{lcc}
 \hline
@@ -154,43 +166,38 @@ std & 0.068 & 0.072\\
 
 \end{table}
 
-The balanced design is not a blind run. Thirty recordings are drawn from
-each source, and the source label is used only to select the recordings;
-it never enters the covariance features, the scaler, or the clustering.
-The draw and the rule are fixed in advance, so this is a pre-specified
-evaluation. It is recording-level, oracle-\(K\) evidence that the source
-label can be reconstructed from the covariance features, not an external
-validation of the blind pipeline and not a subject-level claim.
+The balanced design is not a blind run. The source label is used only to
+select the thirty recordings per source and never enters the features,
+scaler, or clustering, so this is prespecified oracle-\(K\) evidence,
+not blind deployment or a subject-level claim.
 
 The prespecified blind selector does not reproduce the oracle result. On
-the seed-0 balanced design it returns two clusters rather than three,
-with ARI \(0.279\). Run across all six balanced seeds, the automatic
-choice is not fixed: it selects \(K=2\) in three seeds and \(K=3\) in
-the other three, and the ARI measured at the selected \(K\) averages
-\(0.419\pm0.140\). What stays systematic is the two-cluster geometry.
-Whenever \(K=2\) is fitted, the same two sources, ds007541 and ds008099,
-are joined, while on004362 stays apart, and the merged cluster separates
-cleanly into the two true components once the correct number is
-restored. The forced two-cluster ARI averages \(0.277\pm0.043\) across
-the seeds. The eligibility gate, not the BIC term, settles the choice.
-In the three seeds that return two clusters, the \(K=3\) stability falls
-below the adaptive threshold while its silhouette stays positive, so
-\(K=3\) is ineligible and only \(K=2\) remains, even though its BIC is
-lower; in the other three seeds both \(K=2\) and \(K=3\) clear the gate
-and the lower BIC of \(K=3\) selects it. The per-seed silhouettes,
-stabilities, gate decisions, and BIC ranks are tabulated in
-Supplementary Table~ S6, and no prespecified rule recovers
-the oracle number on every seed. We present this as a primary finding
-rather than a caveat. Covariance structure can be recoverable at a fixed
-\(K\) while the number of sources is itself not reliably selected by the
-blind procedure. The \(K\) sensitivity across the full grid is shown in
-Figure~\ref{fig:ksens}, and the per-seed numbers are in
+the seed-0 balanced design it returns two clusters, not three, with ARI
+\(0.279\). Across all six seeds the choice is not fixed: \(K=2\) in
+three seeds and \(K=3\) in the other three, and the ARI measured at the
+selected \(K\) averages \(0.419\pm0.140\). The two-cluster geometry is
+the stable part. Whenever \(K=2\) is fitted, the same two sources,
+ds007541 and ds008099, join while on004362 stays apart, and the merged
+cluster separates cleanly once the correct number is restored. The
+forced two-cluster ARI averages \(0.277\pm0.043\).
+
+The eligibility gate, not the BIC term, settles the choice. In the three
+seeds that return two clusters, the \(K=3\) stability falls below the
+adaptive threshold while its silhouette stays positive, so \(K=3\) is
+ineligible and only \(K=2\) remains. In the other three seeds both clear
+the gate and the lower BIC of \(K=3\) selects it. The per-seed
+silhouettes, stabilities, gate decisions, and BIC ranks are in
+Supplementary Table S6, and no prespecified rule recovers the oracle
+number on every seed. This is a primary finding rather than a caveat:
+covariance structure can be recoverable at a fixed \(K\) while the
+number of sources is not reliably selected. The full-grid sensitivity is
+in Figure~\ref{fig:ksens} and the per-seed numbers in
 Table~\ref{tab:blind}.
 
 \begin{table}[htbp]
 \centering
 \small
-\caption{Per-seed blind selection on the balanced ninety-recording design. For each balanced seed the blind selector instantiates the same fixed auxiliary generator \texttt{default\_rng(2026)}, which supplies the clustering random states; the oracle table instead uses the design seed as its random state, so same-seed values across the two tables are not the same $K$-means run. At seed 3 the oracle $K=3$ fit with random state $3$ gives ARI $0.535$, while the selector's $K=3$ fit with random state $914669162$ gives $0.561$ on the identical ninety recordings, and the gap is initialization-driven. The automatic choice is unstable, two clusters in three seeds and three in the other three, but forcing two clusters always merges the same pair, ds007541 and ds008099, with on004362 kept mostly apart. Stability is the bootstrap cluster-agreement at the selected $K$. Alternative RNG constructions retain the same pattern and never select $K=3$ in all six seeds.}
+\caption{Per-seed blind selection on the balanced design. Each blind selector instantiates the same fixed auxiliary generator \texttt{default\_rng(2026)} for its clustering random states; the oracle table uses the design seed, so same-seed values across the two tables are not the same K-means run. At seed 3 the oracle fit gives ARI 0.535 while the selector's fit gives 0.561 on the identical recordings, and the gap is initialization-driven.}
 \label{tab:blind}
 \begin{tabular}{ccccc}
 \hline
@@ -207,32 +214,72 @@ seed & selected $K$ & ARI at selected $K$ & forced $K=2$ ARI & stability\\
 
 \end{table}
 
+The selector is pre-specified, but fixing it in advance only makes it
+reproducible. It does not show that the rule is statistically justified
+or that it beats standard methods. A direct comparison runs the standard
+internal indices and mixture criteria on the same balanced draws, each
+selecting its own preferred number without the source labels.
+Table~\ref{tab:selectbaseline} gives the result. None of
+the standard methods recovers three clusters reliably. Silhouette,
+Calinski--Harabasz, and the hierarchical fit all stop at two, the
+diagonal-GMM information criteria over-split to four or more, and the
+gap statistic reaches three in only two seeds. The gated selector
+reaches three in three seeds, the highest rate tested, but that is not a
+reliable choice. The blind failure is therefore a property of the data,
+not of one hand-crafted rule.
+
+\begin{table}[htbp]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\caption{Standard $K$-selection methods on the six balanced draws, with the true number equal to three. A Dirichlet-process mixture is excluded because it requires an external dependency and nonparametric mixtures tend to over-split at this sample size. Gate-parameter and candidate-range sensitivity is in Supplementary S10.}
+\label{tab:selectbaseline}
+\begin{tabular}{lcc}
+\hline
+method & selected $K$ (s0–s5) & $K=3$ count\\
+\hline
+silhouette & 2,2,2,2,2,2 & 0/6\\
+Calinski–Harabasz & 2,2,2,2,2,2 & 0/6\\
+Davies–Bouldin & 2,6,6,2,2,6 & 0/6\\
+GMM-diag BIC & 4,4,5,5,5,4 & 0/6\\
+GMM-diag AIC & 6,6,5,5,5,6 & 0/6\\
+GMM-full BIC & 2,2,2,2,2,2 & 0/6\\
+GMM-full AIC & 6,6,6,3,6,6 & 1/6\\
+hierarchical silhouette & 2,2,2,2,2,2 & 0/6\\
+gap statistic & 4,4,5,3,5,3 & 2/6\\
+stability-only & 2,2,3,2,2,2 & 1/6\\
+gated selector (this paper) & 2,3,3,3,2,2 & 3/6\\
+\hline
+\end{tabular}
+
+\end{table}
+
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.85\columnwidth]{fig1_k_sensitivity.pdf}
-\caption{This figure compares candidate-$K$ diagnostics with the prespecified oracle evaluation value $K=3$; it does not establish that $K=3$ is identifiable from the pooled data. The adjusted Rand index, normalized mutual information, and silhouette are reported across $K=2,\dots,6$ on the balanced ninety-recording design. The blind selector stops at two clusters with ARI $0.279$, the oracle value of three gives $0.608$, and the scores plateau before declining as extra clusters split the sources.}
+\caption{Candidate-$K$ diagnostics versus the prespecified oracle value $K=3$; the figure does not establish that $K$ is identifiable. ARI, NMI, and silhouette across $K=2,\dots,6$ on the balanced design. The scores plateau near the oracle value before declining as extra clusters split the sources.}
 \label{fig:ksens}
 \end{figure}
 
 \subsection{Balance and subject-level
 uncertainty}\label{balance-and-subject-level-uncertainty}
 
-The balanced design does real work, and removing it lowers the point
+Balance materially affects the result, and removing it lowers the point
 estimate. On the full unbalanced pool the recording-level ARI falls to
 \(0.371\). The most direct plug-in, run once over all subjects without
 resampling, is weaker still. With a hundred and seventy-one subjects in
 unequal group sizes, the subject-level ARI is only \(0.241\). The large
 source is split across several clusters and the small sources merge, the
 same mechanism seen in the unbalanced recording result. Balance is
-therefore a condition for recovery, not a cosmetic detail. The four
-primary designs are consolidated in
-Table~\ref{tab:designs}.
+therefore a condition for recovery, not a cosmetic detail.
+Table~\ref{tab:designs} consolidates the four primary
+designs.
 
 \begin{table}[htbp]
 \centering
 \small
 \setlength{\tabcolsep}{3pt}
-\caption{ARI across the four primary designs, with the statistical scope stated for each row. The balanced oracle-$K$ design is the strongest; the blind selector is data-driven and seed-dependent and does not recover the oracle number, while unbalanced pooling and the subject plug-in weaken further.}
+\caption{ARI across the four primary designs, with the statistical scope stated for each row.}
 \label{tab:designs}
 \begin{tabular}{lllll}
 \hline
@@ -243,9 +290,7 @@ blind selector (balanced) & 2 or 3 & 3/6 each & recording & $0.419\pm0.140$\\
 fixed $K=3$ (unbalanced) & 3 (fixed) & -- & recording & $0.371$\\
 full plug-in (unbalanced) & selected & -- & subject & $0.241$\\
 \hline
-\multicolumn{5}{@{}p{\textwidth}@{}}{\footnotesize Seed-averaged rows report mean$\pm$standard deviation across six prespecified balanced seeds.}\\
-\multicolumn{5}{@{}p{\textwidth}@{}}{\footnotesize The oracle row reaches $0.608$ at seed 0. For the blind row the reported ARI is measured at the $K$ selected within each seed, and the selection frequency is $K=2$ in three seeds and $K=3$ in three. The forced $K=2$ value of $0.277\pm0.043$ is a separate counterfactual reported in Table~\ref{tab:blind}, not the selector's own choice.}\\
-\multicolumn{5}{@{}p{\textwidth}@{}}{\footnotesize The unbalanced and plug-in rows are single realizations, not seed averages.}\\
+\multicolumn{5}{@{}p{\textwidth}@{}}{\footnotesize Seed-averaged rows report mean$\pm$standard deviation across six prespecified balanced seeds. The oracle row reaches 0.608 at seed 0. For the blind row the ARI is measured at the selected K. The forced K=2 value of $0.277\pm0.043$ is a separate counterfactual in Table~\ref{tab:blind}, not the selector's choice. The unbalanced and plug-in rows are single realizations.}\\
 \end{tabular}
 
 \end{table}
@@ -253,17 +298,50 @@ full plug-in (unbalanced) & selected & -- & subject & $0.241$\\
 Treating the subject as the independent unit, a subject-cluster
 bootstrap with five hundred resamples examines whether the balanced
 recovery rests on treating repeated recordings as independent. The
-subject-aggregated bootstrap gives a mean of \(0.616\) with a
-ninety-five percent interval from \(0.31\) to \(0.81\), the
-cluster-preserving design gives \(0.554\) with a wider interval, and the
-naive recording bootstrap gives \(0.603\). The subject-cluster bootstrap
-distribution stays centered above zero, and all three percentile
-intervals lie above zero. The single balanced subject realization at
-seed zero is \(0.523\), a single draw from the same resampling mechanism
-rather than a point estimate on its own. The intervals are percentile
-intervals, not BCa, and they are finite-sample diagnostics without a
-coverage theorem. The full resampling protocol and the bootstrap figure
-are in Supplementary S4.
+subject-aggregated bootstrap gives a mean of \(0.616\) with a percentile
+interval from \(0.31\) to \(0.81\), the cluster-preserving design gives
+\(0.554\) with a wider interval, and the naive recording bootstrap gives
+\(0.603\). The single balanced subject realization at seed zero is
+\(0.523\), a single draw from the same mechanism, not a point estimate.
+These intervals describe resampling spread, not a coverage theorem or a
+hypothesis test. The above-chance evidence instead comes from a
+permutation null, centered at zero with a ninety-ninth percentile near
+\(0.05\), and every observed balanced value lies above it. Formal
+definitions and the permutation table are in Supplementary S4.
+
+Six prespecified seeds give a narrow view, so a larger Monte Carlo
+repeats the balanced draw independently a hundred times, each drawing
+thirty recordings per source, fitting the scaler and three-cluster
+K-means, and scoring against the source labels. The six-seed set stays
+the confirmatory subset. Table~\ref{tab:montecarlo}
+summarizes. Balanced ARI averages \(0.606\) with standard deviation
+\(0.100\), and its fifth to ninety-fifth percentiles run from \(0.422\)
+to \(0.749\). The Hungarian-aligned macro precision and recall are both
+about \(0.85\). The same protocol on the unbalanced pool gives ARI
+\(0.371\), macro F1 \(0.710\), and purity \(0.729\). The percentile
+columns describe the Monte Carlo distribution, not a confidence
+interval.
+
+\begin{table}[htbp]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\caption{Expanded balanced Monte Carlo over a hundred independent draws. Per-source precision is .863, .826, .901 and per-source recall is .838, .936, .777. The unbalanced pool gives ARI .371, purity .729, macro F1 .710.}
+\label{tab:montecarlo}
+\begin{tabular}{lllll}
+\hline
+metric & mean & std & 5th & 95th\\
+\hline
+ARI & .606 & .100 & .422 & .749\\
+NMI & .596 & .084 & .466 & .726\\
+purity & .850 & .043 & .777 & .911\\
+macro precision & .863 & .035 & .809 & .915\\
+macro recall & .850 & .043 & .777 & .911\\
+macro F1 & .850 & .044 & .773 & .911\\
+\hline
+\end{tabular}
+
+\end{table}
 
 \subsection{Secondary analyses}\label{secondary-analyses}
 
@@ -282,12 +360,11 @@ Each source is held out in turn, the scaler and two centers are fitted
 on the other two and frozen, and the held-out recordings are mapped
 without a refit. Two held-out sources are clearly detectable as novel,
 with ROC AUC between \(0.89\) and \(0.93\), while the third is weakly
-separated at \(0.70\). When all three sources enter training, a
-cross-fitted fold assigns held-out recordings with ARI \(0.610\),
-matching the transductive \(0.608\) and corresponding to the
-sample-split mechanism in the theory. Novelty detection is not the same
-as correctly labeling a new environment, and full cross-domain
-generalization remains unproved.
+separated at \(0.70\). When all three enter training, a cross-fitted
+fold assigns held-out recordings with ARI \(0.610\), matching the
+transductive \(0.608\) and corresponding to the sample-split mechanism
+in the theory. Novelty detection is not the same as correctly labeling a
+new environment, and full cross-domain generalization remains unproved.
 
 Phase locking is a non-covariance diagnostic. The pooled multiband
 phase-locking value gives a high dataset ARI of \(0.915\), yet the
@@ -305,7 +382,7 @@ empirical log reaching only \(0.232\) against \(0.581\) for
 Ledoit--Wolf. The soft GMM reaches \(0.795\) and phase locking
 \(0.915\), both above hard K-means at \(0.581\), but these are
 two-source, \(K=2\) figures and are not compared with the three-source
-main experiment. The complete baseline and ablation tables are in
+main experiment. Complete baseline and ablation tables are in
 Supplementary S2.
 
 \subsection{Scope and summary}\label{scope-and-summary}
@@ -318,21 +395,20 @@ figure is the point: the signal appears across sources and fades within
 a single source, where no latent environment varies.
 
 A set of de-confounding checks asks whether the separation is carried by
-subject structure rather than by source. Within-source clustering
-against subject labels is near zero, and the balanced recording
-permutation on the de-confounded design remains at the smallest
-reportable value. The source label bundles amplifier, task or resting
-state, population, duration, reference, and preprocessing into one mixed
-tag, and these cannot be pulled apart from the pooled data.
+subject structure rather than source. Within-source clustering against
+subject labels is near zero, and the balanced recording permutation on
+the de-confounded design remains at the smallest reportable value. The
+source label bundles amplifier, task or resting state, population,
+duration, reference, and preprocessing into one mixed tag, and these
+cannot be pulled apart from the pooled data.
 
 The real-data evidence supports one narrow statement and marks its
 limits. Under a known \(K\) and a balanced design, source-associated
-covariance structure is recoverable across three independent sources,
-and the subject-cluster bootstrap distribution stays centered above zero
-in this resampling analysis, a finite-sample diagnostic with no coverage
-guarantee. The blind selector is seed-sensitive, repeatedly merging the
-same source pair when it selects two clusters, the unbalanced plug-in is
-weak, and within-source recovery is absent, all reported as boundary
-checks. The recovered object is the dataset-level technical structure
-defined in Section 7.1, and the ARI figures are not validation of the
-theorem.
+covariance structure is recoverable across three independent sources in
+a cross-source technical domain identification, and the observed values
+lie above a permutation null while the bootstrap intervals remain
+resampling diagnostics without a coverage guarantee. The blind selector
+is seed-sensitive, repeatedly merging the same source pair when it
+selects two clusters, the unbalanced plug-in is weak, and within-source
+recovery is absent, all reported as boundary checks. The ARI figures are
+not validation of the theorem.

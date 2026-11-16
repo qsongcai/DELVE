@@ -1,30 +1,28 @@
-Identifying latent environments is an important upstream problem in
-causal representation learning (CRL), as downstream analyses may depend
-on how observations are grouped across environments. Yet pooled
-observations generally do not identify their latent environment
-assignments. We illustrate this non-identifiability with two distinct
-partitions that induce the same distribution, and establish point
-identification of component covariance parameters in a constrained,
-whitened two-component Gaussian model. For recording-level recovery, we
-derive a finite-sample risk-gap guarantee for global empirical
-\(K\)-means under fixed \(K\), fixed features, and an explicit
-population-alignment condition that is assumed rather than derived; it
-is a conditional risk-transfer statement, and the result does not cover
-blind selection of \(K\) or finite-initialization optimization. Across
-three EEG datasets, on the balanced 90-recording design, oracle-\(K\)
-clustering achieved a mean recording-level ARI of \(0.582\pm0.068\)
-across six prespecified seeds, with \(0.608\) obtained at seed 0. The
-prespecified blind selector did not recover the oracle number: on the
-seed-0 design it selected \(K=2\) (ARI \(0.279\)), while across the six
-balanced seeds its choice was unstable, \(K=2\) in three and \(K=3\) in
-the other three. Whenever a two-cluster partition was fitted, the same
-two sources merged systematically, with a mean ARI of \(0.277\pm0.043\).
-The single-run ARI was \(0.371\) on the unbalanced recording pool and
-\(0.241\) in the subject-level plug-in. Thus covariance structure can be
-recovered under a fixed cluster number, whereas blind cluster-number
-selection remains unresolved and seed-dependent. The source labels are
-perfectly predictable from recording metadata, the window count alone
-separating all three sources. In the EEG experiments, ``environment''
-therefore denotes a source-associated technical grouping, not a
-biological or causal environment, and the results indicate dataset-level
-technical differences.
+Recovering latent environments requires distinguishing mixture-parameter
+identification from recording-level assignment recovery. We construct
+two partitions, unrelated by label permutation, that disagree on half
+the support yet induce the same pooled distribution, demonstrating
+non-identifiability without structural restrictions. In a
+two-dimensional, equally weighted Gaussian mixture with covariances
+symmetric around the identity, fourth-order cumulants identify the
+unordered component covariance pair. Separately, we derive a
+finite-sample risk-gap guarantee for global empirical \(K\)-means under
+fixed \(K\), a pre-given feature transformation, and explicit
+boundedness, population-alignment, and regularity assumptions. Alignment
+is assumed rather than derived; the guarantee neither establishes
+consistent blind \(K\) selection nor controls finite-initialization
+optimization error. Using averaged log-covariance features across three
+EEG datasets, known-\(K\) clustering on a label-assisted balanced design
+of 90 recordings achieved a recording-level adjusted Rand index (ARI) of
+\(0.582\pm0.068\) across six prespecified seeds (mean ± standard
+deviation). The blind selector chose \(K=2\) and \(K=3\) in three seeds
+each, achieving ARI \(0.419\pm0.140\). Unbalanced recording-level and
+subject-level plug-in analyses yielded ARIs of \(0.371\) and \(0.241\),
+respectively. Equalizing window counts yielded a mean ARI of \(0.577\).
+Although metadata alone perfectly predicts source labels, the
+fixed-window result indicates that window count alone does not explain
+the observed grouping. Remaining acquisition and dataset confounds
+restrict interpretation to source-associated technical groups. These
+findings distinguish restricted parameter identification from
+conditional assignment recovery, while reliable cluster-number selection
+and biological or causal interpretation remain unestablished.

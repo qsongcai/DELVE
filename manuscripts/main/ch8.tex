@@ -5,9 +5,12 @@ a recording-level compatibility condition between the latent assignment
 and the population K-means objective, and the closed level-set and
 quadratic-growth conditions are hypotheses as well. Nothing in the
 generative model forces them to hold, and the earlier exchange argument
-that sought to derive them is withdrawn. Proving alignment on a
-structured class of distributions is the natural next step, and the
-quantitative growth bound is local, with no global version claimed.
+that sought to derive them is withdrawn. The hard-ball and separation
+assumptions are an idealized benchmark, not a description of the EEG
+data, and the paper makes no claim that the covariance features satisfy
+them. Proving alignment on a structured class of distributions is the
+natural next step, and the quantitative growth bound is local, with no
+global version claimed.
 
 The number of environments is not identified. Every theoretical
 statement conditions on \(K\), and there is no proof that \(K\) is
@@ -21,31 +24,36 @@ extra conditions.
 
 Several technical pieces remain open. An algorithm-independent bound on
 the training-side center error is not established, and the projection
-cross-terms are treated through an all-direction control rather than a
-closed form. The exact correspondence between estimated and population
-objects, the unification of the scaler coordinates, and the fitted
-center term are each stated as conditions, and the K-means basin of
-attraction and a local-to-global proof are not provided. On the data
-side, bad-channel interpolation and an absolute quality threshold are
-absent, and the channel-sensitivity result rules out only a
-single-channel explanation, not distributed artifacts or a shared device
-fingerprint.
+cross-terms are treated through an all-direction control, not a closed
+form. The exact correspondence between estimated and population objects,
+the unification of the scaler coordinates, and the fitted center term
+are each stated as conditions, and the K-means basin of attraction and a
+local-to-global proof are not provided. On the data side, bad-channel
+interpolation and an absolute quality threshold are absent, and the
+channel-sensitivity result rules out only a single-channel explanation,
+not distributed artifacts or a shared device fingerprint.
 
 The empirical and identification claims are bounded. The real-data label
 is a technical mixture of device, task, population, duration, reference,
 and preprocessing whose driver cannot be separated, and no biological or
 causal reading is available. The three-source design gives repeatability
-evidence rather than a generality proof, and full cross-domain
-generalization is not established. The partial-identification framing is
-descriptive, not a proved sharp set, the resampling intervals carry no
-coverage guarantee, and the general non-Gaussian, fully blind problem
-remains open.
+evidence, not a generality proof, and full cross-domain generalization
+is not established. The partial-identification framing is descriptive,
+not a proved sharp set, the resampling intervals carry no coverage
+guarantee, and the general non-Gaussian, fully blind problem remains
+open.
 
 \subsection{Conclusion}\label{conclusion}
 
 The paper asked whether a covariance-based environment structure stays
 identifiable once the labels disappear and the observations are pooled.
-The answer is deliberately several answers rather than one.
+The central claim is a single one. Under unlabeled pooling,
+covariance-based environment discovery has a sharp identifiability
+boundary and a conditional recovery boundary, so source-associated
+technical structure is recoverable at a fixed number of environments
+while blind selection of that number and any causal reading remain
+unreliable. The results that follow are the components of this claim,
+not a set of independent answers.
 
 A two-dimensional witness shows that two genuinely different partitions
 can induce the same pooled distribution, enough to rule out treating
@@ -53,24 +61,30 @@ identifiability as automatic without making a universal claim. In a
 constrained, whitened two-component frame the component covariance pair
 is point-identified, plainly a special case, while the moment-order
 threshold beyond it is reported as cited work. Relax the assumptions and
-the target can only be described as a set of consistent structures, a
-descriptive partial-identification framing rather than a proved sharp
-set.
+the target can only be described as a set of consistent structures, not
+a proved sharp set.
 
 The practical contribution is a recording-level framework that keeps the
 observation mechanism, the estimand, and the algorithm version distinct.
-Under fixed \(K\) and a fixed transformation, the global empirical
+Under fixed \(K\) and a pre-given transformation, the global empirical
 K-means solution carries a finite-sample risk-gap guarantee, and a
 sample-split variant gives a held-out decomposition whose training-side
-term stays explicit. The standard components are not presented as novel;
-the contribution lies in the estimand, the conditional guarantee, and
-the repeatable failure boundary. On three independent EEG sources,
-source-associated structure is recoverable under a known \(K\) and a
-balanced design, and the subject-cluster bootstrap distribution stays
-centered above zero as a finite-sample diagnostic without a coverage
-guarantee, while the blind selector's cluster-number choice is unstable
-across seeds, the weak unbalanced plug-in, and absent within-source
-recovery are all reported as findings.
+term stays explicit. The standard components are not presented as novel.
+On three independent EEG sources, source-associated structure is
+recoverable under a known \(K\) and a balanced design, and the
+subject-cluster bootstrap stays centered above zero as a diagnostic
+without a coverage guarantee. Three boundary findings accompany this:
+the blind selector's cluster-number choice is unstable, the unbalanced
+plug-in is weak, and within-source recovery is absent.
+
+The two parts answer complementary questions. Pooled-distribution
+identifiability asks whether the population law determines the latent
+decomposition at all, and recording-level recovery asks whether a chosen
+clustering objective can approximate the latent labels under additional
+assumptions. Identifiability of the pooled model does not by itself
+imply recording-level clustering recovery, and a successful clustering
+analysis does not establish causal-environment or causal-representation
+identification.
 
 The recovered recording-level groups should be interpreted as candidate
 environments rather than validated causal environments. We do not
