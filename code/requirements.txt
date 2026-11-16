@@ -1,0 +1,13 @@
+# Core numerical dependencies (local scripts, no raw EEG required)
+numpy>=1.26
+scipy>=1.11
+scikit-learn>=1.4
+
+# Additional dependency for the GPU/raw-data pipeline (delve_eeg,
+# delve_third_dataset, delve_strong_baselines, delve_airm_hdbscan,
+# plv_audit, and r5_6_fixed_window via delve_third_dataset)
+mne>=1.6
+
+# Only needed to rebuild the manuscript and figures
+matplotlib>=3.7
+pypandoc-binary ; python_version >= "3.10"
