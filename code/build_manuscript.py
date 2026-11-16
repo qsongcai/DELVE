@@ -5,7 +5,7 @@ import re
 import shutil
 import subprocess
 
-ROOT = "/home/user/Doubao/chats/38451878760457474"
+ROOT = os.path.dirname(os.path.abspath(__file__))
 SRC = ROOT
 BUILD = os.path.join(ROOT, "manuscript")
 ELS = os.path.join(ROOT, "elsevier_template", "elsarticle")
